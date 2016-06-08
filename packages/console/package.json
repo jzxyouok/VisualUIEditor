@@ -1,0 +1,27 @@
+{
+  "name": "console",
+  "version": "0.1.4",
+  "description": "A simple console editor",
+  "author": "Firebox Technology",
+  "main": "main.js",
+  "main-menu": {
+    "i18n:MAIN_MENU.panel.title/i18n:MAIN_MENU.panel.console": {
+      "icon": "panel/icon.png",
+      "accelerator": "CmdOrCtrl+0",
+      "message": "console:open"
+    }
+  },
+  "panel": {
+    "main": "panel/console.html",
+    "ui": "polymer",
+    "popable": false,
+    "type": "dockable",
+    "title": "i18n:MAIN_MENU.panel.console",
+    "icon": "panel/icon.png",
+    "height": 300,
+    "shortcuts": {
+      "command+k": "clear",
+      "ctrl+k": "clear"
+    }
+  }
+}

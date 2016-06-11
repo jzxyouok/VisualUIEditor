@@ -1,6 +1,7 @@
 'use strict';
 
-const Editor = require('editor-framework');
+// const Editor = require('editor-framework');
+const Editor = require('./editor-framework/index');
 const Path = require('fire-path');
 
 Editor.App.extend({

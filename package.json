@@ -6,11 +6,37 @@
   "author": "Johnny Wu",
   "main": "app.js",
   "dependencies": {
+    "async": "^1.5.2",
+    "chalk": "^1.1.1",
+    "chokidar": "^1.4.3",
+    "chroma-js": "^1.1.1",
+    "del": "^2.2.0",
+    "diff": "^2.2.1",
+    "find-up": "1.1.0",
+    "fire-fs": "^0.2.4",
+    "fire-path": "^0.1.9",
+    "fire-url": "^0.1.7",
+    "globby": "^4.0.0",
+    "lodash": "4.0.0",
+    "mousetrap": "1.5.3",
+    "node-polyglot": "1.0.0",
+    "os-locale": "1.4.0",
+    "semver": "5.1.0",
+    "sinon": "^1.17.3",
+    "tap": "5.x",
+    "tap-mocha-reporter": "https://github.com/jwu/tap-mocha-reporter.git",
+    "winston": "^2.2.0",
+    "yargs": "^4.3.1"
   },
   "devDependencies": {
-    "check-dependencies": "0.11.0",
+    "devtron": "^1.1.0",
+    "electron-prebuilt": "1.2.1",
     "gulp": "3.9.0",
-    "gulp-sequence": "0.4.4"
+    "gulp-babel": "6.1.1",
+    "gulp-less": "3.0.5",
+    "gulp-sequence": "0.4.4",
+    "less": "^2.6.1",
+    "less-plugin-clean-css": "^1.5.1"
   },
   "hosts": {
     "fireball-packages/package-examples": "master"

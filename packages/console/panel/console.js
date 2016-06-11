@@ -122,6 +122,7 @@
       console.log("clear!!!!!!!!!!!!!!!!1");
       this._clear();
       Editor.Ipc.sendToMain('console:clear');
+      Editor.trace("ssssssssssssssssssss");
     },
 
     _clear () {
@@ -134,7 +135,7 @@
 
       Editor.Ipc.sendToPackage('console', 'popup-open-log-menu', rect.left, rect.bottom + 5 );
 
-      Editor.Console.info("xxxxxxxxxxxxxxxxxxx");
+      Editor.info("xxxxxxxxxxxxxxxxxxx");
     },
 
     applyFilter ( logsCount, filterText, filterOption, useRegex, collapse ) {

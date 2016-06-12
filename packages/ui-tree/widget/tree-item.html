@@ -93,11 +93,12 @@
             },
 
             _onDblClick: function ( event ) {
-                event.stopPropagation();
+                console.log('edit asset111 %s', this.name);
 
                 if ( event.target === this.$.foldIcon ) {
                     return;
                 }
+                event.stopPropagation();
 
                 console.log('edit asset %s', this.name);
                 // this.fire('open');

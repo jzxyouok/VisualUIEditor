@@ -51,55 +51,23 @@
     </style>
 
     <div class="toolbar">
-      <ui-button class="red small transparent" on-confirm="clear">
-        <i class="icon-block"></i>
-      </ui-button>
-      <ui-button class="small transparent" id="openLogBtn" on-confirm="_onOpenLogFile">
-        <i class="icon-doc-text"></i>
+      <ui-button class="black small transparent" on-confirm="clear">
+        <i class="fa fa-plus-circle"></i>
       </ui-button>
       <ui-input
         id="input"
-        placeholder="filter"
+        placeholder="搜索"
         value="{{filterText::change}}"
         cancelable
         unnavigable
       ></ui-input>
-      <ui-checkbox
-        unnavigable
-        checked="{{useRegex::change}}">Regex</ui-checkbox>
-
-      <ui-select
-        value="{{filterOption::confirm}}"
-        class="small"
-        unnavigable
-      >
-        <option value="All">All</option>
-        <option value="Log">Log</option>
-        <option value="Success">Success</option>
-        <option value="Failed">Failed</option>
-        <option value="Info">Info</option>
-        <option value="Warn">Warn</option>
-        <option value="Error">Error</option>
-      </ui-select>
       <span class="flex-1"></span>
-      <ui-checkbox unnavigable checked="{{collapse::change}}">Collapse</ui-checkbox>
     </div>
 
     <tree-view id="tree"></tree-view>
   </template>
 
   <script>
-    // var tree = document.getElementById("tree");
-    // var item = document.createElement('tree-item');
-
-    // for (var o in tree) {
-    //   console.log("--------------");
-    //   console.log(o);
-    // }
-    // tree.addItem(tree, item, {
-    //     id: "what",
-    //     name: "fuck",
-    // });
 
   </script>
   

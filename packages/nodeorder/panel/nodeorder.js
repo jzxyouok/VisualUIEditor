@@ -5,36 +5,9 @@
   
   Editor.polymerPanel('nodeorder', {
     properties: {
-      logs: {
-        type: Array,
-        value () {
-          return [];
-        },
-      },
-
-      filterOption: {
-        type: String,
-        value: 'All',
-      },
-
       filterText: {
         type: String,
         value: '',
-      },
-
-      useRegex: {
-        type: Boolean,
-        value: false,
-      },
-
-      collapse: {
-        type: Boolean,
-        value: true,
-      },
-
-      logsCount: {
-        type: Number,
-        value: 0,
       },
     },
 

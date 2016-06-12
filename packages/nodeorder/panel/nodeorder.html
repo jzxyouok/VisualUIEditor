@@ -1,4 +1,7 @@
 <link rel="import" href="item.html">
+<link rel="import" href="packages://ui-tree/widget/tree-item.html">
+<link rel="import" href="packages://ui-tree/widget/tree-view.html">
+<script type="text/javascript" src="packages://ui-tree/widget/id-tree.js"></script>
 
 <dom-module id="editor-nodeorder">
   <template>
@@ -64,6 +67,7 @@
       <ui-checkbox
         unnavigable
         checked="{{useRegex::change}}">Regex</ui-checkbox>
+
       <ui-select
         value="{{filterOption::confirm}}"
         class="small"
@@ -80,19 +84,24 @@
       <span class="flex-1"></span>
       <ui-checkbox unnavigable checked="{{collapse::change}}">Collapse</ui-checkbox>
     </div>
-    <ul id="view" class="flex-1">
-      <template is="dom-repeat" items="{{applyFilter(logsCount,filterText,filterOption,useRegex,collapse)}}">
-        <editor-nodeorder-item
-          type="[[item.type]]"
-          count="[[item.count]]"
-          desc="[[item.desc]]"
-          detail="[[item.detail]]"
-          show-count="[[collapse]]"
-        >
-        </editor-nodeorder-item>
-      </template>
-    </ul>
+
+    <tree-view id="tree"></tree-view>
   </template>
 
-  <script type="text/javascript" src="console.js"></script>
+  <script>
+    // var tree = document.getElementById("tree");
+    // var item = document.createElement('tree-item');
+
+    // for (var o in tree) {
+    //   console.log("--------------");
+    //   console.log(o);
+    // }
+    // tree.addItem(tree, item, {
+    //     id: "what",
+    //     name: "fuck",
+    // });
+
+  </script>
+  
+  <script type="text/javascript" src="nodeorder.js"></script>
 </dom-module>

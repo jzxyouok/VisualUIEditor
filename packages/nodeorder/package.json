@@ -5,7 +5,7 @@
   "author": "Firebox Technology",
   "main": "main.js",
   "panel": {
-    "main": "panel/console.html",
+    "main": "panel/nodeorder.html",
     "ui": "polymer",
     "popable": false,
     "type": "dockable",

@@ -11,6 +11,7 @@
     {
       "active": 0,
       "panels": [
+        "ui-tree.preview",
         "console"
       ],
       "type": "panel",

@@ -1,6 +1,6 @@
 <link rel="import" href="item.html">
 
-<dom-module id="editor-console">
+<dom-module id="editor-nodeorder">
   <template>
     <style>
       :host {
@@ -38,11 +38,11 @@
         overflow: auto;
       }
 
-      editor-console-item {
+      editor-nodeorder-item {
         background: #222;
       }
 
-      editor-console-item:nth-child(even) {
+      editor-nodeorder-item:nth-child(even) {
         background: #292929;
       }
     </style>
@@ -64,9 +64,6 @@
       <ui-checkbox
         unnavigable
         checked="{{useRegex::change}}">Regex</ui-checkbox>
-     <ui-slider
-        unnavigable
-        checked="{{xx::change}}">xxxxxxx</ui-slider>
       <ui-select
         value="{{filterOption::confirm}}"
         class="small"
@@ -85,14 +82,14 @@
     </div>
     <ul id="view" class="flex-1">
       <template is="dom-repeat" items="{{applyFilter(logsCount,filterText,filterOption,useRegex,collapse)}}">
-        <editor-console-item
+        <editor-nodeorder-item
           type="[[item.type]]"
           count="[[item.count]]"
           desc="[[item.desc]]"
           detail="[[item.detail]]"
           show-count="[[collapse]]"
         >
-        </editor-console-item>
+        </editor-nodeorder-item>
       </template>
     </ul>
   </template>

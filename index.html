@@ -26,19 +26,29 @@
     <link rel="stylesheet" href="app://bower_components/fontawesome/css/font-awesome.min.css">
   </head>
 
+  <!-- Insert this line above script imports  -->
+  <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+
+  <!-- normal script imports etc  -->
+  <script src="js/jquery.js"></script>    
+
+  <!-- Insert this line after script imports -->
+  <script>if (window.module) module = window.module;</script>
+
+
   <body class="layout vertical">
     <h2>Run demos from <span>Main Menu/Examples</span></h2>
     <ui-main-dock class="flex-1"></ui-main-dock>
     <script>
-      const DomUtils = Editor.UI.DomUtils;
+      // const DomUtils = Editor.UI.DomUtils;
 
-      Pace.once( 'hide', function () {
-        DomUtils.removeLoadingMask();
-      });
+      // Pace.once( 'hide', function () {
+      //   DomUtils.removeLoadingMask();
+      // });
 
-      DomUtils.addLoadingMask({
-        background: '#333',
-      });
+      // DomUtils.addLoadingMask({
+      //   background: '#333',
+      // });
     </script>
   </body>
 </html>

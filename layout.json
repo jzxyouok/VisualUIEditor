@@ -1,5 +1,13 @@
 {
-  "docks": [
+  "docks": [    
+    {
+      "active": 0,
+      "panels": [
+        "nodeorder"
+      ],
+      "type": "panel",
+      "height": 300
+    },
     {
       "active": 0,
       "panels": [

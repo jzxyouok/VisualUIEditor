@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  Editor.polymerPanel('console', {
+  Editor.polymerPanel('nodeorder', {
     properties: {
       logs: {
         type: Array,

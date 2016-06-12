@@ -32,7 +32,7 @@ module.exports = {
 
   messages: {
     'open' () {
-      Editor.Panel.open('console');
+      Editor.Panel.open('nodeorder');
     },
 
     'open-log-file': function () {

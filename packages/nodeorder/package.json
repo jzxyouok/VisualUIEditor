@@ -1,0 +1,20 @@
+{
+  "name": "nodeorder",
+  "version": "0.1.4",
+  "description": "A simple console editor",
+  "author": "Firebox Technology",
+  "main": "main.js",
+  "panel": {
+    "main": "panel/console.html",
+    "ui": "polymer",
+    "popable": false,
+    "type": "dockable",
+    "title": "层级管理器",
+    "icon": "panel/icon.png",
+    "height": 300,
+    "shortcuts": {
+      "command+k": "clear",
+      "ctrl+k": "clear"
+    }
+  }
+}

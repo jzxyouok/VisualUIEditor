@@ -1,5 +1,7 @@
 'use strict';
 
+// <script src="./js/jquery.js" onload="window.$ = window.jQuery = module.exports;"></script>
+
 // const Editor = require('editor-framework');
 const Editor = require('./editor-framework/index');
 const Path = require('fire-path');

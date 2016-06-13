@@ -35,6 +35,9 @@
     },
 
     addItem ( parentItem, childItem) {
+      Editor.log("addItem");
+      // print_func(childItem);
+
       var uuid = gen_uuid();
       childItem._uuid = uuid;
       Polymer.dom(parentItem).appendChild(childItem);

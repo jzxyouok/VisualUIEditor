@@ -13,9 +13,10 @@ Editor.UI.idtree = (() => {
   }
 
   let idtree = {
-    'ui-idtree': true,
+    // 'ui-idtree': true,
 
     created () {
+      Editor.log("created!!!!!!!!!!!!!");
       this._id2el = {};
       this._activeElement = null;
     },

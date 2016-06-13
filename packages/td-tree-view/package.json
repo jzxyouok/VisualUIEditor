@@ -1,0 +1,11 @@
+{
+  "name": "td-tree-view",
+  "version": "0.1.4",
+  "description": "Tree View Widgets",
+  "author": "Firebox Technology",
+  "main": "main.js",
+  "widgets": {
+    "td-tree-item": "widget/td-tree-item.html",
+    "td-tree-view": "widget/td-tree-view.html"
+  }
+}

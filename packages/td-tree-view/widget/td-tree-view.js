@@ -1,0 +1,257 @@
+(() => {
+  'use strict';
+
+  Editor.polymerElement({
+    properties: {
+      enableDrag: Boolean,
+    },
+
+    ready () {
+      this._id2el = {};
+      this._activeElement = null;
+    },
+
+
+    created: function() {
+      Editor.log('Highlighting for ', 111, 'enabled!');
+    },
+
+    // messages: {
+    // },
+    
+    _getLastChildRecursively ( childItem ) {
+        if ( childItem.foldable && !childItem.folded ) {
+        return _getLastChildRecursively ( Polymer.dom(childItem).lastElementChild );
+        }
+        return childItem;
+    },
+
+    _checkFoldable ( item ) {
+        return Polymer.dom( ).childNodes.length > 0;
+    },
+
+    shift : function() {
+        Editor.log("fkkkkkkkkkkkkkk!!!!!!!!!!!!!!!!");
+    },
+
+    addItem ( parentItem, childItem) {
+      var uuid = gen_uuid();
+      childItem._uuid = uuid;
+      Polymer.dom(parentItem).appendChild(childItem);
+      if ( parentItem !== this ) {
+        parentItem.foldable = true;
+      }
+      // add to id table
+      this._id2el[uuid] = childItem;
+      return uuid;
+    },
+
+    removeItem ( childItem ) {
+	  // children
+	  let children = Polymer.dom(childItem).children;
+	  for ( let i = 0; i < children.length; ++i ) {
+	    removeItem(children[i]);
+	  }
+      let parentItem = Polymer.dom(childItem).parentNode;
+      Polymer.dom(parentItem).removeChild(childItem);
+
+      if ( parentItem !== this ) {
+        parentItem.foldable = _checkFoldable(parentItem);
+      }
+      delete self._id2el[childItem._uuid];
+    },
+
+    removeItemById (id) {
+      let el = this._id2el[id];
+      if ( el ) {
+        this.removeItem(el);
+      }
+    },
+
+    setItemParent ( childItem, parentItem ) {
+      if ( Editor.UI.PolymerUtils.isSelfOrAncient( parentItem, childItem ) ) {
+        throw new Error('Failed to set item parent to its child');
+      }
+
+      let oldparentItem = Polymer.dom(childItem).parentNode;
+      Polymer.dom(parentItem).appendChild(childItem);
+      parentItem.foldable = _checkFoldable(parentItem);
+
+      if ( oldparentItem !== this ) {
+        oldparentItem.foldable = _checkFoldable(oldparentItem);
+      }
+    },
+
+    setItemParentById (id, parentId) {
+      let childItem = this._id2el[id];
+      if ( !childItem ) {
+        return;
+      }
+
+      let parentItem = parentId ? this._id2el[parentId] : this;
+      if ( !parentItem ) {
+        return;
+      }
+      this.setItemParent(childItem, parentItem);
+    },
+
+    nextItem ( curItem, skipChildren ) {
+      let curItemDOM = Polymer.dom(curItem);
+      if ( !skipChildren && curItem.foldable && !curItem.folded ) {
+        return curItemDOM.firstElementChild;
+      }
+
+      if ( curItemDOM.nextElementSibling ) {
+        return curItemDOM.nextElementSibling;
+      }
+
+      let parentItem = curItemDOM.parentNode;
+      if ( parentItem === this ) {
+        return null;
+      }
+
+      return this.nextItem(parentItem, true);
+    },
+
+    prevItem ( curItem ) {
+      let curItemDOM = Polymer.dom(curItem);
+
+      let prevSiblingEL = curItemDOM.previousSibling;
+      if ( prevSiblingEL ) {
+        if ( prevSiblingEL.foldable && !prevSiblingEL.folded ) {
+          return _getLastChildRecursively (prevSiblingEL);
+        }
+
+        return prevSiblingEL;
+      }
+
+      let parentItem = curItemDOM.parentNode;
+      if ( parentItem === this ) {
+        return null;
+      }
+
+      return parentItem;
+    },
+
+    lastItem () {
+      let lastChildEL = Polymer.dom(this).lastElementChild;
+      if ( lastChildEL && lastChildEL.foldable && !lastChildEL.folded ) {
+        return _getLastChildRecursively (lastChildEL);
+      }
+      return lastChildEL;
+    },
+
+    clear () {
+      let thisDOM = Polymer.dom(this);
+      while (thisDOM.firstChild) {
+        thisDOM.removeChild(thisDOM.firstChild);
+      }
+      this._id2el = {};
+    },
+
+    expand ( id, expand ) {
+      let childItem = this._id2el[id];
+      let parentItem = Polymer.dom(childItem).parentNode;
+      while ( parentItem ) {
+        if ( parentItem === this ) {
+          break;
+        }
+
+        parentItem.folded = !expand;
+        parentItem = Polymer.dom(parentItem).parentNode;
+      }
+    },
+
+    scrollToItem ( el ) {
+      window.requestAnimationFrame(() => {
+        this.$.content.scrollTop = el.offsetTop + 16 - this.offsetHeight/2;
+      });
+    },
+
+    selectItemById ( id ) {
+      let childItem = this._id2el[id];
+      if ( childItem ) {
+        childItem.selected = true;
+      }
+    },
+
+    unselectItemById ( id ) {
+      let childItem = this._id2el[id];
+      if ( childItem ) {
+        childItem.selected = false;
+      }
+    },
+
+    activeItemById ( id ) {
+      let childItem = this._id2el[id];
+      if ( childItem ) {
+        this._activeElement = childItem;
+      }
+    },
+
+    deactiveItemById ( id ) {
+      if ( this._activeElement && this._activeElement._userId === id ) {
+        this._activeElement = null;
+      }
+    },
+
+    activeItem ( childItem ) {
+      this._activeElement = childItem;
+    },
+
+    deactiveItem ( childItem ) {
+      if ( childItem && this._activeElement === childItem ) {
+        this._activeElement = null;
+      }
+    },
+
+    dumpItemStates () {
+      let states = [];
+
+      for ( let id in this._id2el ) {
+        if ( this._id2el[id].foldable ) {
+          states.push({
+            uuid: this._id2el[id]._uuid,
+            folded: this._id2el[id].folded
+          });
+        }
+      }
+
+      return states;
+    },
+
+    restoreItemStates (states) {
+      if ( !states ) {
+        return;
+      }
+
+      states.forEach(state => {
+        let childItem = this._id2el[state.uuid];
+        if ( childItem ) {
+          childItem.folded = state.folded;
+        }
+      });
+    },
+
+    getToplevelElements ( ids ) {
+      let elements = new Array(ids.length);
+      for ( let i = 0; i < ids.length; ++i ) {
+        elements[i] = this._id2el[ids[i]];
+      }
+
+      let resultELs = Editor.Utils.arrayCmpFilter ( elements, ( elA, elB ) => {
+        if ( elA.contains(elB) ) {
+          return 1;
+        }
+
+        if ( elB.contains(elA) ) {
+          return -1;
+        }
+
+        return 0;
+      });
+      return resultELs;
+    },
+  });
+
+})();

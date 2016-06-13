@@ -30,12 +30,94 @@
         return Polymer.dom( ).childNodes.length > 0;
     },
 
+    listeners: {
+      scroll: 'handleScroll',
+      'dom-change': 'trackElements'
+    },
+    handleScroll: function() {
+      Editor.log("scroll!!!!!!!!!!!!");
+      if (this.dragEl) {
+        this.updateDragPosition();
+      }
+    },
+    trackElements: function(e) {
+      Editor.log("aaaaaaaaaaaaaaaa");
+
+      this.listen(e, 'track', 'handleTrack');
+      
+    },
+    updateDragPosition: function(dy) {
+      this.trackDelta = dy || this.trackDelta || 0;
+      var scrollDelta = this.scrollTop - this.startScrollTop;
+      var pos = this.trackDelta + scrollDelta;
+      this.translate3d(0, pos + 'px', 0, this.dragEl);
+    },
+    handleTrack: function(e) {
+      Editor.log("handleTrack!!!!!!!!!!!!");
+      switch (e.detail.state) {
+        case 'start':
+          // Capture initial state
+          this.startScrollTop = this.scrollTop;
+          this.dragEl = e.target;
+          this.dragEl.style.pointerEvents = 'none';
+          this.dragEl.classList.add('dragging');
+          this.dragModel = this.repeater.modelForElement(this.dragEl);
+          break;
+        case 'track':
+          // Re-position dragged item
+          this.updateDragPosition(e.detail.dy);
+          // Translate non-dragged items up/down
+          var overEl = e.detail.hover();
+          var overModel = overEl && this.repeater.modelForElement(overEl);
+          if (overModel) {
+            this.overModel = overModel;
+            this.dirOffset = e.detail.ddy < 0 ? -1 : 0;
+            var lastOverIndex = this.overIndex || 0;
+            var overIndex = overModel.index + this.dirOffset;
+            var start = Math.max(overIndex < lastOverIndex ? overIndex : lastOverIndex, 0);
+            var end = overModel.index < lastOverIndex ? lastOverIndex : overModel.index;
+            var children = Polymer.dom(this).children;
+            for (var i=start; i<=end; i++) {
+              var el = children[i];
+              if (el != this.repeater && i !== this.dragModel.index) {
+                var dir = 0;
+                if (i > this.dragModel.index && i <= overIndex) {
+                  dir = -1;
+                } else if (i > overIndex && i < this.dragModel.index) {
+                  dir = 1;
+                }
+                el.classList.add('moving');
+                this.translate3d(0, dir * this.dragEl.offsetHeight + 'px', 0, el);
+              }
+            }
+            this.overIndex = overModel.index;
+          }
+          break;
+        case 'end':
+          // Move item in array to new position
+          var fromIdx = this.repeater.items.indexOf(this.dragModel.item);
+          if (fromIdx >= 0 && this.overModel) {
+            var toIdx = this.repeater.items.indexOf(this.overModel.item) +
+              (this.overModel.index > this.dragModel.index ? this.dirOffset : 0);
+            var item = this.repeater.splice('items', fromIdx, 1)[0];
+            this.repeater.splice('items', toIdx, 0, item);
+          }
+          // Reset style of dragged & moved elements
+          this.dragEl.style.pointerEvents = '';
+          this.dragEl.classList.remove('dragging');
+          this.dragEl = null;
+          Polymer.dom(this).children.forEach(function(el) {
+            this.transform('', el);
+            el.classList.remove('moving');
+          }, this);
+          break;
+      }
+    },
     shift : function() {
         Editor.log("fkkkkkkkkkkkkkk!!!!!!!!!!!!!!!!");
     },
 
     addItem ( parentItem, childItem) {
-      Editor.log("addItem");
       // print_func(childItem);
 
       var uuid = gen_uuid();
@@ -44,6 +126,7 @@
       if ( parentItem !== this ) {
         parentItem.foldable = true;
       }
+      this.trackElements(childItem);
       // add to id table
       this._id2el[uuid] = childItem;
       return uuid;

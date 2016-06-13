@@ -52,8 +52,12 @@
       var pos = this.trackDelta + scrollDelta;
       this.translate3d(0, pos + 'px', 0, this.dragEl);
     },
+
     handleTrack: function(e) {
-      Editor.log("handleTrack!!!!!!!!!!!!");
+      Editor.log("handleTrack!!!!!!!!!!!! uuid = " + e.target._uuid + " name = " + e.target.name);
+      if(e.target._uuid == undefined) {
+        return;
+      }
       switch (e.detail.state) {
         case 'start':
           // Capture initial state

@@ -34,6 +34,7 @@
       scroll: 'handleScroll',
       'dom-change': 'trackElements'
     },
+
     handleScroll: function() {
       Editor.log("scroll!!!!!!!!!!!!");
       if (this.dragEl) {
@@ -41,10 +42,9 @@
       }
     },
     trackElements: function(e) {
-      Editor.log("aaaaaaaaaaaaaaaa");
+      // Editor.log("aaaaaaaaaaaaaaaa uuid = " + e._uuid + " name = " + e.name);
 
-      this.listen(e, 'track', 'handleTrack');
-      
+      // this.listen(e, 'track', 'handleTrack');
     },
     updateDragPosition: function(dy) {
       this.trackDelta = dy || this.trackDelta || 0;

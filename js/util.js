@@ -63,6 +63,30 @@ function print_func(o) {
   return result;
 }
 
+function print_keys(o) {
+  var result = '';
+  var type = typeof o;
+  switch(type) {
+    case 'string':
+    case 'number':
+    case 'boolean':
+    case 'undefined':
+        break;
+    case 'function':
+        result += o;
+        break;
+    case 'object':
+    default:
+      result += '[';
+      for(var key in o) {
+        result += key + ", ";
+      }
+      result += ']';
+  }
+  Editor.log(result);
+  return result;
+}
+
 function print_r(o, depth) {
       var result = '';
       depth || (depth=1);

@@ -1,15 +1,15 @@
 {
-  "name": "nodeorder",
+  "name": "resorder",
   "version": "0.1.4",
   "description": "A simple console editor",
   "author": "Firebox Technology",
   "main": "main.js",
   "panel": {
-    "main": "panel/nodeorder.html",
+    "main": "panel/resorder.html",
     "ui": "polymer",
     "popable": false,
     "type": "dockable",
-    "title": "层级管理器",
+    "title": "资源管理器",
     "icon": "panel/icon.png",
     "height": 300
   }

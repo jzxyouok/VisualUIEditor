@@ -1,3 +1,5 @@
+var fs = require('fs')
+
 function gen_uuid() {
     var s = [];
     var hexDigits = "0123456789abcdef";
@@ -11,31 +13,6 @@ function gen_uuid() {
     var uuid = s.join("");
     return uuid;
 }
-
-// function ergodic(obj,indentation){
-//   var indent = "  " + indentation;
-//   if(obj.constructor == Array || obj.constructor == Object){
- 
-//     for(var p in obj){
-//       if(obj[p].constructor == Array|| obj[p].constructor == Object){
-//         Editor.log(indent + "["+p+"] => "+typeof(obj)+"");
-//         Editor.log(indent + "{");
-//         ergodic(obj[p], indent);
-//         Editor.log(indent + "}");
-//       } else if (obj[p].constructor == String) {
-//         Editor.log(indent + "["+p+"] => '"+obj[p]+"'");
-//       } else {
-//         Editor.log(indent + "["+p+"] => "+obj[p]+"");
-//       }
-//     }
-//   }
-// }
- 
-// function print_r(obj) {
-//   Editor.log("{")
-//   ergodic(obj, "");
-//   Editor.log("}")
-// }
 
 function print_func(o) {
   var result = '';
@@ -90,8 +67,8 @@ function print_keys(o) {
 function print_r(o, depth) {
       var result = '';
       depth || (depth=1);
-      if (depth > 1) {
-          return "";
+      if(depth > 3) {
+          return result;
       }
       var indent = new Array(4*depth+1).join(' ');
       var indentNext = new Array(4*(depth+1)+1).join(' ');
@@ -120,3 +97,72 @@ function print_r(o, depth) {
       Editor.log(result)
       return result;
 };
+
+
+function getFileName(path) {
+    var result = path;
+    var index = 0;
+    for(var i = path.length - 1; i >= 0; i--) {
+        if(path.charAt(i) == '\\' || path.charAt(i) == '/') {
+            index = Math.min(i + 1, path.length - 1);
+            break;
+        }
+    }
+    return path.substring(index);
+}
+ 
+//遍历文件夹，获取所有文件夹里面的文件信息
+/*
+ * @param path 路径
+ *
+ */
+ 
+function geFileList(path, filter)
+{
+    var filesList = [];
+    var childList = [];
+    filesList.push({
+        name: getFileName(path),
+        isDirectory: true,
+        children: childList,
+        path: path,
+    });
+    readFile(path,childList, filter)
+    return filesList;
+}
+ 
+//遍历读取文件
+function readFile(path,filesList, filter)
+{
+    files = fs.readdirSync(path);//需要用到同步读取
+    files.forEach(walk);
+    function walk(file)
+    { 
+        if(filter && filter(file)) {
+            return;
+        }
+        states = fs.statSync(path+'/'+file);   
+        if(states.isDirectory())
+        {
+
+            var childList = [];
+            readFile(path+'/'+file, childList, filter);
+            filesList.push({
+                name: file,
+                isDirectory: true,
+                children: childList,
+                path: path + "/" + file,
+            })
+        }
+        else
+        {
+            filesList.push({
+                name: file,
+                isDirectory: false,
+                path: path + "/" + file,
+            })
+        }  
+    }
+}
+ 
+

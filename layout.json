@@ -11,6 +11,14 @@
     {
       "active": 0,
       "panels": [
+        "resorder"
+      ],
+      "type": "panel",
+      "height": 300
+    },
+    {
+      "active": 0,
+      "panels": [
         "console"
       ],
       "type": "panel",

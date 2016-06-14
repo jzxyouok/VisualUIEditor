@@ -53,5 +53,7 @@ Editor.App.extend({
       });
     }
     mainWin.focus();
+
+
   },
 });

@@ -36,7 +36,7 @@
       event.dataTransfer.dropEffect = 'none';
     });
 
-    // prevent contextmenu
+    // prevent contextmenu 
     document.addEventListener( 'contextmenu', event => {
       event.preventDefault();
       event.stopPropagation();

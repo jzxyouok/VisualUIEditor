@@ -2,6 +2,8 @@
   'use strict';
 
   var Fs = require('fire-fs');
+
+  var dragIdName = "NodeMoveUUID";
   
   Editor.polymerPanel('nodeorder', {
     properties: {
@@ -17,8 +19,8 @@
 
     ready: function () {
       Editor.UI.DockUtils.root.draggable = false;
-      this._addLogTimeoutID = null;
-      this._logsToAdd = [];
+      this._dragprop = [];
+      this._curOpMode = "center";
 
       Editor.log("ffffffffffffffffffffffffff");
       print_func(this.$.tree);
@@ -63,11 +65,10 @@
     },
     dragStart: function(ev) {
         print_func(ev);
-        ev.preventDefault();
-        ev.dataTransfer.dropEffect = 'link';
-        ev.dataTransfer.setData("Text",ev.target._uuid);
+        ev.stopPropagation();
+        ev.dataTransfer.dropEffect = 'move';
+        ev.dataTransfer.setData(dragIdName,ev.target._uuid);
         ev.target.style.opacity = "0.4";
-        Editor.log("sssssssssssssss" + ev.target._uuid);
     },
     dragEnd: function(ev) {
         ev.preventDefault();
@@ -75,9 +76,9 @@
     },
     dragEnter: function(ev) {
         ev.preventDefault();
-        // ev.stopPropagation();
+        ev.stopPropagation();
+        
         ev.target.style.background = 'blue';
-        ev.target.classList.add('over');
         ev.dataTransfer.effectAllowed = "all";
         ev.dataTransfer.dropEffect = "all"; // drop it like it's hot
     },
@@ -85,43 +86,65 @@
         ev.dataTransfer.effectAllowed = "all";
         ev.dataTransfer.dropEffect = "all"; // drop it like it's hot
         ev.preventDefault();
-        // ev.stopPropagation();
-        var data = ev.dataTransfer.getData("Text");
+        ev.stopPropagation();
+
+
+        print_keys(ev);
+        var rect = ev.currentTarget.getBoundingClientRect();
+        if (ev.clientY - rect.top < rect.height / 4) {
+            ev.target.style.background = "red";
+            this._curOpMode = "top";
+        } else if(rect.bottom - ev.clientY < rect.height / 4) {
+            ev.target.style.background = "yellow";
+            this._curOpMode = "bottom";
+        } else {
+            ev.target.style.background = "blue";
+            this._curOpMode = "center";
+        }
+
+        var data = ev.dataTransfer.getData(dragIdName);
         Editor.log("dragOver!!!!!!!!!!!!!!!!!!!" + ev.target._uuid + data);
     },
     dragLeave: function(ev) {
         ev.preventDefault();
-        // ev.stopPropagation();
+        ev.stopPropagation();
         ev.target.style.removeProperty("background");
     },
     dragDrop: function(ev) {
         Editor.log("dragDrop!!!!!!!!!!!!!!!!!!!");
         ev.preventDefault();
         ev.stopPropagation();
-        ev.target.style.opacity = "1";
-        print_keys(ev);
-        print_keys(ev.target);
-        print_keys(ev.dataTransfer);
-
-        print_keys(ev.toElement);
+        ev.target.style.removeProperty("background");
         
-        var data = ev.dataTransfer.getData("Text");
-        Editor.log("dragDrop!!!!!!!!!!!!!!!!!!!" + ev.target._uuid + data);
-    },
-    tryExchangeItem: function(sourceItem, changeItem) {
-        if (Editor.PolymerUtils.isSelfOrAncient(sourceItem, changeItem) || Editor.PolymerUtils.isSelfOrAncient(changeItem, sourceItem)) {
+        var data = ev.dataTransfer.getData(dragIdName);
+        
+        var item = this.$.tree.getItemById(data);
+        if (item === null || item == undefined) {
             return;
         }
+        this.tryChangeItemPosition(item, ev.currentTarget);
     },
+    tryChangeItemPosition: function(sourceItem, parentItem) {
+        if (Editor.UI.PolymerUtils.isSelfOrAncient(parentItem, sourceItem)) {
+            return;
+        }
+        if (this._curOpMode == "top") {
+            this.$.tree.setItemBefore(sourceItem, parentItem);
+        } else if(this._curOpMode == "bottom") {
+            this.$.tree.setItemAfter(sourceItem, parentItem);
+        } else {
+            this.$.tree.setItemParent(sourceItem, parentItem);
+        }
+    },  
     newEntry: function (entry) {
       var item = document.createElement('td-tree-item');
       item.draggable = true;
-      item['ondragstart'] = this.dragStart;
-      item['ondragend'] = this.dragEnd;
-      item['ondragenter'] = this.dragEnter;
-      item['ondragover'] = this.dragOver;
-      item['ondragleave'] = this.dragLeave;
-      item['ondrop'] = this.dragDrop;
+      item['ondragstart'] = this.dragStart.bind(this);
+      item['ondragend'] = this.dragEnd.bind(this);
+      item['ondragenter'] = this.dragEnter.bind(this);
+      item['ondragover'] = this.dragOver.bind(this);
+      item['ondragleave'] = this.dragLeave.bind(this);
+      item['ondrop'] = this.dragDrop.bind(this);
       item.name = entry.name;
       return item;
     },

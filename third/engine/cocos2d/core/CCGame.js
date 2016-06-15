@@ -95,7 +95,8 @@ var game = /** @lends cc.game# */{
         renderMode: "renderMode",
         registerSystemEvent: "registerSystemEvent",
         jsList: "jsList",
-        scenes: "scenes"
+        scenes: "scenes",
+        element: "element"
     },
 
     // states
@@ -627,7 +628,9 @@ var game = /** @lends cc.game# */{
             win = window,
             element = cc.$(el) || cc.$('#' + el),
             localCanvas, localContainer, localConStyle;
-
+        if (!element) {
+            element = cc.$(this.config["element"]);
+        }
         if (element.tagName === "CANVAS") {
             width = width || element.width;
             height = height || element.height;

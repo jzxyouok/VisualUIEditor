@@ -22,7 +22,7 @@
       this._dragprop = [];
       this._curOpMode = "center";
 
-      var path = Editor.url('packages://ui-tree/test/fixtures/zed-tree.json');
+      var path = Editor.url('app://res/zed-tree.json');
       Fs.readFile( path, function ( err, data ) {
           if ( !err ) {
               var data = JSON.parse(data);

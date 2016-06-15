@@ -22,16 +22,7 @@
       this._dragprop = [];
       this._curOpMode = "center";
 
-      Editor.log("ffffffffffffffffffffffffff");
-      print_func(this.$.tree);
-      Editor.log("kkkkkkkkkkkkkkkkkkkkkkkkkk");
-      // var childItem = document.createElement('td-tree-item');
-      // childItem.name = "mytest";
-      // this.$.tree.shift();
-      // this.$.tree.addItem(this.$.tree, childItem);
-      // process.cwd()
       var files = geFileList("F:/test_floder", function(file) {
-          Editor.log("file name = " + file)
           if(file.length > 0 && file.charAt(0) == '.') {
               return true;
           }
@@ -40,7 +31,6 @@
           }
           return false;
       });
-      print_r(files);
       this.build(files);
 
     },
@@ -71,7 +61,6 @@
         return el;
     },
     dragStart: function(ev) {
-        print_func(ev);
         ev.stopPropagation();
         ev.dataTransfer.dropEffect = 'move';
         ev.dataTransfer.setData(dragIdName,ev.target._uuid);
@@ -95,7 +84,6 @@
         ev.preventDefault();
         ev.stopPropagation();
 
-        print_keys(ev);
         var rect = ev.currentTarget.getBoundingClientRect();
         if (ev.clientY - rect.top < rect.height / 4) {
             ev.target.style.background = "red";

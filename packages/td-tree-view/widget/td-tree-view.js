@@ -23,16 +23,9 @@
 
 
     created: function() {
-      Editor.log('Highlighting for ', 111, 'enabled!');
     },
 
-    // messages: {
-    // },
-    
-
     addItem ( parentItem, childItem) {
-      // print_func(childItem);
-
       var uuid = gen_uuid();
       childItem._uuid = uuid;
       Polymer.dom(parentItem).appendChild(childItem);
@@ -71,7 +64,6 @@
         throw new Error('Failed to set item parent to its child');
       }
 
-      print_func(Polymer.dom(parentItem));
       let oldparentItem = Polymer.dom(childItem).parentNode;
       Polymer.dom(parentItem).appendChild(childItem);
       parentItem.foldable = _checkFoldable(parentItem);

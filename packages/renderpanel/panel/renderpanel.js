@@ -22,7 +22,6 @@
     },
 
     dragStart: function(ev) {
-        print_func(ev);
         ev.stopPropagation();
         ev.dataTransfer.dropEffect = 'move';
         ev.dataTransfer.setData(dragIdName,ev.target._uuid);
@@ -45,8 +44,6 @@
         ev.dataTransfer.dropEffect = "all"; // drop it like it's hot
         ev.preventDefault();
         ev.stopPropagation();
-
-        print_keys(ev);
         var rect = ev.currentTarget.getBoundingClientRect();
         if (ev.clientY - rect.top < rect.height / 4) {
             ev.target.style.background = "red";

@@ -1,16 +1,14 @@
-<script type="text/javascript" src="packages://ui-tree/widget/id-tree.js"></script>
-
 <dom-module id="render-scene">
     <template>
-        <content></content>
-        <div id="highlightBorder" class="highlight"></div>
-        <div id="insertLine" class="insert"></div>
-        <div style="display:inline-block;width:auto; margin: 0 auto; background: #000; position:relative; border:5px solid black; border-radius: 10px; box-shadow: 0 5px 50px #333">
-            <!--<canvas id="gameCanvas" width="1200" height="675"></canvas>-->
-            <!--<canvas id="gameCanvas" width="480" height="270"></canvas>-->
-            <canvas id="gameCanvas" width="800" height="400"></canvas>
+        <div id="backgroud" style="url(app://res/grid.png) repeat;" class="flex" overflow="auto">
+            <div style="display:inline-block;width:auto;height:auto; margin: 0 auto; position:relative; border:5px solid black; border-radius: 10px; box-shadow: 0 5px 50px #333">
+                <!--<canvas id="gameCanvas" width="1200" height="675"></canvas>-->
+                <!--<canvas id="gameCanvas" width="480" height="270"></canvas>-->
+                <canvas id="gameCanvas" width="800" height="400"></canvas>
+            </div>
+            
+            <canvas id="forgeCanvas" width="10000" height="10000"></canvas>
         </div>
-        <editor-input id="nameInput" style="display:none"></editor-input>
     </template>
 
   <script type="text/javascript" src="renderscene.js"></script>

@@ -7,6 +7,11 @@
     },
 
     ready () {
+        // this.$.backgroud.style.zoom = "75%";
+      this.$.backgroud.style.background = "url(app://res/grid.png) repeat";
+
+      let rect = this.$.backgroud.getBoundingClientRect();
+      let rect1 = this.$.gameCanvas.getBoundingClientRect();
       this._id2el = {};
       this._activeElement = null;
         cc.game.run({
@@ -39,8 +44,14 @@
         });
     },
 
+    attached: function() {
+        let rect = this.$.backgroud.getBoundingClientRect();
+        let rect1 = this.$.gameCanvas.getBoundingClientRect();
+    },
+
 
     created: function() {
+        
     },
 
     // messages: {

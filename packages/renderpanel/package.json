@@ -1,0 +1,16 @@
+{
+  "name": "renderpanel",
+  "version": "0.1.4",
+  "description": "A simple console editor",
+  "author": "Firebox Technology",
+  "main": "main.js",
+  "panel": {
+    "main": "panel/renderpanel.html",
+    "ui": "polymer",
+    "popable": false,
+    "type": "dockable",
+    "title": "场景编辑器",
+    "icon": "panel/icon.png",
+    "height": 300
+  }
+}

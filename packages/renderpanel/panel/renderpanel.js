@@ -5,7 +5,7 @@
 
   var dragIdName = "NodeMoveUUID";
   
-  Editor.polymerPanel('resorder', {
+  Editor.polymerPanel('renderpanel', {
     properties: {
       filterText: {
         type: String,

@@ -1,31 +1,49 @@
 {
-  "docks": [    
+  "docks": [
     {
-      "active": 0,
-      "panels": [
-        "nodeorder"
+      "docks": [
+        {
+          "active": 0,
+          "panels": [
+            "nodeorder"
+          ],
+          "type": "panel",
+          "width": 350
+        },
+        {
+          "active": 0,
+          "panels": [
+            "resorder"
+          ],
+          "type": "panel"
+        }
       ],
-      "type": "panel",
-      "height": 300
+      "row": false,
+      "type": "dock"
     },
     {
-      "active": 0,
-      "panels": [
-        "resorder"
+      "docks": [
+        {
+          "active": 0,
+          "panels": [
+            "renderpanel"
+          ],
+          "type": "panel",
+          "width": 350
+        },
+        {
+          "active": 0,
+          "panels": [
+            "console"
+          ],
+          "type": "panel"
+        }
       ],
-      "type": "panel",
-      "height": 300
-    },
-    {
-      "active": 0,
-      "panels": [
-        "console"
-      ],
-      "type": "panel",
-      "height": 300
+      "row": false,
+      "type": "dock"
     }
   ],
   "no-collapse": true,
-  "row": false,
+  "row": true,
   "type": "dock"
 }

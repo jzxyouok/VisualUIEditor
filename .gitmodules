@@ -1,0 +1,3 @@
+[submodule "third/engine"]
+	path = third/engine
+	url = https://github.com/cocos-creator/engine

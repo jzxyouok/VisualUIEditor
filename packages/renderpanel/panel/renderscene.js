@@ -8,10 +8,16 @@
 
     ready () {
         // this.$.backgroud.style.zoom = "75%";
-      this.$.backgroud.style.background = "url(app://res/grid.png) repeat";
+    //   this.$.backgroud.style.background = "url(app://res/grid.png) repeat";
+
 
       let rect = this.$.backgroud.getBoundingClientRect();
       let rect1 = this.$.gameCanvas.getBoundingClientRect();
+
+      this.$.gameCanvas.left = 100;
+      
+      let rect2 = this.$.gameCanvas.getBoundingClientRect();
+      
       this._id2el = {};
       this._activeElement = null;
         cc.game.run({

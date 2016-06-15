@@ -18,58 +18,9 @@
     },
 
     ready: function () {
-      Editor.UI.DockUtils.root.draggable = false;
-      this._dragprop = [];
-      this._curOpMode = "center";
-
-      Editor.log("ffffffffffffffffffffffffff");
-      print_func(this.$.tree);
-      Editor.log("kkkkkkkkkkkkkkkkkkkkkkkkkk");
-      // var childItem = document.createElement('td-tree-item');
-      // childItem.name = "mytest";
-      // this.$.tree.shift();
-      // this.$.tree.addItem(this.$.tree, childItem);
-      // process.cwd()
-      var files = geFileList("F:/test_floder", function(file) {
-          Editor.log("file name = " + file)
-          if(file.length > 0 && file.charAt(0) == '.') {
-              return true;
-          }
-          if(file.indexOf("bower_components") == 0 || file.indexOf("node_modules") == 0 || file.indexOf(".") == 0) {
-              return true;
-          }
-          return false;
-      });
-      print_r(files);
-      this.build(files);
 
     },
 
-    build: function ( data ) {
-        console.time('tree');
-
-        data.forEach( function ( entry ) {
-            var newEL = this.newEntryRecursively(entry);
-            this.$.tree.addItem( this.$.tree, newEL);
-            newEL.folded = false;
-        }.bind(this));
-
-        console.timeEnd('tree');
-    },
-
-    newEntryRecursively: function ( entry ) {
-        var el = this.newEntry(entry);
-
-        if ( entry.children ) {
-            entry.children.forEach( function ( childEntry ) {
-                var childEL = this.newEntryRecursively(childEntry);
-                this.$.tree.addItem( el, childEL );
-                childEL.folded = true;
-            }.bind(this) );
-        }
-
-        return el;
-    },
     dragStart: function(ev) {
         print_func(ev);
         ev.stopPropagation();
@@ -129,31 +80,6 @@
             return;
         }
         this.tryChangeItemPosition(item, ev.currentTarget);
-    },
-    tryChangeItemPosition: function(sourceItem, parentItem) {
-        if (Editor.UI.PolymerUtils.isSelfOrAncient(parentItem, sourceItem)) {
-            return;
-        }
-        if (this._curOpMode == "top") {
-            this.$.tree.setItemBefore(sourceItem, parentItem);
-        } else if(this._curOpMode == "bottom") {
-            this.$.tree.setItemAfter(sourceItem, parentItem);
-        } else {
-            this.$.tree.setItemParent(sourceItem, parentItem);
-        }
-    },  
-    newEntry: function (entry) {
-      var item = document.createElement('td-tree-item');
-      item.draggable = true;
-      item['ondragstart'] = this.dragStart.bind(this);
-      item['ondragend'] = this.dragEnd.bind(this);
-      item['ondragenter'] = this.dragEnter.bind(this);
-      item['ondragover'] = this.dragOver.bind(this);
-      item['ondragleave'] = this.dragLeave.bind(this);
-      item['ondrop'] = this.dragDrop.bind(this);
-      item.name = entry.name;
-      item.path = entry.path;
-      return item;
     },
 
     messages: {

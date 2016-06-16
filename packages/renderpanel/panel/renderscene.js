@@ -11,15 +11,19 @@
     //   this.$.backgroud.style.background = "url(app://res/grid.png) repeat";
 
 
-      let rect = this.$.backgroud.getBoundingClientRect();
+    //   let rect = this.$.backgroud.getBoundingClientRect();
       let rect1 = this.$.gameCanvas.getBoundingClientRect();
 
-      this.$.gameCanvas.left = 100;
-      
+      let rootRect = this.getBoundingClientRect();
+
+      this.$.forgeCanvas.style.width = "1000px";
+
+    //   this.style.zoom = "50%";
+
+      if(1)
+        return;
       let rect2 = this.$.gameCanvas.getBoundingClientRect();
       
-      this._id2el = {};
-      this._activeElement = null;
         cc.game.run({
             "debugMode"     : 1,
             "showFPS"       : false,
@@ -48,11 +52,14 @@
                 cc.director.runScene(new MyScene());
             }, this);
         });
+        
+      this.$.gameCanvas.setAttribute("left", "900");
     },
 
     attached: function() {
-        let rect = this.$.backgroud.getBoundingClientRect();
+        // let rect = this.$.backgroud.getBoundingClientRect();
         let rect1 = this.$.gameCanvas.getBoundingClientRect();
+
     },
 
 

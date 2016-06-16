@@ -5,6 +5,7 @@
             display: block;
             outline: none;
             box-sizing: border-box;
+            /*text-align: center;*/
 
             overflow-x: hidden;
             overflow-y: auto;
@@ -18,17 +19,33 @@
             min-width: 100px;
             min-height: 100px;
         }
+
+        #gameCanvas {
+            display:inline-block;
+            position: absolute;
+            border:5px solid black; 
+            border-radius: 10px; 
+            box-shadow: 0 5px 50px #333;
+            margin: 0 auto; 
+        }
+
+        #forgeCanvas {
+            display: inline-block;
+            position: absolute;
+            border:5px solid black; 
+            border-radius: 10px; 
+            box-shadow: 0 5px 50px #333;
+            margin: 0 auto; 
+        }
         </style>
-        
-        <host id="backgroud" >
-            <div style="display:inline-block;width:auto;height:auto; margin: 0 auto; position:relative; border:5px solid black; border-radius: 10px; box-shadow: 0 5px 50px #333">
+        <div></div>
+        <!--<host id="backgroud" >-->
                 <!--<canvas id="gameCanvas" width="1200" height="675"></canvas>-->
                 <!--<canvas id="gameCanvas" width="480" height="270"></canvas>-->
-                <canvas id="gameCanvas" top = "100" left ="99" width="800" height="400"></canvas>
-            </div>
+            <canvas id="gameCanvas" left ="50px" top="50px" width="800px" height="400px"></canvas>
             
-            <!--<canvas id="forgeCanvas" width="10000" height="10000"></canvas>-->
-        </host>
+            <canvas id="forgeCanvas" class="flex" ></canvas>
+        <!--</host>-->
     </template>
 
   <script type="text/javascript" src="renderscene.js"></script>

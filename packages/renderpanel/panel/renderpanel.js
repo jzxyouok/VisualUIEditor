@@ -13,6 +13,15 @@
       },
     },
 
+    listeners: {
+        'panel-resize': 'resize',
+    },
+
+    resize: function() {
+        this.$.scene.fixForgeCanvas();
+        this.$.scene.initGameCanvas();
+    },
+
     addFunc: function(data) {
 
     },
@@ -80,7 +89,7 @@
     },
 
     messages: {
-      
+
     },
 
   });

@@ -1,3 +1,4 @@
+
 (() => {
   'use strict';
 
@@ -6,24 +7,34 @@
       enableDrag: Boolean,
     },
 
+    listeners: {
+        'panel-resize': 'resize',
+    },
+
+    resize: function() {
+        this._isInitGameCanvas = false;
+    },
+
+    fixForgeCanvas: function() {
+        let rect = this.getBoundingClientRect();
+        let canvas = this.$.forgeCanvas;
+        canvas.width = rect.width - 5;
+        canvas.height = rect.height - 5;
+    },
+
+    initGameCanvas: function() {
+        if (this._isInitGameCanvas) {
+            return;
+        }
+        let rect = this.getBoundingClientRect();
+        let canvas = this.$.gameCanvas;
+        let canvasRect = canvas.getBoundingClientRect();
+        canvas.style.left = (rect.width - canvasRect.width) / 2;
+        canvas.style.top = (rect.height - canvasRect.height) / 2;
+        this._isInitGameCanvas = true;
+    },
+
     ready () {
-        // this.$.backgroud.style.zoom = "75%";
-    //   this.$.backgroud.style.background = "url(app://res/grid.png) repeat";
-
-
-    //   let rect = this.$.backgroud.getBoundingClientRect();
-      let rect1 = this.$.gameCanvas.getBoundingClientRect();
-
-      let rootRect = this.getBoundingClientRect();
-
-      this.$.forgeCanvas.style.width = "1000px";
-
-    //   this.style.zoom = "50%";
-
-      if(1)
-        return;
-      let rect2 = this.$.gameCanvas.getBoundingClientRect();
-      
         cc.game.run({
             "debugMode"     : 1,
             "showFPS"       : false,
@@ -67,8 +78,11 @@
         
     },
 
-    // messages: {
-    // },
+    messages: {
+        'editor:panel-resize' (event, messages) {
+            Editor.log("editor:panel-resize!!!!!!!!!!!!!!!!!!");
+        }
+    },
     
   });
 

@@ -35,6 +35,7 @@
     },
 
     ready () {
+        this.$.gameCanvas.style.zoom = "150%";
         cc.game.run({
             "debugMode"     : 1,
             "showFPS"       : false,

@@ -31,9 +31,9 @@ ccs.PT_RATIO = 32;
 /**
  * Base class for ccs.ColliderFilter
  * @class
- * @extends ccs.Class
+ * @extends cc._Class
  */
-ccs.ColliderFilter = ccs.Class.extend(/** @lends ccs.ColliderFilter# */{
+ccs.ColliderFilter = cc._Class.extend(/** @lends ccs.ColliderFilter# */{
     _collisionType: 0,
     _group: 0,
     _categoryBits: 0,
@@ -63,14 +63,14 @@ ccs.ColliderFilter = ccs.Class.extend(/** @lends ccs.ColliderFilter# */{
 /**
  * Base class for ccs.ColliderBody
  * @class
- * @extends ccs.Class
+ * @extends cc._Class
  *
  * @property {ccs.ContourData}      contourData     - The contour data of collider body
  * @property {ccs.Shape}            shape           - The shape of collider body
  * @property {ccs.ColliderFilter}   colliderFilter  - The collider filter of collider body
  *
  */
-ccs.ColliderBody = ccs.Class.extend(/** @lends ccs.ColliderBody# */{
+ccs.ColliderBody = cc._Class.extend(/** @lends ccs.ColliderBody# */{
     shape: null,
     coutourData: null,
     colliderFilter: null,
@@ -152,7 +152,7 @@ ccs.ColliderBody = ccs.Class.extend(/** @lends ccs.ColliderBody# */{
 /**
  * Base class for ccs.ColliderDetector
  * @class
- * @extends ccs.Class
+ * @extends cc._Class
  *
  * @param {ccs.Bone} [bone]
  *
@@ -160,7 +160,7 @@ ccs.ColliderBody = ccs.Class.extend(/** @lends ccs.ColliderBody# */{
  * @property {Boolean}              active          - Indicate whether the collider detector is active
  * @property {Object}               body            - The collider body
  */
-ccs.ColliderDetector = ccs.Class.extend(/** @lends ccs.ColliderDetector# */{
+ccs.ColliderDetector = cc._Class.extend(/** @lends ccs.ColliderDetector# */{
     _colliderBodyList: null,
     _bone: null,
     _body: null,

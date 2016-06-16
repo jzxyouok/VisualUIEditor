@@ -26,9 +26,9 @@
 /**
  *  use to calculate the matrix of node from parent node
  * @class ccs.TransformHelp
- * @extend ccs.Class
+ * @extend cc._Class
  */
-ccs.TransformHelp = ccs.TransformHelp || ccs.Class.extend({});
+ccs.TransformHelp = ccs.TransformHelp || cc._Class.extend({});
 
 ccs.TransformHelp.helpMatrix1 = cc.affineTransformMake(1, 0, 0, 1, 0, 0);
 ccs.TransformHelp.helpMatrix2 = cc.affineTransformMake(1, 0, 0, 1, 0, 0);

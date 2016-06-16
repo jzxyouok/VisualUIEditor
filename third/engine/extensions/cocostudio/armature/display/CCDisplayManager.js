@@ -30,7 +30,7 @@
  *
  * @param {ccs.Bone} bone The bone for the display manager
  */
-ccs.DisplayManager = ccs.Class.extend(/** @lends ccs.DisplayManager */{
+ccs.DisplayManager = cc._Class.extend(/** @lends ccs.DisplayManager */{
     _decoDisplayList:null,
     _currentDecoDisplay:null,
     _displayRenderNode:null,

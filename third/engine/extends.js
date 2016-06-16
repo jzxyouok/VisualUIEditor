@@ -56,3 +56,5 @@ if (!(CC_EDITOR && Editor.isMainProcess)) {
     require('./extensions/ccpool/CCNodePool.js');
     require('./extensions/ccpool/CCPool.js');
 }
+require('./extensions/cocostudio/armature');
+

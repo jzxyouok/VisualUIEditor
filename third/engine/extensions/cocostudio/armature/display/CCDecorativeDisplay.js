@@ -26,9 +26,9 @@
 /**
  * Decorative a display node for Cocos Armature
  * @class
- * @extends ccs.Class
+ * @extends cc._Class
  */
-ccs.DecorativeDisplay = ccs.Class.extend(/** @lends ccs.DecorativeDisplay# */{
+ccs.DecorativeDisplay = cc._Class.extend(/** @lends ccs.DecorativeDisplay# */{
     _display: null,
     _colliderDetector: null,
     _displayData: null,

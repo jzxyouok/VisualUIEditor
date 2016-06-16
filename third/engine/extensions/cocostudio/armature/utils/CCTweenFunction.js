@@ -74,7 +74,7 @@ ccs.TweenType = {
     TWEEN_EASING_MAX: 10000
 };
 
-ccs.TweenFunction = ccs.TweenFunction || ccs.Class.extend({});
+ccs.TweenFunction = ccs.TweenFunction || cc._Class.extend({});
 
 ccs.DOUBLE_PI = ccs.M_PI_X_2 = Math.PI * 2;
 ccs.HALF_PI = ccs.M_PI_2 = Math.PI / 2;

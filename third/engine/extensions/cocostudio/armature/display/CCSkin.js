@@ -36,7 +36,7 @@
  * @property {String}   displayName - <@readonly> The displayed name of skin
  *
  */
-ccs.Skin = ccs.Sprite.extend(/** @lends ccs.Skin# */{
+ccs.Skin = _ccsg.Sprite.extend(/** @lends ccs.Skin# */{
     _skinData: null,
     bone: null,
     _skinTransform: null,

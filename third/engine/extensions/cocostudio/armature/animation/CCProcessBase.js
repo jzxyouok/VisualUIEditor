@@ -70,7 +70,7 @@ ccs.ANIMATION_TYPE_MAX = 2;
 /**
  * The Base Process class for Cocostudio.
  * @class
- * @extends ccs.Class
+ * @extends cc._Class
  *
  * @property {Number}   currentFrameIndex   - <@readonly> The current frame's index
  * @property {Boolean}  paused              - <@readonly> Indicate whether the process is paused
@@ -83,7 +83,7 @@ ccs.ANIMATION_TYPE_MAX = 2;
  * @property {Number}   processScale        - The process scale
  * @property {Boolean}  playing             - <@readonly> Indicate whether the process is playing
  */
-ccs.ProcessBase = ccs.Class.extend(/** @lends ccs.ProcessBase# */{
+ccs.ProcessBase = cc._Class.extend(/** @lends ccs.ProcessBase# */{
     _processScale: 1,
     _isComplete: true,
     _isPause: true,

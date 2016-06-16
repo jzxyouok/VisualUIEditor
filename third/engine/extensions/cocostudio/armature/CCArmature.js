@@ -37,7 +37,7 @@
  * @property {Object}                   body            - The body of the armature
  * @property {ccs.ColliderFilter}       colliderFilter  - <@writeonly> The collider filter of the armature
  */
-ccs.Armature = ccs.Node.extend(/** @lends ccs.Armature# */{
+ccs.Armature = _ccsg.Node.extend(/** @lends ccs.Armature# */{
     animation: null,
     armatureData: null,
     batchNode: null,

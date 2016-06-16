@@ -67,7 +67,7 @@
     };
 
     proto.transform = function(parentCmd, recursive){
-        ccs.Node.CanvasRenderCmd.prototype.transform.call(this, parentCmd, recursive);
+        _ccsg.Node.CanvasRenderCmd.prototype.transform.call(this, parentCmd, recursive);
 
         var locChildren = this._node._children;
         for (var i = 0, len = locChildren.length; i< len; i++) {

@@ -151,7 +151,7 @@ ccs.DISPLAY_TYPE_MAX = 3;
  *     To get more matrix information, you can have a look at this pape : http://www.senocular.com/flash/tutorials/transformmatrix/    <br/>
  * </p>
  * @class
- * @extends ccs.Class
+ * @extends cc._Class
  *
  * @property {Number}         x                - x
  * @property {Number}         y                - y
@@ -167,7 +167,7 @@ ccs.DISPLAY_TYPE_MAX = 3;
  * @property {Number}         b                - b of color
  * @property {Number}         a                - a of color
  */
-ccs.BaseData = ccs.Class.extend(/** @lends ccs.BaseData# */{
+ccs.BaseData = cc._Class.extend(/** @lends ccs.BaseData# */{
     x:0,
     y:0,
     zOrder:0,
@@ -293,12 +293,12 @@ ccs.BaseData = ccs.Class.extend(/** @lends ccs.BaseData# */{
 /**
  * The class use for save display data.
  * @class
- * @extends ccs.Class
+ * @extends cc._Class
  *
  * @property {Number}         displayType                - the display type
  * @property {String}         displayName                - the display name
  */
-ccs.DisplayData = ccs.Class.extend(/** @lends ccs.DisplayData# */{
+ccs.DisplayData = cc._Class.extend(/** @lends ccs.DisplayData# */{
     displayType: ccs.DISPLAY_TYPE_MAX,
     displayName: "",
 
@@ -457,13 +457,13 @@ ccs.BoneData = ccs.BaseData.extend(/** @lends ccs.BoneData# */{
  * So we can get a BoneData from the Dictionary saved in the ArmatureData.                        <br/>
  * </p>
  * @class ccs.ArmatureData
- * @extends ccs.Class
+ * @extends cc._Class
  *
  * @property {Object}                    boneDataDic                - the bone data dictionary
  * @property {String}                    name                       - the name of armature data
  * @property {Number}                    dataVersion                - the data version of armature data
  */
-ccs.ArmatureData = ccs.Class.extend(/** @lends ccs.ArmatureData# */{
+ccs.ArmatureData = cc._Class.extend(/** @lends ccs.ArmatureData# */{
     boneDataDic:null,
     name:"",
     dataVersion:0.1,
@@ -596,7 +596,7 @@ ccs.FrameData = ccs.BaseData.extend(/** @lends ccs.FrameData# */{
 /**
  * MovementBoneData saved the name, delay, frame list of Bone's movement.
  * @class ccs.MovementBoneData
- * @extends ccs.Class
+ * @extends cc._Class
  *
  * @property {Number}                    delay             - the delay of bone's movement.
  * @property {Number}                    scale             - the scale of bone's movement.
@@ -604,7 +604,7 @@ ccs.FrameData = ccs.BaseData.extend(/** @lends ccs.FrameData# */{
  * @property {Array}                     frameList         - the frame list of bone's movement.
  * @property {String}                    name              - the name of bone's movement.
  */
-ccs.MovementBoneData = ccs.Class.extend(/** @lends ccs.MovementBoneData# */{
+ccs.MovementBoneData = cc._Class.extend(/** @lends ccs.MovementBoneData# */{
     delay:0,
     scale:1,
     duration:0,
@@ -703,7 +703,7 @@ ccs.MovementData.prototype.getMovementBoneData = function(boneName){
  *                                              -> MovementFrameData                                               <br/>
  * </p>
  * @class ccs.AnimationData
- * @extends ccs.Class
+ * @extends cc._Class
  */
 ccs.AnimationData = function(){
     this.movementDataDic = {};

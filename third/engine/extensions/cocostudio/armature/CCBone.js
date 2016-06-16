@@ -47,7 +47,7 @@
  * @property {Boolean}              blendDirty              - Indicate whether the blend is dirty
  *
  */
-ccs.Bone = ccs.Node.extend(/** @lends ccs.Bone# */{
+ccs.Bone = _ccsg.Node.extend(/** @lends ccs.Bone# */{
     _boneData: null,
     _armature: null,
     _childArmature: null,

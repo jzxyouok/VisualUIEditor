@@ -38,9 +38,9 @@ ccs.MovementEventType = {
  * The animation event class, it has the callback, target and arguments.
  * @deprecated since v3.0.
  * @class
- * @extends ccs.Class
+ * @extends cc._Class
  */
-ccs.AnimationEvent = ccs.Class.extend(/** @lends ccs.AnimationEvent# */{
+ccs.AnimationEvent = cc._Class.extend(/** @lends ccs.AnimationEvent# */{
     _arguments: null,
     _callFunc: null,
     _selectorTarget: null,

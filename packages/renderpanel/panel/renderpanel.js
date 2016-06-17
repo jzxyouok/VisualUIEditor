@@ -11,17 +11,59 @@
         type: String,
         value: '',
       },
+
+      zoomScale: {
+        type: Number,
+        value: 1,
+        observer: '_zoomScaleChange'
+      }
     },
 
     listeners: {
         'panel-resize': 'resize',
         'mousemove' : "_mouseMove",
+        'mousewheel' : "_mouseWheel",
+    },
+
+    _zoomScaleChange: function(newValue, location) {
+        let gameCanvas = this.$.scene.$.gameCanvas;
+        Editor.log("zoomChange " + newValue);
+        let isNeedFix = false;
+        let preLocation = null;
+        if(location) {
+            isNeedFix = true;
+            preLocation = this.calcSceneLocation(location.x, location.y);
+        }
+        let rect = gameCanvas.getBoundingClientRect();
+        gameCanvas.style.zoom = "" + newValue;
+        if(!isNeedFix) {
+            return;
+        }
+        let rect1 = gameCanvas.getBoundingClientRect();
+        let nowLocation = this.calcSceneLocation(location.x, location.y);
+        let stepX = nowLocation.x - preLocation.x, stepY = nowLocation.y - preLocation.y;
+        
+        gameCanvas.style.left = parseFloat(gameCanvas.style.left)  + stepX + "px";
+        gameCanvas.style.top = parseFloat(gameCanvas.style.top) + stepY + "px";
+
+        let afterFix = this.calcSceneLocation(location.x, location.y);
+    },
+
+    _mouseWheel: function(ev) {
+        Editor.log("_mouseWheel");
+
+        this.$.zoomSlider.value = this.$.zoomSlider.value + (ev.deltaY > 0 ? 0.05 : -0.05);
+        this._zoomScaleChange(this.$.zoomSlider.value, {x : ev.clientX, y : ev.clientY});
     },
 
     _mouseMove: function(ev) {
         Editor.log("_mouseMove");
         let location = this.calcSceneLocation(ev.clientX, ev.clientY);
         this.$.location.textContent = location.x + "X" + location.y;
+    },
+
+    recalcGameLeftTop: function(x, y) {
+
     },
 
     calcSceneLocation: function(x, y) {
@@ -31,7 +73,11 @@
         let left = rect.left, top = rect.top;
         let ratio = 1;
         if(zoom) {
-            ratio = parseFloat(zoom) / 100;
+            if(zoom.indexOf("%") >= 0) {
+                ratio = parseFloat(zoom) / 100;
+            } else {
+                ratio = parseFloat(zoom);
+            }
             left = left * ratio;
             top = top * ratio;
         }
@@ -50,7 +96,10 @@
     },
 
     ready: function () {
-
+        this.$.zoomSlider.addEventListener('change', (event => {
+            event.stopPropagation();
+            this._zoomScaleChange(event.detail.value);
+        }).bind(this));
     },
 
     dragStart: function(ev) {

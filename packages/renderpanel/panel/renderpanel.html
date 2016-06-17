@@ -56,7 +56,14 @@
         unnavigable
       ></ui-input>
       <span class="flex-1"></span>
-      <ui-text id="location">xxx</ui-text>
+      <ui-slider
+        id="zoomSlider"
+        unnavigable
+        max = "5.0"
+        min = "0.1"
+        value = "1"
+        checked="{{zoomScale::change}}">缩放</ui-slider>
+      <ui-text id="location">0X0</ui-text>
     </div>
 
     <render-scene id="scene" class="flex"></render-scene>

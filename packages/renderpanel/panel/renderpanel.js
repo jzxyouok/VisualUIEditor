@@ -28,6 +28,7 @@
 
     _mouseDown : function(ev) {
         Editor.log("_mouseDown");  
+        this.updateForgeCanvas();
     },
 
     _zoomScaleChange: function(newValue, location) {
@@ -57,8 +58,10 @@
     _mouseWheel: function(ev) {
         Editor.log("_mouseWheel");
 
-        this.$.zoomSlider.value = this.$.zoomSlider.value + (ev.deltaY > 0 ? 0.05 : -0.05);
+        this.$.zoomSlider.value = this.$.zoomSlider.value + (ev.deltaY < 0 ? 0.05 : -0.05);
         this._zoomScaleChange(this.$.zoomSlider.value, {x : ev.clientX, y : ev.clientY});
+
+        this.updateForgeCanvas();
     },
 
     _mouseMove: function(ev) {
@@ -97,7 +100,48 @@
         top = top * ratio;
         x = (x - left) / ratio;
         y = (y - top) / ratio;
-        return {x : x.toFixed(1), y : y.toFixed(1)};
+        return {x : x.toFixed(1), y : (rect.height - y).toFixed(1)};
+    },
+
+    updateForgeCanvas: function() {
+        let runScene = this.$.scene.getRunScene();
+        let children = runScene.getChildren();
+
+        let canvas = this.$.scene.getFabricCanvas();
+        canvas.clear();
+
+        let forgeRect = this.$.scene.$.forgeCanvas.getBoundingClientRect();
+        for(var i = 0; i < children.length; i++) {
+            let child = children[i];
+            let rect = child.getBoundingBoxToWorld();
+            let nodeRect = this.getNodeRect(child);
+
+            var block = new fabric.Rect({
+                top : nodeRect.y - forgeRect.top,
+                left : nodeRect.x - forgeRect.left,
+                width : nodeRect.width,
+                height : nodeRect.height,
+                fill : 'red'
+            });
+
+            block._innerItem = child;
+            
+            canvas.add(block);
+        }
+
+    },
+
+    getNodeRect: function(node) {
+        let rect = node.getBoundingBoxToWorld();
+        let start = this.sceneToDom(rect.x, rect.y);
+        let zoom = this.calcGameCanvasZoom();
+        let height = rect.height * zoom;
+
+        return {
+            x : start.x, y : start.y - height,
+            width: rect.width * zoom,
+            height: height,
+        }
     },
 
     resize: function() {
@@ -114,10 +158,27 @@
             event.stopPropagation();
             this._zoomScaleChange(event.detail.value);
         }).bind(this));
+
+        let canvas = this.$.scene.getFabricCanvas();
+        canvas.on({
+            'object:moving': this.canvasItemChange,
+            'object:scaling': this.canvasItemChange,
+            'object:rotating': this.canvasItemChange,
+        });
+        
+    },
+
+    canvasItemChange: function(options) {
+        Editor.log("canvasItemChange!!!!!!!!!!!");
+        // options.target.setCoords();
+        // canvas.forEachObject(function(obj) {
+        // if (obj === options.target) return;
+        // obj.setOpacity(options.target.intersectsWithObject(obj) ? 0.5 : 1);
+        // });
     },
 
     dragStart: function(ev) {
-        ev.stopPropagation();
+        ev.stopPropagation();   
         ev.dataTransfer.dropEffect = 'move';
         ev.dataTransfer.setData(dragIdName,ev.target._uuid);
         ev.target.style.opacity = "0.4";

@@ -20,6 +20,8 @@
         let canvas = this.$.forgeCanvas;
         canvas.width = rect.width - 5;
         canvas.height = rect.height - 5;
+        this.fabricCanvas.setWidth(rect.width - 5);
+        this.fabricCanvas.setHeight(rect.height - 5);
     },
 
     initGameCanvas: function() {
@@ -34,8 +36,17 @@
         this._isInitGameCanvas = true;
     },
 
+    getRunScene: function() {
+        return this.runScene;
+    },
+
+    getFabricCanvas: function() {
+        return this.fabricCanvas;
+    },
+
     ready () {
-        this.$.gameCanvas.style.zoom = "150%";
+        this.fabricCanvas = new fabric.Canvas(this.$.forgeCanvas);
+        this.runScene = null;
         cc.game.run({
             "debugMode"     : 1,
             "showFPS"       : false,
@@ -60,10 +71,11 @@
                         this.addChild(label, 1);
                     }
                 });
-                
-                cc.director.runScene(new MyScene());
+
+                this.runScene = new MyScene();
+                cc.director.runScene(this.runScene);
             }, this);
-        });
+        }.bind(this));
         
       this.$.gameCanvas.setAttribute("left", "900");
     },

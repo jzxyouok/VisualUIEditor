@@ -126,10 +126,6 @@
             block._innerItem = child;
             block._preInfo = nodeRect;
             canvas.add(block);
-
-            nodeRect = this.getNodeRect(child);
-            ctx.fillStyle='#FF0000';
-            ctx.fillRect(nodeRect.x - forgeRect.left,nodeRect.y - forgeRect.top,nodeRect.width,nodeRect.height);
         }
 
     },
@@ -195,7 +191,7 @@
             height: target.height,
             scaleX: target.scaleX,
             scaleY: target.scaleY,
-            angle: target.angle,
+            angle: target.getAngle(),
         };
         let ratio = this.calcGameCanvasZoom();
 
@@ -213,6 +209,10 @@
 
         if(curInfo.scaleY != preInfo.scaleY) {
             child.setScaleY(child.getScaleY() * (curInfo.scaleY / preInfo.scaleY))
+        }
+        preInfo.angle = preInfo.angle || 0;
+        if(curInfo.angle != preInfo.angle) {
+            child.setRotation(child.getRotation() + (curInfo.angle - preInfo.angle));
         }
 
         target._preInfo = curInfo;

@@ -122,9 +122,11 @@
             nodeRect.scaleY = nodeRect.scaleY || 1;
             nodeRect.opacity = 0.5;
             nodeRect.fill = "red";
+            nodeRect.hasRotatingPoint = true;
             var block = new fabric.Rect(nodeRect);
             block._innerItem = child;
             block._preInfo = nodeRect;
+            block.hasRotatingPoint = true;
             canvas.add(block);
         }
 

@@ -68,6 +68,7 @@
                         // this.addChild(sprite, 0);
                         var label = new cc.LabelTTF("Hello World", "Arial", 40);
                         label.setPosition(size.width / 2, size.height / 2);
+                        label.setScale(2);
                         this.addChild(label, 1);
                     }
                 });

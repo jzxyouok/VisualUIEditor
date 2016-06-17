@@ -28,7 +28,6 @@
 
     _mouseDown : function(ev) {
         Editor.log("_mouseDown");  
-        this.updateForgeCanvas();
     },
 
     _zoomScaleChange: function(newValue, location) {
@@ -75,7 +74,7 @@
         let rect = gameCanvas.getBoundingClientRect();
         let ratio = this.calcGameCanvasZoom();
         y = rect.height - y;
-        return {x : (rect.left + x) / ratio, y : (rect.top + y) / ratio};
+        return {x : (rect.left + x) * ratio, y : (rect.top + y) * ratio};
     },
 
     calcGameCanvasZoom: function() {
@@ -107,6 +106,8 @@
         let runScene = this.$.scene.getRunScene();
         let children = runScene.getChildren();
 
+        var ctx = this.$.scene.$.forgeCanvas.getContext('2d');
+
         let canvas = this.$.scene.getFabricCanvas();
         canvas.clear();
 
@@ -114,21 +115,33 @@
         for(var i = 0; i < children.length; i++) {
             let child = children[i];
             let rect = child.getBoundingBoxToWorld();
-            let nodeRect = this.getNodeRect(child);
-
-            var block = new fabric.Rect({
-                top : nodeRect.y - forgeRect.top,
-                left : nodeRect.x - forgeRect.left,
-                width : nodeRect.width,
-                height : nodeRect.height,
-                fill : 'red'
-            });
-
+            let nodeRect = this.getNodeRectToFabric(child);
+            nodeRect.left -= forgeRect.left;
+            nodeRect.top -= forgeRect.top;
+            nodeRect.scaleX = nodeRect.scaleX || 1;
+            nodeRect.scaleY = nodeRect.scaleY || 1;
+            nodeRect.opacity = 0.5;
+            nodeRect.fill = "red";
+            var block = new fabric.Rect(nodeRect);
             block._innerItem = child;
-            
+            block._preInfo = nodeRect;
             canvas.add(block);
+
+            nodeRect = this.getNodeRect(child);
+            ctx.fillStyle='#FF0000';
+            ctx.fillRect(nodeRect.x - forgeRect.left,nodeRect.y - forgeRect.top,nodeRect.width,nodeRect.height);
         }
 
+    },
+
+    getNodeRectToFabric: function(node) {
+        let rect = this.getNodeRect(node);
+        return {
+            top : rect.y + rect.height / 2,
+            left: rect.x + rect.width / 2,
+            width: rect.width,
+            height: rect.height,
+        }
     },
 
     getNodeRect: function(node) {
@@ -161,15 +174,49 @@
 
         let canvas = this.$.scene.getFabricCanvas();
         canvas.on({
-            'object:moving': this.canvasItemChange,
-            'object:scaling': this.canvasItemChange,
-            'object:rotating': this.canvasItemChange,
+            'object:moving': this.canvasItemChange.bind(this),
+            'object:scaling': this.canvasItemChange.bind(this),
+            'object:rotating': this.canvasItemChange.bind(this),
         });
-        
     },
 
     canvasItemChange: function(options) {
         Editor.log("canvasItemChange!!!!!!!!!!!");
+        let child = options.target._innerItem;
+        let preInfo = options.target._preInfo;
+        if(!child) {
+            return;
+        }
+        let target = options.target;
+        let curInfo = {
+            left: target.left,
+            top: target.top,
+            width: target.width,
+            height: target.height,
+            scaleX: target.scaleX,
+            scaleY: target.scaleY,
+            angle: target.angle,
+        };
+        let ratio = this.calcGameCanvasZoom();
+
+        if(curInfo.left != preInfo.left) {
+            child.setPositionX(child.getPositionX() + (curInfo.left - preInfo.left) / ratio)
+        }
+
+        if(curInfo.top != preInfo.top) {
+            child.setPositionY(child.getPositionY() - (curInfo.top - preInfo.top) / ratio)
+        }
+
+        if(curInfo.scaleX != preInfo.scaleX) {
+            child.setScaleX(child.getScaleX() * (curInfo.scaleX / preInfo.scaleX))
+        }
+
+        if(curInfo.scaleY != preInfo.scaleY) {
+            child.setScaleY(child.getScaleY() * (curInfo.scaleY / preInfo.scaleY))
+        }
+
+        target._preInfo = curInfo;
+        Editor.log("canvasItemChange!!!!!!!!!!!111111111111");
         // options.target.setCoords();
         // canvas.forEachObject(function(obj) {
         // if (obj === options.target) return;

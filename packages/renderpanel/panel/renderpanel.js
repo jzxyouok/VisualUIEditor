@@ -23,6 +23,11 @@
         'panel-resize': 'resize',
         'mousemove' : "_mouseMove",
         'mousewheel' : "_mouseWheel",
+        'mousedown' : "_mouseDown",
+    },
+
+    _mouseDown : function(ev) {
+        Editor.log("_mouseDown");  
     },
 
     _zoomScaleChange: function(newValue, location) {
@@ -62,8 +67,24 @@
         this.$.location.textContent = location.x + "X" + location.y;
     },
 
-    recalcGameLeftTop: function(x, y) {
+    sceneToDom: function(x, y) {
+        let gameCanvas = this.$.scene.$.gameCanvas;
+        let rect = gameCanvas.getBoundingClientRect();
+        let ratio = this.calcGameCanvasZoom();
+        y = rect.height - y;
+        return {x : (rect.left + x) / ratio, y : (rect.top + y) / ratio};
+    },
 
+    calcGameCanvasZoom: function() {
+        let zoom = this.$.scene.$.gameCanvas.style.zoom;
+        if(zoom) {
+            if(zoom.indexOf("%") >= 0) {
+                return parseFloat(zoom) / 100;
+            } else {
+                return parseFloat(zoom);
+            }
+        }
+        return 1
     },
 
     calcSceneLocation: function(x, y) {
@@ -71,16 +92,9 @@
         let rect = gameCanvas.getBoundingClientRect();
         let zoom = gameCanvas.style.zoom;
         let left = rect.left, top = rect.top;
-        let ratio = 1;
-        if(zoom) {
-            if(zoom.indexOf("%") >= 0) {
-                ratio = parseFloat(zoom) / 100;
-            } else {
-                ratio = parseFloat(zoom);
-            }
-            left = left * ratio;
-            top = top * ratio;
-        }
+        let ratio = this.calcGameCanvasZoom();
+        left = left * ratio;
+        top = top * ratio;
         x = (x - left) / ratio;
         y = (y - top) / ratio;
         return {x : x.toFixed(1), y : y.toFixed(1)};

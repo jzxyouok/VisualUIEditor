@@ -71,6 +71,31 @@
                         label.setScale(2);
                         label.setRotation(45);
                         this.addChild(label, 1);
+
+                        var label1 = new cc.LabelTTF("Hello World", "Arial", 40);
+                        label1.setPosition(size.width / 3, size.height / 3);
+                        label1.setScale(0.5);
+                        label1.setRotation(45);
+                        this.addChild(label1, 1);
+
+                        var node = new _ccsg.Node();
+                        node.setPosition(size.width / 4, size.height / 4);
+                        node.setScale(0.5);
+                        this.addChild(node, 1);
+
+                        {
+                            var label = new cc.LabelTTF("Hello World", "Arial", 40);
+                            label.setPosition(50, 50);
+                            label.setScale(2);
+                            label.setRotation(45);
+                            node.addChild(label, 1);
+
+                            var label1 = new cc.LabelTTF("Hello World", "Arial", 40);
+                            label1.setPosition(10, 10);
+                            label1.setScale(0.5);
+                            label1.setRotation(45);
+                            node.addChild(label1, 1);
+                        }
                     }
                 });
 

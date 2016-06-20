@@ -102,98 +102,56 @@
         return {x : x.toFixed(1), y : (rect.height - y).toFixed(1)};
     },
 
-    recursiveAddChild: function(node, parent) {
+    isCollection: function(rectSrc, rectDest) {
+        return !(   rectSrc.left + rectSrc.width < rectDest.left ||
+                    rectDest.left + rectDest.width < rectSrc.left ||
+                    rectSrc.top + rectSrc.height < rectDest.top || 
+                    rectDest.top + rectDest.height < rectSrc.top );
+    },
+
+    recursiveAddChild: function(node, rect) {
         let canvas = this.$.scene.getFabricCanvas();
 
         let forgeRect = this.$.scene.$.forgeCanvas.getBoundingClientRect();
         let nodeRect = this.getNodeWorldRectToFabric(node);
         nodeRect.left -= forgeRect.left;
         nodeRect.top -= forgeRect.top;
-        nodeRect.scaleX = nodeRect.scaleX || 1;
-        nodeRect.scaleY = nodeRect.scaleY || 1;
-        nodeRect.opacity = 0.5;
-        nodeRect.fill = "red";
-        nodeRect.hasRotatingPoint = true;
-        var block = new fabric.Rect(nodeRect);
-        block._innerItem = node;
-        block._preInfo = nodeRect;
-        block.hasRotatingPoint = true;
-        canvas.add(block);
+        let isCollect = this.isCollection(nodeRect, rect);
+
+        if(isCollect) {
+            nodeRect.scaleX = nodeRect.scaleX || 1;
+            nodeRect.scaleY = nodeRect.scaleY || 1;
+            nodeRect.opacity = 0.5;
+            nodeRect.fill = "red";
+            nodeRect.hasRotatingPoint = true;
+            var block = new fabric.Rect(nodeRect);
+            block._innerItem = node;
+            block._preInfo = nodeRect;
+            block.hasRotatingPoint = true;
+            canvas.add(block);
+            return;
+        }
 
         var children = node.getChildren();
         for(var i = 0; i < children.length; i++) {
-            this.recursiveAddChild(children[i]);
-            // let child = children[i];
-            // let rect = child.getBoundingBoxToWorld();
-            // let nodeRect = this.getNodeRectToFabric(child);
-            // nodeRect.left -= forgeRect.left;
-            // nodeRect.top -= forgeRect.top;
-            // nodeRect.scaleX = nodeRect.scaleX || 1;
-            // nodeRect.scaleY = nodeRect.scaleY || 1;
-            // nodeRect.opacity = 0.5;
-            // nodeRect.fill = "red";
-            // nodeRect.hasRotatingPoint = true;
-            // var block = new fabric.Rect(nodeRect);
-            // block._innerItem = child;
-            // block._preInfo = nodeRect;
-            // block.hasRotatingPoint = true;
-            // canvas.add(block);
+            this.recursiveAddChild(children[i], rect);
         }
     },
 
     updateForgeCanvas: function() {
-        let runScene = this.$.scene.getRunScene();
-        let children = runScene.getChildren();
+        // let runScene = this.$.scene.getRunScene();
+        // let children = runScene.getChildren();
 
-        var ctx = this.$.scene.$.forgeCanvas.getContext('2d');
+        // var ctx = this.$.scene.$.forgeCanvas.getContext('2d');
 
-        let canvas = this.$.scene.getFabricCanvas();
-        canvas.clear();
+        // let canvas = this.$.scene.getFabricCanvas();
+        // canvas.clear();
 
-        let forgeRect = this.$.scene.$.forgeCanvas.getBoundingClientRect();
-        children.forEach(function(element) {
-            this.recursiveAddChild(element);
-        }, this);
+        // let forgeRect = this.$.scene.$.forgeCanvas.getBoundingClientRect();
+        // children.forEach(function(element) {
+        //     this.recursiveAddChild(element);
+        // }, this);
 
-//         var circle1 = new fabric.Circle({
-//   radius: 50,
-//   fill: 'red',
-//   left: 0
-// });
-// var circle2 = new fabric.Circle({
-//   radius: 50,
-//   fill: 'green',
-//   left: 100
-// });
-// var circle3 = new fabric.Circle({
-//   radius: 50,
-//   fill: 'blue',
-//   left: 200
-// });
-
-// var group = new fabric.Group([ circle1, circle2, circle3 ], {
-//   left: 200,
-//   top: 100
-// });
-
-// canvas.add(group);
-//         for(var i = 0; i < children.length; i++) {
-//             let child = children[i];
-//             let rect = child.getBoundingBoxToWorld();
-//             let nodeRect = this.getNodeRectToFabric(child);
-//             nodeRect.left -= forgeRect.left;
-//             nodeRect.top -= forgeRect.top;
-//             nodeRect.scaleX = nodeRect.scaleX || 1;
-//             nodeRect.scaleY = nodeRect.scaleY || 1;
-//             nodeRect.opacity = 0.5;
-//             nodeRect.fill = "red";
-//             nodeRect.hasRotatingPoint = true;
-//             var block = new fabric.Rect(nodeRect);
-//             block._innerItem = child;
-//             block._preInfo = nodeRect;
-//             block.hasRotatingPoint = true;
-//             canvas.add(block);
-//         }
     },
 
     isBaseType: function(node) {
@@ -203,8 +161,8 @@
     getNodeWorldRectToFabric: function(node) {
         let rect = this.getWorldNodeRect(node);
         return {
-            top : rect.y + rect.height / 2,
-            left: rect.x + rect.width / 2,
+            top : rect.y,
+            left: rect.x,
             width: rect.width,
             height: rect.height,
         }
@@ -268,16 +226,36 @@
             'object:scaling': this.canvasItemChange.bind(this),
             'object:rotating': this.canvasItemChange.bind(this),
         });
+
+        canvas.extPreSelector = this.preSelectorRect.bind(this);
     },
 
-    canvasItemChange: function(options) {
-        Editor.log("canvasItemChange!!!!!!!!!!!");
-        let child = options.target._innerItem;
-        let preInfo = options.target._preInfo;
+    preSelectorRect: function(rect) {
+        let left = Math.min(rect.ex, rect.ex + rect.left);
+        let top = Math.min(rect.ey, rect.ey + rect.top);
+        let width = Math.abs(rect.left), height = Math.abs(rect.top);
+        
+        rect = {left:left, top:top, width: width, height: height};
+
+        let runScene = this.$.scene.getRunScene();
+        let children = runScene.getChildren();
+
+        let canvas = this.$.scene.getFabricCanvas();
+        canvas.clear();
+
+        let forgeRect = this.$.scene.$.forgeCanvas.getBoundingClientRect();
+        children.forEach(function(element) {
+            this.recursiveAddChild(element, rect);
+        }, this);
+        Editor.log("extPreSelector!!!!!!!!!!!!!!!!!");
+    },
+
+    canvasTargetChange: function(target, group) {
+       let child = target._innerItem;
+        let preInfo = target._preInfo;
         if(!child) {
             return;
         }
-        let target = options.target;
         let curInfo = {
             left: target.left,
             top: target.top,
@@ -287,6 +265,10 @@
             scaleY: target.scaleY,
             angle: target.getAngle(),
         };
+        if(group) {
+            curInfo.left = group.left + group.width / 2 + target.left;
+            curInfo.top = group.top + group.height / 2 + target.top;
+        }
         let ratio = this.calcGameCanvasZoom();
 
         if(curInfo.left != preInfo.left) {
@@ -308,9 +290,20 @@
         if(curInfo.angle != preInfo.angle) {
             child.setRotation(child.getRotation() + (curInfo.angle - preInfo.angle));
         }
-
+        // curInfo.left -= group.left || 0;
+        // curInfo.top -= group.top || 0;
         target._preInfo = curInfo;
         Editor.log("canvasItemChange!!!!!!!!!!!111111111111");
+    },
+
+    canvasItemChange: function(options) {
+        Editor.log("canvasItemChange!!!!!!!!!!!");
+        if (options.target._objects) {
+            options.target._objects.forEach(function(target) {
+                this.canvasTargetChange(target, options.target)
+            }, this);
+        }
+        this.canvasTargetChange(options.target);
         // options.target.setCoords();
         // canvas.forEachObject(function(obj) {
         // if (obj === options.target) return;

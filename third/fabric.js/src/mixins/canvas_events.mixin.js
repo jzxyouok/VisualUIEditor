@@ -285,6 +285,7 @@
         this._maybeGroupObjects(e);
       }
       else {
+        this.fire('mouseup:touchnull', e);
         // those are done by default on mouse up
         // by _maybeGroupObjects, we are skipping it in case of no target find
         this._groupSelector = null;

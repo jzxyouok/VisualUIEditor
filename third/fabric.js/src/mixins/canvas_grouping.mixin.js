@@ -176,9 +176,7 @@
      */
     _maybeGroupObjects: function(e) {
       if (this.selection && this._groupSelector) {
-        if(this.extPreSelector) {
-          this.extPreSelector(this._groupSelector);
-        }
+        this.fire('selection:preselect', { selector: this._groupSelector });
         this._groupSelectedObjects(e);
       }
 

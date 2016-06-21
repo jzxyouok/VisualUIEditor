@@ -109,7 +109,7 @@
                     rectDest.top + rectDest.height < rectSrc.top );
     },
 
-    recursiveAddChild: function(node, rect) {
+    recursiveAddChild: function(node, rect, isClick) {
         let canvas = this.$.scene.getFabricCanvas();
 
         let forgeRect = this.$.scene.$.forgeCanvas.getBoundingClientRect();
@@ -129,13 +129,18 @@
             block._preInfo = nodeRect;
             block.hasRotatingPoint = true;
             canvas.add(block);
-            return;
+            return true;
         }
 
         var children = node.getChildren();
         for(var i = 0; i < children.length; i++) {
-            this.recursiveAddChild(children[i], rect);
+            let isSuccessAdd = this.recursiveAddChild(children[i], rect, isClick);
+            if(isClick && isSuccessAdd) {
+                return true;
+            }
         }
+
+        return false;
     },
 
     updateForgeCanvas: function() {
@@ -225,14 +230,28 @@
             'object:moving': this.canvasItemChange.bind(this),
             'object:scaling': this.canvasItemChange.bind(this),
             'object:rotating': this.canvasItemChange.bind(this),
+            'selection:preselect': this.preSelectorRect.bind(this),
+            'mouseup:touchnull': this.mouseupTouchnull.bind(this),
         });
-
-        canvas.extPreSelector = this.preSelectorRect.bind(this);
     },
 
-    preSelectorRect: function(rect) {
+    mouseupTouchnull: function(e) {
+        let canvas = this.$.scene.getFabricCanvas();
+        canvas.clear();
+
+        this.preSelectorRect({selector: {
+            ex : e.offsetX,
+            ey : e.offsetY,
+            left: 0,
+            top: 0,
+        }});
+    },
+
+    preSelectorRect: function(object) {
+        let rect = object.selector;
         let left = Math.min(rect.ex, rect.ex + rect.left);
         let top = Math.min(rect.ey, rect.ey + rect.top);
+        let isClick = rect.left == 0 && rect.top == 0;
         let width = Math.abs(rect.left), height = Math.abs(rect.top);
         
         rect = {left:left, top:top, width: width, height: height};
@@ -244,9 +263,14 @@
         canvas.clear();
 
         let forgeRect = this.$.scene.$.forgeCanvas.getBoundingClientRect();
-        children.forEach(function(element) {
-            this.recursiveAddChild(element, rect);
-        }, this);
+
+        for(var i = 0; i < children.length; i++) {
+            let isSuccessAdd = this.recursiveAddChild(children[i], rect, isClick);
+            if(isClick && isSuccessAdd) {
+                return true;
+            }
+        }
+
         Editor.log("extPreSelector!!!!!!!!!!!!!!!!!");
     },
 

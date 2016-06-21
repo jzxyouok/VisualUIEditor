@@ -24,12 +24,25 @@
     {
       "docks": [
         {
-          "active": 0,
-          "panels": [
-            "renderpanel"
+          "docks": [
+            {
+              "active": 0,
+              "panels": [
+                "renderpanel"
+              ],
+              "type": "panel",
+              "width": 350
+            },
+            {
+              "active": 0,
+              "panels": [
+                "controlpanel"
+              ],
+              "type": "panel"
+            }
           ],
-          "type": "panel",
-          "width": 350
+          "row": true,
+          "type": "dock"
         },
         {
           "active": 0,

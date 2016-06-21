@@ -1,0 +1,16 @@
+{
+  "name": "controlpanel",
+  "version": "0.1.4",
+  "description": "A simple console editor",
+  "author": "Firebox Technology",
+  "main": "main.js",
+  "panel": {
+    "main": "panel/controlpanel.html",
+    "ui": "polymer",
+    "popable": false,
+    "type": "dockable",
+    "title": "控件管理器",
+    "icon": "panel/icon.png",
+    "height": 300
+  }
+}

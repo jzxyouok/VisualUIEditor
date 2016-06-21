@@ -292,6 +292,7 @@
                 select_items.push(uuid);
         }
 
+
         Editor.Ipc.sendToAll("ui:select_items_change", {select_items : select_items});
         Editor.log("extPreSelector!!!!!!!!!!!!!!!!!");
     },

@@ -830,6 +830,7 @@
       if (this.contextTop) {
         this.clearContext(this.contextTop);
       }
+      this.lastRenderedWithControls = null;
       this.fire('canvas:cleared');
       this.renderAll();
       return this;

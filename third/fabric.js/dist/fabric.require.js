@@ -9155,6 +9155,7 @@ fabric.Pattern = fabric.util.createClass(/** @lends fabric.Pattern.prototype */ 
       if (this.contextTop) {
         this.clearContext(this.contextTop);
       }
+      this.lastRenderedWithControls = null;
       this.fire('canvas:cleared');
       this.renderAll();
       return this;

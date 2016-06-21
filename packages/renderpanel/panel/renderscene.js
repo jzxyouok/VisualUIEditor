@@ -57,15 +57,18 @@
             
         }, function() {
             //load resources
-            cc.LoaderScene.preload(["HelloWorld.png"], function () {
+            cc.LoaderScene.preload(["res/grid.png"], function () {
                 var MyScene = _ccsg.Scene.extend({
                     ctor:function () {
                         this._super();
                         var size = cc.director.getWinSize();
-                        // var sprite = cc.Sprite.create("HelloWorld.png");
-                        // sprite.setPosition(size.width / 2, size.height / 2);
-                        // sprite.setScale(0.8);
-                        // this.addChild(sprite, 0);
+                        var sprite = new _ccsg.Sprite("res/grid.png");
+                        sprite.setPosition(size.width / 2, size.height / 2);
+                        sprite.setScale(0.8);
+                        sprite.uiname = "Sprite";
+                        sprite.uuid = gen_uuid();
+                        this.addChild(sprite, 0);
+
                         var label = new cc.LabelTTF("Hello World0", "Arial", 40);
                         label.setPosition(size.width / 2, size.height / 2);
                         label.setScale(2);

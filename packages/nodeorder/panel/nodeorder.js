@@ -110,6 +110,27 @@
         }
         this.tryChangeItemPosition(item, ev.currentTarget);
     },
+    clickItem: function(e) {
+        Editor.log("mouseUp!!!!!!!!!!!!!!!!!!!");
+        this.clearSelectInfo();
+        if(e.currentTarget.doselect) {
+            e.currentTarget.doselect(e);
+        }
+        e.stopPropagation();
+        e.preventDefault();
+    },
+    clearSelectInfo: function() {
+        function recursiveClearSelect(item) {
+            if(item.dounselect) {
+                item.dounselect();
+            }
+            let children = Polymer.dom(item).children;
+            for ( let i = 0; i < children.length; ++i ) {
+                recursiveClearSelect(children[i]);
+            }
+        }
+        recursiveClearSelect(this.$.tree);
+    },
     tryChangeItemPosition: function(sourceItem, parentItem) {
         if (Editor.UI.PolymerUtils.isSelfOrAncient(parentItem, sourceItem)) {
             return;
@@ -123,7 +144,7 @@
         } else {
             this.$.tree.setItemParent(sourceItem, parentItem);
         }
-    },  
+    },
     newEntry: function (entry) {
       var item = document.createElement('td-tree-item');
       item.draggable = true;
@@ -133,6 +154,17 @@
       item['ondragover'] = this.dragOver.bind(this);
       item['ondragleave'] = this.dragLeave.bind(this);
       item['ondrop'] = this.dragDrop.bind(this);
+      item['onclick'] = this.clickItem.bind(this);
+      let _item = item;
+      item['doselect'] = (e) => {
+          _item.style.background = 'blue';
+          Editor.Ipc.sendToAll("ui:select_item", {uuid : _item._uuid});
+      };
+
+      item['dounselect'] = () => {
+          _item.style.removeProperty('background');
+      }
+
       item.name = entry.uiname;
       item._uuid = entry.uuid;
       return item;

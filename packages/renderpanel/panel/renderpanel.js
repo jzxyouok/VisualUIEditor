@@ -107,6 +107,26 @@
                     rectDest.top + rectDest.height < rectSrc.top );
     },
 
+    addNodeControl: function(node) {
+        let canvas = this.$.scene.getFabricCanvas();
+
+        let forgeRect = this.$.scene.$.forgeCanvas.getBoundingClientRect();
+        let nodeRect = this.getNodeWorldRectToFabric(node);
+        nodeRect.left -= forgeRect.left;
+        nodeRect.top -= forgeRect.top;
+        nodeRect.scaleX = nodeRect.scaleX || 1;
+        nodeRect.scaleY = nodeRect.scaleY || 1;
+        nodeRect.opacity = 0.5;
+        nodeRect.fill = "red";
+        nodeRect.hasRotatingPoint = true;
+        var block = new fabric.Rect(nodeRect);
+        block._innerItem = node;
+        block._preInfo = nodeRect;
+        block.hasRotatingPoint = true;
+        canvas.add(block);
+        return true;
+    },
+
     recursiveAddChild: function(node, rect, isClick) {
         let canvas = this.$.scene.getFabricCanvas();
 
@@ -117,16 +137,7 @@
         let isCollect = this.isCollection(nodeRect, rect);
 
         if(isCollect) {
-            nodeRect.scaleX = nodeRect.scaleX || 1;
-            nodeRect.scaleY = nodeRect.scaleY || 1;
-            nodeRect.opacity = 0.5;
-            nodeRect.fill = "red";
-            nodeRect.hasRotatingPoint = true;
-            var block = new fabric.Rect(nodeRect);
-            block._innerItem = node;
-            block._preInfo = nodeRect;
-            block.hasRotatingPoint = true;
-            canvas.add(block);
+            this.addNodeControl(node);
             return true;
         }
 
@@ -471,9 +482,21 @@
         }
     },
 
+    changeItemSelect: function(info) {
+        let sourceNode = this.getItemByUUID(info.uuid);
+        if(!sourceNode) {
+            return;
+        }
+        this.$.scene.getFabricCanvas().clear();
+        this.addNodeControl(sourceNode);
+    },
+
     messages: {
-        "ui:change_item_position" (event, messages) {
-            this.changeItemPosition(messages.sourceUUID, messages.compareUUID, messages.mode);
+        "ui:change_item_position" (event, message) {
+            this.changeItemPosition(message.sourceUUID, message.compareUUID, message.mode);
+        },
+        "ui:select_item" (event, message) {
+            this.changeItemSelect(message);
         },
     },
 

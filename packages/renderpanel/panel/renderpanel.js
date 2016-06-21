@@ -257,6 +257,7 @@
             left: 0,
             top: 0,
         }});
+
     },
 
     preSelectorRect: function(object) {
@@ -283,6 +284,15 @@
             }
         }
 
+        let objects = canvas.getObjects();
+        let select_items = [];
+        for(var i = 0; i < objects.length; i++) {
+            let uuid = objects[i]._innerItem.uuid;
+            if(uuid) 
+                select_items.push(uuid);
+        }
+
+        Editor.Ipc.sendToAll("ui:select_items_change", {select_items : select_items});
         Editor.log("extPreSelector!!!!!!!!!!!!!!!!!");
     },
 
@@ -487,7 +497,9 @@
         if(!sourceNode) {
             return;
         }
-        this.$.scene.getFabricCanvas().clear();
+        if(!info.ctrlKey) {
+            this.$.scene.getFabricCanvas().clear();
+        }
         this.addNodeControl(sourceNode);
     },
 

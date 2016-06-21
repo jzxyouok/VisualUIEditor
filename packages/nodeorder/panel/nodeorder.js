@@ -112,7 +112,9 @@
     },
     clickItem: function(e) {
         Editor.log("mouseUp!!!!!!!!!!!!!!!!!!!");
-        this.clearSelectInfo();
+        if(!e.ctrlKey) {
+            this.clearSelectInfo();
+        }
         if(e.currentTarget.doselect) {
             e.currentTarget.doselect(e);
         }
@@ -130,6 +132,19 @@
             }
         }
         recursiveClearSelect(this.$.tree);
+    },
+    selectItemsByData: function(select_items) {
+        this.clearSelectInfo();
+        function recursiveItemSelect(item, select_items) {
+            if(select_items.indexOf(item._uuid) >= 0 && item.doselect) {
+                item.doselect();
+            }
+            let children = Polymer.dom(item).children;
+            for ( let i = 0; i < children.length; ++i ) {
+                recursiveItemSelect(children[i], select_items);
+            }
+        }
+        recursiveItemSelect(this.$.tree, select_items);
     },
     tryChangeItemPosition: function(sourceItem, parentItem) {
         if (Editor.UI.PolymerUtils.isSelfOrAncient(parentItem, sourceItem)) {
@@ -157,11 +172,17 @@
       item['onclick'] = this.clickItem.bind(this);
       let _item = item;
       item['doselect'] = (e) => {
+          if(_item._isSlected) {
+              return;
+          }
           _item.style.background = 'blue';
-          Editor.Ipc.sendToAll("ui:select_item", {uuid : _item._uuid});
+          _item._isSlected = true;
+          if(e)
+            Editor.Ipc.sendToAll("ui:select_item", {uuid : _item._uuid, ctrlKey : e.ctrlKey});
       };
 
       item['dounselect'] = () => {
+          _item._isSlected = false;
           _item.style.removeProperty('background');
       }
 
@@ -176,6 +197,10 @@
         this._scene = window.runScene;
         this.build();
       },
+      'ui:select_items_change' (event, message) {
+        Editor.log("ui:select_items_change");
+        this.selectItemsByData(message.select_items);
+      }
     },
 
   });

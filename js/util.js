@@ -165,4 +165,15 @@ function readFile(path,filesList, filter)
     }
 }
  
+isSelfOrAncient = function ( node, parentNode) {
+  let parent = node;
+  while ( parent ) {
+    if ( parent === parentNode ) {
+      return true;
+    }
 
+    parent = parent.getParent();
+  }
+
+  return false;
+};

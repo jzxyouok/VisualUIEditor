@@ -26,8 +26,7 @@
     },
 
     addItem ( parentItem, childItem) {
-      var uuid = gen_uuid();
-      childItem._uuid = uuid;
+      let uuid = childItem._uuid = childItem._uuid || gen_uuid();
       Polymer.dom(parentItem).appendChild(childItem);
       if ( parentItem !== this ) {
         parentItem.foldable = true;
@@ -74,7 +73,7 @@
     },
 
     setItemBefore( sourceItem, compareItem) {
-      if ( Editor.UI.PolymerUtils.isSelfOrAncient( sourceItem, compareItem ) ) {
+      if ( Editor.UI.PolymerUtils.isSelfOrAncient( compareItem, sourceItem ) ) {
         throw new Error('Failed to set item parent to its child');
       }
 

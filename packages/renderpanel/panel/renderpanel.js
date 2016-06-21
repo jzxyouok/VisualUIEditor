@@ -56,7 +56,6 @@
 
     _mouseWheel: function(ev) {
         Editor.log("_mouseWheel");
-
         this.$.zoomSlider.value = this.$.zoomSlider.value + (ev.deltaY < 0 ? 0.05 : -0.05);
         this._zoomScaleChange(this.$.zoomSlider.value, {x : ev.clientX, y : ev.clientY});
 
@@ -64,7 +63,6 @@
     },
 
     _mouseMove: function(ev) {
-        Editor.log("_mouseMove");
         let location = this.calcSceneLocation(ev.clientX, ev.clientY);
         this.$.location.textContent = location.x + "X" + location.y;
     },
@@ -233,6 +231,9 @@
             'selection:preselect': this.preSelectorRect.bind(this),
             'mouseup:touchnull': this.mouseupTouchnull.bind(this),
         });
+
+        // Editor.Ipc.sendToAll('ui:renderer-scene_change', "change!!!!!!!!!!!!!!");
+        let scene = this.$.scene.getRunScene();
     },
 
     mouseupTouchnull: function(e) {
@@ -393,8 +394,87 @@
         this.tryChangeItemPosition(item, ev.currentTarget);
     },
 
-    messages: {
+    getItemByUUID: function(uuid) {
+        function recursiveGetChild(node, uuid) {
+            if (node.uuid == uuid) {
+                return node;
+            }
+            var children = node.getChildren();
+            for(var i = 0; i < children.length; i++) {
+                let subNode = recursiveGetChild(children[i], uuid);
+                if(subNode) {
+                    return subNode;
+                }
+            }
+            return null;
+        }
+        return recursiveGetChild(this.$.scene.getRunScene(), uuid);
+    },
 
+    insertItemBefore: function(sourceNode, compareNode) {
+        let compareParent = compareNode.getParent();
+        if(!compareParent) {
+            return;
+        }
+        sourceNode.removeFromParent(false);
+        let afterNode = [];
+        let children = compareParent.getChildren();
+        let index = children.indexOf(compareNode);
+        for(var i = index; i < children.length; i++) {
+            afterNode.push(children[i]);
+        }
+        for(var i = index; i < children.length; i++) {
+            children[i].removeFromParent(false);
+        }
+        compareParent.addChild(sourceNode);
+        for(var i = 0; i < afterNode.length; i++) {
+            compareParent.addChild(afterNode[i]);
+        }
+    },
+
+    insertItemAfter: function(sourceNode, compareNode) {
+        let compareParent = compareNode.getParent();
+        if(!compareParent) {
+            return;
+        }
+        sourceNode.removeFromParent(false);
+        let afterNode = [];
+        let children = compareParent.getChildren();
+        let index = children.indexOf(compareNode);
+        for(var i = index + 1; i < children.length; i++) {
+            afterNode.push(children[i]);
+        }
+        for(var i = index + 1; i < children.length; i++) {
+            children[i].removeFromParent(false);
+        }
+
+        compareParent.addChild(sourceNode);
+        for(var i = 0; i < afterNode.length; i++) {
+            compareParent.addChild(afterNode[i]);
+        }
+    },
+
+    changeItemPosition : function(sourceUUID, compareUUID, mode) {
+        let sourceNode = this.getItemByUUID(sourceUUID);
+        let compareNode = this.getItemByUUID(compareUUID);
+        if(!sourceNode || !compareNode || isSelfOrAncient(compareNode, sourceNode)) {
+            return;
+        }
+
+        if(mode == "top") {
+            this.insertItemBefore(sourceNode, compareNode);
+        } else if(mode == "bottom") {
+            this.insertItemAfter(sourceNode, compareNode);
+        } else {
+            sourceNode.removeFromParent(false);
+            compareNode.addChild(sourceNode);
+        }
+    },
+
+    messages: {
+        "ui:change_item_position" (event, messages) {
+            this.changeItemPosition(messages.sourceUUID, messages.compareUUID, messages.mode);
+        },
     },
 
   });

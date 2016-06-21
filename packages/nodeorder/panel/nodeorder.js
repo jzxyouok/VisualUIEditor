@@ -21,33 +21,29 @@
       Editor.UI.DockUtils.root.draggable = false;
       this._dragprop = [];
       this._curOpMode = "center";
+      this._scene = null;
 
-      var path = Editor.url('app://res/zed-tree.json');
-      Fs.readFile( path, function ( err, data ) {
-          if ( !err ) {
-              var data = JSON.parse(data);
-              this.build(data);
-          }
-      }.bind(this));
     },
 
     build: function ( data ) {
         console.time('tree');
+        this.$.tree.clear();
+        if(!this._scene) {
+            return;
+        }
 
-        data.forEach( function ( entry ) {
-            var newEL = this.newEntryRecursively(entry);
-            this.$.tree.addItem( this.$.tree, newEL);
-            newEL.folded = false;
-        }.bind(this));
+        var newEL = this.newEntryRecursively(this._scene);
+        this.$.tree.addItem( this.$.tree, newEL);
+        newEL.folded = false;
 
         console.timeEnd('tree');
     },
 
     newEntryRecursively: function ( entry ) {
         var el = this.newEntry(entry);
-
-        if ( entry.children ) {
-            entry.children.forEach( function ( childEntry ) {
+        let children = entry.getChildren();
+        if ( children ) {
+            children.forEach( function ( childEntry ) {
                 var childEL = this.newEntryRecursively(childEntry);
                 this.$.tree.addItem( el, childEL );
                 childEL.folded = true;
@@ -118,6 +114,8 @@
         if (Editor.UI.PolymerUtils.isSelfOrAncient(parentItem, sourceItem)) {
             return;
         }
+        let uuid = {sourceUUID : sourceItem._uuid, compareUUID : parentItem._uuid, mode : this._curOpMode};
+        Editor.Ipc.sendToAll("ui:change_item_position", uuid);
         if (this._curOpMode == "top") {
             this.$.tree.setItemBefore(sourceItem, parentItem);
         } else if(this._curOpMode == "bottom") {
@@ -135,12 +133,17 @@
       item['ondragover'] = this.dragOver.bind(this);
       item['ondragleave'] = this.dragLeave.bind(this);
       item['ondrop'] = this.dragDrop.bind(this);
-      item.name = entry.name;
+      item.name = entry.uiname;
+      item._uuid = entry.uuid;
       return item;
     },
 
     messages: {
-      
+      'ui:scene_change' ( event, message ) {
+        Editor.log("ui:scene_change");
+        this._scene = window.runScene;
+        this.build();
+      },
     },
 
   });

@@ -1,6 +1,4 @@
 <link rel="import" href="item.html">
-<link rel="import" href="packages://td-tree-view/widget/td-tree-view.html">
-<link rel="import" href="packages://td-tree-view/widget/td-tree-item.html">
 
 <dom-module id="editor-controlpanel">
   <template>
@@ -56,7 +54,15 @@
       <span class="flex-1"></span>
     </div>
 
-    <td-tree-view id="tree" class="flex"></td-tree-view>
+    <ul id="view" class="flex-1">
+      <template is="dom-repeat" items="{{_getItems()}}">
+        <editor-control-item
+          icon="[[item.icon]]"
+          name="[[item.name]]"
+        >
+        </editor-control-item>
+      </template>
+    </ul>
   </template>
 
   <script>

@@ -13,53 +13,23 @@
       },
     },
 
+    show_items: [
+        {icon:"res/grid.png", name:"Sprite"},
+    ],
+
+    _getItems: function() {
+        return this.show_items;
+    },
+
     addFunc: function(data) {
 
     },
 
     ready: function () {
-      Editor.UI.DockUtils.root.draggable = false;
-      this._dragprop = [];
-      this._curOpMode = "center";
-
-      var files = geFileList("F:/test_floder", function(file) {
-          if(file.length > 0 && file.charAt(0) == '.') {
-              return true;
-          }
-          if(file.indexOf("bower_components") == 0 || file.indexOf("node_modules") == 0 || file.indexOf(".") == 0) {
-              return true;
-          }
-          return false;
-      });
-      this.build(files);
+      
 
     },
 
-    build: function ( data ) {
-        console.time('tree');
-
-        data.forEach( function ( entry ) {
-            var newEL = this.newEntryRecursively(entry);
-            this.$.tree.addItem( this.$.tree, newEL);
-            newEL.folded = false;
-        }.bind(this));
-
-        console.timeEnd('tree');
-    },
-
-    newEntryRecursively: function ( entry ) {
-        var el = this.newEntry(entry);
-
-        if ( entry.children ) {
-            entry.children.forEach( function ( childEntry ) {
-                var childEL = this.newEntryRecursively(childEntry);
-                this.$.tree.addItem( el, childEL );
-                childEL.folded = true;
-            }.bind(this) );
-        }
-
-        return el;
-    },
     dragStart: function(ev) {
         ev.stopPropagation();
         ev.dataTransfer.dropEffect = 'move';

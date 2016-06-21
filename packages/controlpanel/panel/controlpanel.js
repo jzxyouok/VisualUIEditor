@@ -15,6 +15,8 @@
 
     show_items: [
         {icon:"res/grid.png", name:"Sprite"},
+        {icon:"res/grid.png", name:"Sprite"},
+        {icon:"res/grid.png", name:"Sprite"},
     ],
 
     _getItems: function() {

@@ -284,7 +284,7 @@
         for(var i = 0; i < children.length; i++) {
             let isSuccessAdd = this.recursiveAddChild(children[i], rect, isClick);
             if(isClick && isSuccessAdd) {
-                return true;
+                break;
             }
         }
 
@@ -409,13 +409,6 @@
             node.uiname = data;
             Editor.Ipc.sendToAll("ui:scene_item_add", {uuid:uuid});
         }
-        // var data = ev.dataTransfer.getData(dragIdName);
-        
-        // var item = this.$.tree.getItemById(data);
-        // if (item === null || item == undefined) {
-        //     return;
-        // }
-        // this.tryChangeItemPosition(item, ev.currentTarget);
     },
 
     insertItemBefore: function(sourceNode, compareNode) {

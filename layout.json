@@ -38,7 +38,9 @@
               "panels": [
                 "controlpanel"
               ],
-              "type": "panel"
+              "type": "panel",
+              "width": 100,
+              "max-width": 100
             }
           ],
           "row": true,

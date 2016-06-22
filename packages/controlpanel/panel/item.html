@@ -2,8 +2,38 @@
   <link rel="import" type="css" href="item.css">
 
   <template>
-        <div>First name: <span>{{icon}}</span></div>
-        <div>Last name: <span>{{name}}</span></div>
+      <style>
+        :host {
+          @apply(--layout-vertical);
+        }
+
+        #name {
+          border: 1px solid black;
+
+          box-shadow: inset 0 0 8px 2px rgba(0,0,0,0.2);
+          background: #333;
+          font-size: larger;
+        }
+
+        ul {
+          padding: 0px;
+          margin: 0px;
+
+          overflow: auto;
+        }
+
+        editor-console-item {
+          background: #222;
+        }
+
+        editor-console-item:nth-child(even) {
+          background: #292929;
+        }
+      </style>
+      <div class="desc layout vertical center">
+        <img src="{{icon}}" width="100" height="100"></img>
+        <div id="name" fontsize="40x">{{name}}</div>
+      </div>
   </template>
 
   <script type="text/javascript" src="item.js"></script>

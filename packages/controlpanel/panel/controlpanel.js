@@ -28,7 +28,6 @@
     },
 
     ready: function () {
-      
 
     },
 

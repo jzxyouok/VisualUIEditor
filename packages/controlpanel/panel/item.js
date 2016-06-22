@@ -36,53 +36,24 @@
       },
     },
 
+    dragStart: function(ev) {
+        ev.stopPropagation();
+        ev.dataTransfer.dropEffect = 'move';
+        ev.dataTransfer.clearData();
+        ev.dataTransfer.setData("controlType","Sprite");
+        ev.target.style.opacity = "0.4";
+    },
+
+    dragEnd: function(ev) {
+        ev.preventDefault();
+        ev.target.style.opacity = "1";
+    },
+
     ready () {
+      this['ondragstart'] = this.dragStart.bind(this);
+      this['ondragend'] = this.dragEnd.bind(this);
+
     },
 
-    _typeClass ( type ) {
-      return 'item layout vertical ' + type;
-    },
-
-    _iconClass (type) {
-      switch (type) {
-        case 'error':
-          return 'fa fa-times-circle icon';
-
-        case 'warn':
-          return 'fa fa-warning icon';
-
-        default:
-          return '';
-      }
-    },
-
-    _textClass (detail) {
-      if (detail) {
-        return 'more';
-      }
-    },
-
-    _showCount ( showCount, count ) {
-      if ( showCount && count > 0 ) {
-        return true;
-      }
-
-      return false;
-    },
-
-    _computedCount ( count ) {
-      return count + 1;
-    },
-
-    _onFoldClick () {
-      this.set( 'folded', !this.folded );
-    },
-
-    _foldClass ( detail, folded ) {
-      if (!detail) {
-        return;
-      }
-      return folded ? 'fa fold fa-caret-down' : 'fa fold fa-caret-right';
-    },
   });
 })();

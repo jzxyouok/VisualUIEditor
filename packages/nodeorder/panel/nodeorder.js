@@ -65,16 +65,27 @@
     dragEnter: function(ev) {
         ev.preventDefault();
         ev.stopPropagation();
-        
+        var data = ev.dataTransfer.getData(dragIdName);
+        if(!data) {
+            ev.dataTransfer.effectAllowed = "none";
+            ev.dataTransfer.dropEffect = "none"; // drop it like it's hot
+            return;
+        }
         ev.target.style.background = 'blue';
-        ev.dataTransfer.effectAllowed = "all";
-        ev.dataTransfer.dropEffect = "all"; // drop it like it's hot
     },
     dragOver: function(ev) {
-        ev.dataTransfer.effectAllowed = "all";
-        ev.dataTransfer.dropEffect = "all"; // drop it like it's hot
         ev.preventDefault();
         ev.stopPropagation();
+        
+        var data = ev.dataTransfer.getData(dragIdName);
+        if(!data) {
+            ev.dataTransfer.effectAllowed = "none";
+            ev.dataTransfer.dropEffect = "none"; // drop it like it's hot
+            return;
+        }
+        
+        ev.dataTransfer.effectAllowed = "all";
+        ev.dataTransfer.dropEffect = "all"; // drop it like it's hot
 
         var rect = ev.currentTarget.getBoundingClientRect();
         if (ev.clientY - rect.top < rect.height / 4) {

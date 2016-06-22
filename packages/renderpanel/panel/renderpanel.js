@@ -243,8 +243,12 @@
             'mouseup:touchnull': this.mouseupTouchnull.bind(this),
         });
 
-        // Editor.Ipc.sendToAll('ui:renderer-scene_change', "change!!!!!!!!!!!!!!");
-        let scene = this.$.scene.getRunScene();
+       this['ondragenter'] = this.dragEnter.bind(this);
+       this['ondragover'] = this.dragOver.bind(this);
+       this['ondrop'] = this.dragDrop.bind(this);
+       this['ondragleave'] = this.dragLeave.bind(this);
+
+
     },
 
     mouseupTouchnull: function(e) {
@@ -358,21 +362,11 @@
         // });
     },
 
-    dragStart: function(ev) {
-        ev.stopPropagation();   
-        ev.dataTransfer.dropEffect = 'move';
-        ev.dataTransfer.setData(dragIdName,ev.target._uuid);
-        ev.target.style.opacity = "0.4";
-    },
-    dragEnd: function(ev) {
-        ev.preventDefault();
-        ev.target.style.opacity = "1";
-    },
+
     dragEnter: function(ev) {
         ev.preventDefault();
         ev.stopPropagation();
         
-        ev.target.style.background = 'blue';
         ev.dataTransfer.effectAllowed = "all";
         ev.dataTransfer.dropEffect = "all"; // drop it like it's hot
     },
@@ -381,25 +375,24 @@
         ev.dataTransfer.dropEffect = "all"; // drop it like it's hot
         ev.preventDefault();
         ev.stopPropagation();
-        var rect = ev.currentTarget.getBoundingClientRect();
-        if (ev.clientY - rect.top < rect.height / 4) {
-            ev.target.style.background = "red";
-            this._curOpMode = "top";
-        } else if(rect.bottom - ev.clientY < rect.height / 4) {
-            ev.target.style.background = "yellow";
-            this._curOpMode = "bottom";
-        } else {
-            ev.target.style.background = "blue";
-            this._curOpMode = "center";
-        }
+        // var rect = ev.currentTarget.getBoundingClientRect();
+        // if (ev.clientY - rect.top < rect.height / 4) {
+        //     ev.target.style.background = "red";
+        //     this._curOpMode = "top";
+        // } else if(rect.bottom - ev.clientY < rect.height / 4) {
+        //     ev.target.style.background = "yellow";
+        //     this._curOpMode = "bottom";
+        // } else {
+        //     ev.target.style.background = "blue";
+        //     this._curOpMode = "center";
+        // }
 
-        var data = ev.dataTransfer.getData(dragIdName);
-        Editor.log("dragOver!!!!!!!!!!!!!!!!!!!" + ev.target._uuid + data);
+        // var data = ev.dataTransfer.getData(dragIdName);
+        // Editor.log("dragOver!!!!!!!!!!!!!!!!!!!" + ev.target._uuid + data);
     },
     dragLeave: function(ev) {
         ev.preventDefault();
         ev.stopPropagation();
-        ev.target.style.removeProperty("background");
     },
     dragDrop: function(ev) {
         Editor.log("dragDrop!!!!!!!!!!!!!!!!!!!");
@@ -407,13 +400,13 @@
         ev.stopPropagation();
         ev.target.style.removeProperty("background");
         
-        var data = ev.dataTransfer.getData(dragIdName);
+        // var data = ev.dataTransfer.getData(dragIdName);
         
-        var item = this.$.tree.getItemById(data);
-        if (item === null || item == undefined) {
-            return;
-        }
-        this.tryChangeItemPosition(item, ev.currentTarget);
+        // var item = this.$.tree.getItemById(data);
+        // if (item === null || item == undefined) {
+        //     return;
+        // }
+        // this.tryChangeItemPosition(item, ev.currentTarget);
     },
 
     getItemByUUID: function(uuid) {

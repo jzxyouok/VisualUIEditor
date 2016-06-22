@@ -316,6 +316,10 @@
             scaleY: target.scaleY,
             angle: target.getAngle(),
         };
+        Editor.log("target canvas " + JSON.stringify(curInfo));
+
+        
+        Editor.log("child position canvas " + JSON.stringify(child.getPosition()));
         if(group) {
             curInfo.left = group.left + group.width / 2 + target.left;
             curInfo.top = group.top + group.height / 2 + target.top;
@@ -375,20 +379,6 @@
         ev.dataTransfer.dropEffect = "all"; // drop it like it's hot
         ev.preventDefault();
         ev.stopPropagation();
-        // var rect = ev.currentTarget.getBoundingClientRect();
-        // if (ev.clientY - rect.top < rect.height / 4) {
-        //     ev.target.style.background = "red";
-        //     this._curOpMode = "top";
-        // } else if(rect.bottom - ev.clientY < rect.height / 4) {
-        //     ev.target.style.background = "yellow";
-        //     this._curOpMode = "bottom";
-        // } else {
-        //     ev.target.style.background = "blue";
-        //     this._curOpMode = "center";
-        // }
-
-        // var data = ev.dataTransfer.getData(dragIdName);
-        // Editor.log("dragOver!!!!!!!!!!!!!!!!!!!" + ev.target._uuid + data);
     },
     dragLeave: function(ev) {
         ev.preventDefault();
@@ -400,6 +390,25 @@
         ev.stopPropagation();
         ev.target.style.removeProperty("background");
         
+        var data = ev.dataTransfer.getData("controlType");
+        let runScene = this.$.scene.getRunScene();
+        let scenePosition = this.calcSceneLocation(ev.clientX, ev.clientY);
+        let uuid = gen_uuid();
+        var node = null;
+        if(data == "Sprite") {
+            node = new _ccsg.Sprite("res/default/Sprite.png");
+            runScene.addChild(node, 0);
+        } else if(data == "LabelTTF") {
+            node = new cc.LabelTTF("VisualUI", "Arial", 20);
+            runScene.addChild(node);
+        }
+
+        if (node) {
+            node.setPosition(parseFloat(scenePosition.x), parseFloat(scenePosition.y));
+            node.uuid = uuid;
+            node.uiname = data;
+            Editor.Ipc.sendToAll("ui:scene_item_add", {uuid:uuid});
+        }
         // var data = ev.dataTransfer.getData(dragIdName);
         
         // var item = this.$.tree.getItemById(data);
@@ -407,23 +416,6 @@
         //     return;
         // }
         // this.tryChangeItemPosition(item, ev.currentTarget);
-    },
-
-    getItemByUUID: function(uuid) {
-        function recursiveGetChild(node, uuid) {
-            if (node.uuid == uuid) {
-                return node;
-            }
-            var children = node.getChildren();
-            for(var i = 0; i < children.length; i++) {
-                let subNode = recursiveGetChild(children[i], uuid);
-                if(subNode) {
-                    return subNode;
-                }
-            }
-            return null;
-        }
-        return recursiveGetChild(this.$.scene.getRunScene(), uuid);
     },
 
     insertItemBefore: function(sourceNode, compareNode) {
@@ -470,8 +462,8 @@
     },
 
     changeItemPosition : function(sourceUUID, compareUUID, mode) {
-        let sourceNode = this.getItemByUUID(sourceUUID);
-        let compareNode = this.getItemByUUID(compareUUID);
+        let sourceNode = cocosGetItemByUUID(this.$.scene.getRunScene(), sourceUUID);
+        let compareNode = cocosGetItemByUUID(this.$.scene.getRunScene(),compareUUID);
         if(!sourceNode || !compareNode || isSelfOrAncient(compareNode, sourceNode)) {
             return;
         }
@@ -487,7 +479,7 @@
     },
 
     changeItemSelect: function(info) {
-        let sourceNode = this.getItemByUUID(info.uuid);
+        let sourceNode = cocosGetItemByUUID(this.$.scene.getRunScene(),info.uuid);
         if(!sourceNode) {
             return;
         }

@@ -64,7 +64,6 @@
                         var size = cc.director.getWinSize();
                         var sprite = new _ccsg.Sprite("res/grid.png");
                         sprite.setPosition(size.width / 2, size.height / 2);
-                        sprite.setScale(0.8);
                         sprite.uiname = "Sprite";
                         sprite.uuid = gen_uuid();
                         this.addChild(sprite, 0);

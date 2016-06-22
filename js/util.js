@@ -177,3 +177,21 @@ isSelfOrAncient = function ( node, parentNode) {
 
   return false;
 };
+
+
+cocosGetItemByUUID = function(node, uuid) {
+    function recursiveGetChild(node, uuid) {
+        if (node.uuid == uuid) {
+            return node;
+        }
+        var children = node.getChildren();
+        for(var i = 0; i < children.length; i++) {
+            let subNode = recursiveGetChild(children[i], uuid);
+            if(subNode) {
+                return subNode;
+            }
+        }
+        return null;
+    }
+    return recursiveGetChild(node, uuid);
+}

@@ -157,6 +157,44 @@
         }
         recursiveItemSelect(this.$.tree, select_items);
     },
+    getItemByUUID: function(uuid) {
+        function recursiveGetItemByUUID(item, uuid) {
+            if(uuid === item._uuid) {
+                return item;
+            }
+            let children = Polymer.dom(item).children;
+            for ( let i = 0; i < children.length; ++i ) {
+                let selectItem = recursiveItemSelect(children[i], uuid);
+                if(selectItem) {
+                    return selectItem;
+                }
+            }
+            return null;
+        }
+        return recursiveGetItemByUUID(this.$.tree, uuid);
+    },
+    sceneItemAdd: function(uuid) {
+        let child = cocosGetItemByUUID(this._scene, uuid);
+        if(!child) {
+            return;
+        }
+        let parent = child.getParent();
+        let parentItem = this.$.tree;
+        if(parent) {
+            parentItem = this.$.tree.getItemById(parent.uuid) || this.$.tree;
+        }
+        let item = this.newEntry(child);
+        this.$.tree.addItem(parentItem, item);
+    },
+    sceneItemDelete: function(uuid) {
+        function recursiveItemDelete(item, delete_items) {
+            if(delete_items.indexOf(item._uuid) >= 0) {
+                let parentItem = Polymer.dom(item).parentNode;
+                Polymer.dom(parentItem).removeChild(item);
+            }
+        }
+        recursiveItemDelete(this.$.tree, [uuid]);
+    },
     tryChangeItemPosition: function(sourceItem, parentItem) {
         if (Editor.UI.PolymerUtils.isSelfOrAncient(parentItem, sourceItem)) {
             return;
@@ -211,6 +249,10 @@
       'ui:select_items_change' (event, message) {
         Editor.log("ui:select_items_change");
         this.selectItemsByData(message.select_items);
+      },
+      'ui:scene_item_add'(event, message) {
+        Editor.log("ui:scene_item_add");
+        this.sceneItemAdd(message.uuid);
       }
     },
 

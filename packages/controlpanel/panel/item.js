@@ -40,7 +40,7 @@
         ev.stopPropagation();
         ev.dataTransfer.dropEffect = 'move';
         ev.dataTransfer.clearData();
-        ev.dataTransfer.setData("controlType","Sprite");
+        ev.dataTransfer.setData("controlType",this.name);
         ev.target.style.opacity = "0.4";
     },
 

@@ -15,7 +15,7 @@
 
     show_items: [
         {icon:"res/grid.png", name:"Sprite"},
-        {icon:"res/grid.png", name:"Sprite"},
+        {icon:"res/grid.png", name:"LabelTTF"},
         {icon:"res/grid.png", name:"Sprite"},
     ],
 

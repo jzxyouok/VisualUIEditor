@@ -56,6 +56,15 @@
       ],
       "row": false,
       "type": "dock"
+    },
+    {
+      "active": 0,
+      "panels": [
+        "proppanel"
+      ],
+      "type": "panel",
+      "width": 100,
+      "max-width": 100
     }
   ],
   "no-collapse": true,

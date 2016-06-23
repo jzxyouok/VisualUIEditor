@@ -1,0 +1,1 @@
+:host{display:flex;flex-direction:row;align-items:center}:host[disabled]{pointer-events:none}span.space{flex:none;width:6px}

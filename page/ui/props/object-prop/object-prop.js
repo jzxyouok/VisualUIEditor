@@ -26,7 +26,7 @@ Editor.polymerElement({
         this._initFocusable(this.$.focus)
     },
     _nameText: function(e) {
-        return e ? Editor.UI.DomUtils.toHumanText(e) : "(Anonymous)"
+        return e ? Editor.UI._DomUtils.toHumanText(e) : "(Anonymous)"
     },
     _nameClass: function(e) {
         return e ? "name flex-1" : "name anonymous flex-1"

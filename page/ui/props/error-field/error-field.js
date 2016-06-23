@@ -1,0 +1,1 @@
+"use strict";Editor.polymerElement({properties:{message:{type:String,value:""},resetable:{type:Boolean,value:!1},path:{type:String,value:""},type:{type:String,value:""}},_onResetClick:function(e){e.stopPropagation(),this.fire("reset-prop",{path:this.path,type:this.type})}});

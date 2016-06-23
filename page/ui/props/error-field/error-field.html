@@ -1,0 +1,22 @@
+<dom-module id="editor-error-field"><template><style>:host {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+      }
+
+      .wrapper {
+        display: inline-block;
+
+        margin-right: 10px;
+        padding: 2px 6px;
+        border-radius: 1px;
+        font-size: 10px;
+        font-weight: bold;
+
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        min-width: 20px;
+
+        color: #ccc;
+        background: #c80c0c;
+      }</style><div class="layout horizontal flex-1"><div class="wrapper">[[message]]</div></div><editor-button class="small" on-click="_onResetClick" hidden="{{!resetable}}">Reset</editor-button></template><script src="error-field.js"></script></dom-module>

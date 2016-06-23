@@ -1,0 +1,29 @@
+<dom-module id="editor-null-field"><template><style>:host {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+      }
+
+      .wrapper {
+        display: inline-block;
+
+        padding: 1px 6px;
+        border-radius: 1px;
+        font-size: 10px;
+        font-weight: bold;
+
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        min-width: 20px;
+
+        color: #333;
+        background: #aaa;
+      }
+
+      .wrapper.type {
+        margin-left: 5px;
+        margin-right: 5px;
+
+        color: #000;
+        background: #1FA135;
+      }</style><div class="layout horizontal flex-1"><div class="wrapper">[[label]]</div><div class="wrapper type">[[type]]</div></div><editor-button class="small" on-click="_onCreateClick">Create</editor-button></template><script src="null-field.js"></script></dom-module>

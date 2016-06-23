@@ -1,0 +1,32 @@
+<dom-module id="cc-layout-inspector"><template><editor-prop prop="{{target.type}}"></editor-prop><editor-prop prop="{{target.resizeMode}}"></editor-prop><div hidden="[[_isLayoutTypeNone(target.type.value)]]"><editor-prop prop="{{target.cellSize}}" hidden="[[_isHiddenCellSize(target.type.value, target.resizeMode.value)]]"></editor-prop><editor-prop prop="{{target.startAxis}}" hidden="[[!_isGridLayout(target.type.value)]]"></editor-prop><editor-prop prop="{{target.padding}}"></editor-prop><editor-prop prop="{{target.spacingX}}" hidden="[[_isVerticalLayout(target.type.value)]]"></editor-prop><editor-prop prop="{{target.spacingY}}" hidden="[[_isHorizontalLayout(target.type.value)]]"></editor-prop><editor-prop prop="{{target.verticalDirection}}" hidden="[[_isHorizontalLayout(target.type.value)]]"></editor-prop><editor-prop prop="{{target.horizontalDirection}}" hidden="[[_isVerticalLayout(target.type.value)]]"></editor-prop></div></template><script>'use strict';
+
+    Editor.polymerElement({
+      properties: {
+        target: {
+          type: Object,
+          value: null,
+          notify: true,
+        },
+      },
+
+      _isLayoutTypeNone (type) {
+        return type === 0;
+      },
+
+      _isHorizontalLayout (type) {
+        return type === 1;
+      },
+
+      _isVerticalLayout (type) {
+        return type === 2;
+      },
+
+      _isGridLayout (type) {
+        return type === 3;
+      },
+
+      _isHiddenCellSize (type, resizeMode) {
+        return type !== 3 || resizeMode !== 2;
+      },
+
+    });</script></dom-module>

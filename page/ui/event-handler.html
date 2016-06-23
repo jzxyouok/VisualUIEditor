@@ -1,0 +1,132 @@
+<dom-module id="comp-event-handler">
+    <template>
+        <editor-prop prop="{{value.target}}" disabled="[[disabled]]"></editor-prop>
+        <editor-custom-prop name="component">
+            <editor-select class="click-event-component flex-1" value="{{value.component.value}}">
+                <template is="dom-repeat" items="{{components}}">
+                    <editor-option value="{{item}}" text="{{item}}">{{item}}</editor-option>
+                </template>
+            </editor-select>
+        </editor-custom-prop>
+        <editor-custom-prop name="handler">
+            <editor-select class="click-event-handler flex-1" value="{{value.handler.value}}">
+                <template is="dom-repeat" items="{{handlers}}">
+                    <editor-option value="{{item}}" text="{{item}}">{{item}}</editor-option>
+                </template>
+            </editor-select>
+        </editor-custom-prop>
+    </template>
+    <script>
+        'use strict';
+        Editor.polymerElement({
+            properties: {
+                value: {
+                    type: Object,
+                    value: null,
+                    notify: true,
+                },
+
+                components: {
+                    type: Array,
+                    value: function () { return []; },
+                },
+
+                handlers: {
+                    type: Array,
+                    value: function () { return []; },
+                }
+            },
+
+            observers: [
+                '_onTargetChanged(value.target.value)',
+                '_onComponentChanged(value.component.value)'
+            ],
+
+            ready () {
+                this._requestID = null;
+                this._dump = {};
+            },
+
+            _component () {
+                return this.value.component.value;
+            },
+
+            _handler () {
+                return this.value.handler.value;
+            },
+
+            _updateComponents () {
+                // still dumping
+                if ( this._requestID ) {
+                    return;
+                }
+
+                this.components = Object.keys(this._dump);
+
+                // empty dump
+                if (this.components.length === 0) {
+                    this.set('value.component.value', '');
+                    return;
+                }
+
+                // original value not exists in dump
+                if (this.components.indexOf(this._component()) === -1) {
+                    this.set('value.component.value', '');
+                }
+            },
+
+            _updateHandlers (componentName) {
+                // still dumping
+                if ( this._requestID ) {
+                    return;
+                }
+
+                componentName = componentName || this._component();
+                let functions = this._dump[componentName];
+                this.handlers = functions || [];
+
+                // empty dump
+                if (this.handlers.length === 0 ) {
+                    this.set('value.handler.value', '');
+                    return;
+                }
+
+                // original value not exists in dump
+                if (functions.indexOf(this._handler()) === -1) {
+                    this.set('value.handler.value', '');
+                }
+            },
+
+            _updateDump () {
+                if ( this._requestID ) {
+                    Editor.Ipc.cancelRequest(this._requestID);
+                    this._requestID = null;
+                }
+
+                let nodeID = this.value.target.value.uuid;
+                this._requestID = Editor.Ipc.sendToPanel('scene', 'scene:query-node-functions', nodeID, (error, dump) => {
+                    this._requestID = null;
+
+                    this._dump = dump;
+                    this._updateComponents();
+                    this._updateHandlers();
+                }, -1);
+            },
+
+            _onTargetChanged ( target ) {
+                if ( !target ) {
+                    return;
+                }
+                this._updateDump();
+            },
+
+            _onComponentChanged ( comp ) {
+                if ( !comp ) {
+                    return;
+                }
+
+                this._updateHandlers();
+            },
+        });
+    </script>
+</dom-module>

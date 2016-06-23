@@ -1,0 +1,29 @@
+:host {
+	@apply(--layout-vertical);
+	color:#9e9e9f
+}
+div {
+	padding:6px;
+	font-size:12px;
+	position:relative
+}
+:host[type=spriteFrame] {
+	height:35px
+}
+.buttons {
+	position:absolute;
+	right:8px;
+	top:0;
+	cursor:pointer;
+	padding:3px 0
+}
+.buttons i {
+	padding:4px
+}
+:host[invalid] {
+	color:#d4231f
+}
+.buttons i[lock] {
+	color:#FFF;
+	text-shadow:#FFF 0 0 10px
+}

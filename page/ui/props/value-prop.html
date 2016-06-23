@@ -1,0 +1,12 @@
+<link rel="import" href="../field/field.html">
+<dom-module id="editor-value-prop">
+    <link rel="import" type="css" href="value-prop.css">
+    <template>
+        <div class="layout horizontal flex-1 group" readonly$="{{prop.attrs.readonly}}" title$="{{prop.attrs.tooltip}}">
+            <div class$="{{_nameClass(prop.name)}}" on-mousedown="_onMouseDown">{{_nameText(prop.name)}}</div>
+            <i class="fa fa-lock"></i>
+        </div>
+        <editor-field id="field" class="flex-2" path="[[prop.path]]" type="[[prop.type]]" attrs="[[prop.attrs]]" value="{{prop.value}}" slidable="{{slidable}}" disabled="[[disabled]]" on-mousedown="_onFieldMouseDown"></editor-field>
+    </template>
+    <script src="value-prop.js"></script>
+</dom-module>

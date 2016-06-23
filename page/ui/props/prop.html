@@ -1,0 +1,24 @@
+<link rel="import" href="../field/field.html">
+<dom-module id="editor-prop">
+	<template>
+		<style>
+		  :host {
+			display: block;
+		  }
+
+		  .prop {
+			min-width: 240px;
+		  }
+		</style>
+		<template is="dom-if" if="[[_isValueProp(prop.type)]]">
+			<editor-value-prop class="prop" prop="{{prop}}" disabled="{{disabled}}"></editor-value-prop>
+		</template>
+		<template is="dom-if" if="[[_isArrayProp(prop.type)]]">
+			<editor-array-prop class="prop" prop="{{prop}}" disabled="{{disabled}}"></editor-array-prop>
+		</template>
+		<template is="dom-if" if="[[_isObjectProp(prop.type)]]">
+			<editor-object-prop class="prop" prop="{{prop}}" disabled="{{disabled}}"></editor-object-prop>
+		</template>
+	</template>
+	<script src="prop.js"></script>
+</dom-module>

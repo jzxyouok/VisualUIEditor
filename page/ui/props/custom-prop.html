@@ -1,0 +1,11 @@
+<link rel="import" href="../field/field.html">
+<dom-module id="editor-custom-prop">
+    <link rel="import" type="css" href="custom-prop.css">
+    <template>
+        <div class$="{{_nameClass(name)}}" on-mousedown="_onMouseDown">{{_nameText(name)}}</div>
+        <div id="field" class="flex-2" on-mousedown="_onFieldMouseDown">
+            <content></content>
+        </div>
+    </template>
+    <script src="custom-prop.js"></script>
+</dom-module>

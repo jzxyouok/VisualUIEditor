@@ -1,0 +1,50 @@
+:host {
+	display:flex;
+	flex-direction:row;
+	flex-wrap:nowrap;
+	align-items:center;
+	font-size:12px;
+	box-sizing:border-box;
+	min-height:24px;
+	margin-bottom:5px;
+	cursor:default
+}
+.group {
+	margin-left:15px;
+	margin-right:10px
+}
+.group[readonly] .name {
+	color:#888
+}
+.group[readonly] .fa-lock {
+	display:block
+}
+.name {
+	min-width:30px;
+	text-overflow:ellipsis;
+	overflow:hidden;
+	white-space:nowrap;
+	color:#aaa
+}
+.name:hover {
+	color:#f90
+}
+.fa-lock,.name.anonymous {
+	color:#888
+}
+.fa-lock {
+	display:none;
+	line-height:14px
+}
+:host[focused] .name {
+	color:#00a6ff
+}
+:host[disabled] * {
+	pointer-events:none
+}
+:host[disabled] .name {
+	color:#666
+}
+:host[slidable] .name {
+	cursor:ew-resize
+}

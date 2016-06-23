@@ -75,7 +75,22 @@
 
       :host[focused] .title{
         color: #00a6ff;
-      }</style><div class="header" id="header" title="[[_T('INSPECTOR.component.header')]]" on-click="_onFoldClick" on-keydown="_onKeyDown" on-focus="_onFocus" on-blur="_onBlur"><div class="layout horizontal center flex-1"><i class$="{{_foldClass(folded)}}"></i><div class="title">Node</div></div><div id="dropdown" class="dropdown" on-click="_onMenuClick"><i class="fa fa-cog"></i></div></div><div class="content" id="content"><content></content></div></template><script>(() => {
+      }
+    </style>
+    <div class="header" id="header" title="[[_T('INSPECTOR.component.header')]]" on-click="_onFoldClick" on-keydown="_onKeyDown" on-focus="_onFocus" on-blur="_onBlur">
+      <div class="layout horizontal center flex-1">
+        <i class$="{{_foldClass(folded)}}"></i>
+        <div class="title">Node</div>
+      </div>
+      <div id="dropdown" class="dropdown" on-click="_onMenuClick">
+        <i class="fa fa-cog"></i>
+      </div>
+    </div>
+    <div class="content" id="content">
+      <content></content>
+    </div>
+  </template>
+  <script>(() => {
       'use strict';
 
       Editor.polymerElement({
@@ -154,4 +169,6 @@
           }, -1);
         },
       });
-    })();</script></dom-module>
+    })();
+  </script>
+</dom-module>

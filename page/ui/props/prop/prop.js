@@ -15,6 +15,14 @@ Editor.polymerElement(
 				reflectToAttribute:!0
 			}
 		},
+
+		observers: [
+			'knowPropChange(prop)'
+		],
+		knowPropChange: function(prop) {
+			Editor.log(JSON.stringify(prop));
+		},
+
 		ready:function(){},
 		_isValueProp:function(t){return"Array"===t?!1:"Object"!==t},
 		_isArrayProp:function(t){return"Array"===t},

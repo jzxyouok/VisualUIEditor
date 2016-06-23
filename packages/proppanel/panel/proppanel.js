@@ -127,13 +127,54 @@
       'ui:scene_change' ( event, message ) {
         Editor.log("ui:scene_change");
         this._scene = window.runScene;
-        this.$.node.target = this._scene;
+        // this.$.node.target = this._scene;
+                let realValue = {
+            path: "cocos!!!!!!!!!!!!!",
+            type: "cc.Node",
+            name: "myName",
+            attrs: {
+                position : node._position,
+                rotation: 2,
+                size : node._size,
+            },
+            position: {
+                name: "vec2",
+                type: "Number",
+                attrs: {},
+                value: 10,
+            },
+            rotation: {
+                name: "vec2",
+                type: "Number",
+            },
+            value: null
+        };
+        this.$.node.target = realValue;
       },
       'ui:select_items_change' (event, message) {
         Editor.log("ui:select_items_change");
         let node = cocosGetItemByUUID(this._scene, message.select_items[0]);
-        this.$.node.target = node;
         let position = node._position;
+        let realValue = {
+            path: "cocos!!!!!!!!!!!!!",
+            type: "cc.Node",
+            name: "myName",
+            attrs: {
+                position : node._position,
+                rotation: 2,
+                size : node._size,
+            },
+            position: {
+                name: "vec2",
+                type: "Number",
+            },
+            rotation: {
+                name: "vec2",
+                type: "Number",
+            },
+            value: null
+        };
+        this.$.node.target = realValue;
         // this.selectItemsByData(message.select_items);
       }
     },

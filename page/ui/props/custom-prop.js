@@ -26,7 +26,7 @@ Editor.polymerElement({
         }
     },
     _nameText: function(o) {
-        return o ? Editor.UI.DomUtils.toHumanText(o) : "(Anonymous)"
+        return o ? Editor.UI._DomUtils.toHumanText(o) : "(Anonymous)"
     },
     _nameClass: function(o) {
         return o ? "name flex-1" : "name anonymous flex-1"
@@ -40,7 +40,7 @@ Editor.polymerElement({
     _onMouseDown: function(o) {
         o.preventDefault(), o.stopPropagation();
         for (var e = Polymer.dom(this).children, n = 0; n < e.length; ++n) {
-            var t = Editor.UI.DomUtils.getFirstFocusableChild(e[n]);
+            var t = Editor.UI._DomUtils.getFirstFocusableChild(e[n]);
             if (t) {
                 t.focus();
                 break
@@ -54,7 +54,7 @@ Editor.polymerElement({
         if (13 === o.keyCode) {
             o.preventDefault(), o.stopPropagation();
             for (var e = Polymer.dom(this).children, n = 0; n < e.length; ++n) {
-                var t = Editor.UI.DomUtils.getFirstFocusableChild(e[n]);
+                var t = Editor.UI._DomUtils.getFirstFocusableChild(e[n]);
                 if (t) {
                     t.focus();
                     break

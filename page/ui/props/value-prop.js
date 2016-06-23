@@ -32,7 +32,7 @@ Editor.polymerElement({
         this._initFocusable(this)
     },
     _nameText: function(t) {
-        return t ? Editor.UI.DomUtils.toHumanText(t) : "(Anonymous)"
+        return t ? Editor.UI._DomUtils.toHumanText(t) : "(Anonymous)"
     },
     _nameClass: function(t) {
         return t ? "name flex-1" : "name anonymous flex-1"
@@ -46,13 +46,13 @@ Editor.polymerElement({
     _onMouseDown: function(t) {
         var o = this;
         t.preventDefault(), t.stopPropagation();
-        var e = Editor.UI.DomUtils.getFirstFocusableChild(this.$.field);
+        var e = Editor.UI._DomUtils.getFirstFocusableChild(this.$.field);
         if (e && e.focus(), this.slidable) {
             var n = this.prop.value,
                 i = Number.NEGATIVE_INFINITY;
             "number" == typeof this.prop.attrs.min && (i = this.prop.attrs.min);
             var s = Number.POSITIVE_INFINITY;
-            "number" == typeof this.prop.attrs.max && (s = this.prop.attrs.max), Editor.UI.DomUtils.startDrag("ew-resize", t, function(t, e, r, u, a) {
+            "number" == typeof this.prop.attrs.max && (s = this.prop.attrs.max), Editor.UI._DomUtils.startDrag("ew-resize", t, function(t, e, r, u, a) {
                 o.set("prop.value", Editor.Math.clamp(n + u, i, s))
             }, function() {
                 o.async(function() {
@@ -67,7 +67,7 @@ Editor.polymerElement({
     _onKeyDown: function(t) {
         if (13 === t.keyCode) {
             t.preventDefault(), t.stopPropagation();
-            var o = Editor.UI.DomUtils.getFirstFocusableChild(this.$.field);
+            var o = Editor.UI._DomUtils.getFirstFocusableChild(this.$.field);
             o && o.focus()
         }
     }

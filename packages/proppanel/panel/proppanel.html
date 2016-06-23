@@ -54,15 +54,7 @@
       <span class="flex-1"></span>
     </div>
 
-    <ul id="view" class="flex-1">
-      <template is="dom-repeat" items="{{_getItems()}}">
-        <editor-prop-item
-          icon="[[item.icon]]"
-          name="[[item.name]]"
-        >
-        </editor-prop-item>
-      </template>
-    </ul>
+    <cc-sprite-inspector id = "sprite"></cc-sprite-inspector>
   </template>
 
   <script>

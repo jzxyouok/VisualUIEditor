@@ -28,6 +28,14 @@
     },
 
     ready: function () {
+        this._scene = null;
+        // var sprite = document.createElement('cc-sprite-inspector');
+        // let subNode = this.$.node.$.addCompBtn;
+        // let subParent = Polymer.dom(subNode).parentNode;
+        // this.$.node.appendChild(sprite);
+        // this.$.node.insertBefore(sprite, subParent);
+        // let nodeItem = Polymer.dom(this.$.node);
+        // nodeItem.appendChild(sprite);
 
     },
 
@@ -116,7 +124,18 @@
     },
 
     messages: {
-      
+      'ui:scene_change' ( event, message ) {
+        Editor.log("ui:scene_change");
+        this._scene = window.runScene;
+        this.$.node.target = this._scene;
+      },
+      'ui:select_items_change' (event, message) {
+        Editor.log("ui:select_items_change");
+        let node = cocosGetItemByUUID(this._scene, message.select_items[0]);
+        this.$.node.target = node;
+        let position = node._position;
+        // this.selectItemsByData(message.select_items);
+      }
     },
 
   });

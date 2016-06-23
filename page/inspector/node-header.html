@@ -1,0 +1,62 @@
+<dom-module id="inspector-node-header">
+  <template>
+    <style>:host {
+        flex: none;
+        padding-left: 10px;
+        /*padding-right: 10px;*/
+        padding-top: 5px;
+      }
+
+      editor-toolbar {
+        margin-bottom: 10px;
+      }
+
+      .prefab-toolbar {
+        margin-bottom: 10px;
+      }
+
+      .prefab-toolbar editor-button {
+        margin-right: 5px;
+      }
+    </style>
+    <editor-toolbar>
+      <editor-checkbox title="[[_T('INSPECTOR.node.active')]]" checked="{{target.active.value}}"></editor-checkbox>
+      <editor-input title="[[_T('INSPECTOR.node.name')]]" class="flex-1" value="{{target.name.value}}"></editor-input>
+      <editor-button id="addCompBtn" on-click="_onPopupComponentMenu">
+        <i class="fa fa-plus"></i>
+      </editor-button>
+    </editor-toolbar>
+    <template is="dom-if" if="[[target.__prefab__]]">
+      <div class="prefab-toolbar layout horizontal center">
+        <editor-label class="blue mini">prefab</editor-label>
+        <span class="flex-1"></span>
+        <editor-button title="[[_T('INSPECTOR.node.prefab_select')]]" class="small" on-click="_onPrefabSelect">[[_T('INSPECTOR.node.prefab_btn_select')]]</editor-button>
+        <editor-button title="[[_T('INSPECTOR.node.prefab_revert')]]" class="small red" on-click="_onPrefabRevert">[[_T('INSPECTOR.node.prefab_btn_revert')]]</editor-button>
+        <editor-button title="[[_T('INSPECTOR.node.prefab_apply')]]" class="small green" on-click="_onPrefabApply">[[_T('INSPECTOR.node.prefab_btn_apply')]]</editor-button>
+      </div>
+    </template>
+  </template>
+  <script>
+    Editor.polymerElement({
+      properties: {
+          target: {
+              type: Object,
+              value: null,
+              notify: !0
+          }
+      },
+      _onPrefabSelect: function() {
+          this.fire("prefab-select")
+      },
+      _onPrefabApply: function() {
+          this.fire("prefab-apply")
+      },
+      _onPrefabRevert: function() {
+          this.fire("prefab-revert")
+      },
+      _onPopupComponentMenu: function() {
+          var e = this.$.addCompBtn.getBoundingClientRect();
+          Editor.Ipc.sendToMain("inspector:popup-comp-menu", e.left, e.bottom + 5, this.target.uuid)
+      }});
+  </script>
+</dom-module>

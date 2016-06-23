@@ -1,0 +1,83 @@
+:host {
+	display:flex;
+	min-width:60px;
+	position:relative
+}
+.label,.name {
+	display:inline-block;
+	text-overflow:ellipsis;
+	overflow:hidden
+}
+.dropArea {
+	position:relative;
+	box-sizing:border-box;
+	border:1px solid #666;
+	min-width:60px;
+	min-height:22px;
+	cursor:pointer;
+	background:#232323;
+	flex:1
+}
+.content {
+	color:#A5A5A5;
+	padding:2px 4px;
+	font-size:12px;
+	border:1px solid #000;
+	white-space:nowrap;
+	overflow:hidden
+}
+.name.null {
+	color:#525252
+}
+.label-wrapper {
+	min-width:30px;
+	margin-left:5px
+}
+.label {
+	padding:0 3px;
+	border-radius:1px;
+	font-size:9px;
+	font-weight:700;
+	color:#000;
+	background:#C8A002
+}
+.label:hover {
+	color:#fff;
+	background:#2376e4
+}
+.label.left {
+	border-top-right-radius:0;
+	border-bottom-right-radius:0
+}
+.label.right {
+	flex:none;
+	border-top-left-radius:0;
+	border-bottom-left-radius:0;
+	padding-top:1px;
+	margin-left:1px;
+	background:#aaa
+}
+.label.right:hover {
+	background:#a00
+}
+:host[focused] .dropArea {
+	border:1px solid #0c70a6
+}
+:host[highlighted] .dropArea {
+	background:rgba(4,128,20,.5);
+	border:1px solid #06c90e
+}
+:host[highlighted] .content {
+	border:1px solid #06c90e
+}
+:host[highlighted][invalid] .dropArea {
+	background:rgba(167,11,11,.5);
+	border:1px solid #d02323
+}
+:host[highlighted][invalid] .content {
+	border:1px solid #d02323
+}
+:host[disabled] {
+	pointer-events:none;
+	opacity:.5
+}

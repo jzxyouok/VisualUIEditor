@@ -1,0 +1,19 @@
+<link rel="import" href="comp-section.html">
+<dom-module id="inspector-comps-section">
+    <template>
+        <template is="dom-repeat" items="{{target.__comps__}}">
+            <inspector-comp-section target="{{item}}"></inspector-comp-section>
+        </template>
+    </template>
+    <script>
+        Editor.polymerElement({
+            properties: {
+                target: {
+                    type: Object,
+                    value: null,
+                    notify: !0
+                }
+            }
+        });
+    </script>
+</dom-module>

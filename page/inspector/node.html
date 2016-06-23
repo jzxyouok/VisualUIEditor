@@ -1,0 +1,76 @@
+<link rel="import" href="node-header.html">
+<link rel="import" href="node-section.html">
+<link rel="import" href="comps-section.html">
+<dom-module id="cc-node-inspector">
+  <link rel="import" type="css" href="common.css">
+  <template>
+    <inspector-node-header target="{{target}}"></inspector-node-header>
+    <div class="props flex-1 layout vertical">
+      <inspector-node-section target="{{target}}">
+        <editor-prop title="Position" prop="{{target.position}}"></editor-prop>
+        <editor-prop title="Rotation" prop="{{target.rotation}}"></editor-prop>
+        <editor-prop title="Scale" prop="{{target.scale}}"></editor-prop>
+        <editor-prop title="Anchor" prop="{{target.anchor}}"></editor-prop>
+        <editor-prop title="Size" prop="{{target.size}}"></editor-prop>
+        <editor-prop title="Color" prop="{{target.color}}"></editor-prop>
+        <editor-prop title="Opacity" prop="{{target.opacity}}"></editor-prop>
+        <editor-prop title="Skew" prop="{{target.skew}}"></editor-prop>
+        <editor-custom-prop name="group" title="[[_T('INSPECTOR.node.group')]]">
+          <div class="layout horizontal">
+            <editor-select class="flex-3 group-list" text="{{target.group.value}}" value="{{target.group.value}}">
+              <template is="dom-repeat" items="{{groupList}}">
+                <editor-option value="{{item}}">{{item}}</editor-option>
+              </template>
+            </editor-select>
+            <editor-button on-click="_openGroupSettings">[[_T('COMPONENT.sprite.edit_button')]]</editor-button>
+          </div>
+        </editor-custom-prop>
+      </inspector-node-section>
+      <inspector-comps-section target="{{target}}"></inspector-comps-section>
+      <div class="add-comp-btn layout horizontal center-center">
+        <editor-button id="addCompBtn" style="width: 240px" on-click="_onPopupComponentMenu" nofocus>[[_T('INSPECTOR.add_component')]]</editor-button>
+      </div>
+    </div>
+  </template>
+  <script>
+    'use strict';
+
+    Editor.polymerElement({
+      properties: {
+        target: {
+          type: Object,
+          value: null,
+          notify: true,
+        },
+
+        groupList: {
+          type: Array,
+          value: function () {
+            return [];
+          },
+        },
+      },
+
+      ready: function () {
+        Editor.Ipc.sendToPanel('scene', 'scene:query-group-list', (err, groupList) => {
+          this.groupList = groupList;
+        });
+        
+      },
+
+      _onPopupComponentMenu: function () {
+        var rect = this.$.addCompBtn.getBoundingClientRect();
+        Editor.Ipc.sendToMain(
+          'inspector:popup-comp-menu',
+          rect.left + 5,
+          rect.bottom + 5,
+          this.target.uuid
+        );
+      },
+
+      _openGroupSettings: function () {
+        Editor.Ipc.sendToMain('project-settings:open', {tab: 0});
+      }
+    });
+  </script>
+</dom-module>

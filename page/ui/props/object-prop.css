@@ -1,0 +1,72 @@
+.label,.name {
+	text-overflow:ellipsis;
+	overflow:hidden;
+	white-space:nowrap
+}
+:host {
+	display:block;
+	font-size:12px;
+	box-sizing:border-box;
+	margin-bottom:5px;
+	min-height:24px;
+	cursor:default
+}
+.fold,.group {
+	cursor:pointer
+}
+.group {
+	margin-right:10px;
+	margin-left:5px;
+	min-height:22px
+}
+.group[readonly] .name {
+	color:#888
+}
+.group[readonly] .label {
+	display:block
+}
+.name {
+	min-width:30px;
+	color:#aaa
+}
+.name:hover {
+	color:#f90
+}
+.name.anonymous {
+	color:#888
+}
+.label {
+	display:none;
+	font-size:9px;
+	font-weight:700;
+	font-style:italic;
+	padding:.1em .5em;
+	min-width:20px;
+	border-radius:1px;
+	border-color:#e8e8e8;
+	background:#2376e4
+}
+.fold {
+	text-align:center;
+	width:10px;
+	color:#aaa
+}
+.fold:hover {
+	color:#fff
+}
+#subProps {
+	margin-top:5px;
+	margin-left:15px
+}
+:host[focused] .name {
+	color:#00a6ff
+}
+:host[focused] .fold {
+	color:#00a6ff
+}
+:host[disabled] * {
+	pointer-events:none
+}
+:host[disabled] .name {
+	color:#666
+}

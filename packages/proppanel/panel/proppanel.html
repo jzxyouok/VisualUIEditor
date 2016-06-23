@@ -40,21 +40,9 @@
 
     </style>
 
-    <div class="toolbar">
-      <ui-button class="black small transparent" on-confirm="clear">
-        <i class="fa fa-plus-circle"></i>
-      </ui-button>
-      <ui-input
-        id="input"
-        placeholder="搜索"
-        value="{{filterText::change}}"
-        cancelable
-        unnavigable
-      ></ui-input>
-      <span class="flex-1"></span>
-    </div>
 
-    <cc-sprite-inspector id = "sprite"></cc-sprite-inspector>
+    <cc-node-inspector id = "node"></cc-node-inspector>
+    <!--<cc-sprite-inspector id = "sprite"></cc-sprite-inspector>-->
   </template>
 
   <script>

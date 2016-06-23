@@ -1,0 +1,157 @@
+<dom-module id="inspector-node-section"><template><style>:host {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-items: stretch;
+        box-sizing: border-box;
+        margin-bottom: 1px;
+
+        font-size: 0.8rem;
+      }
+
+      .header {
+        display: flex;
+        flex-flow: row;
+        align-items: center;
+        padding: 4px 0px 4px 6px;
+        font-weight: 700;
+        font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
+
+        border-bottom: 1px solid #666;
+        margin-bottom: 5px;
+
+        color: #aaa;
+        font-weight: bold;
+        padding-bottom: 4px;
+        cursor: pointer;
+      }
+
+      .dropdown {
+        text-align: center;
+        padding: 0px 4px;
+        width: 9px;
+        transition: width .5s ease;
+        overflow: hidden;
+        display: inline-block;
+        white-space: nowrap;
+        border-radius: 2px;
+      }
+
+      .dropdown:hover {
+        color: #eee;
+      }
+
+      .dropdown:active {
+        color: #333;
+      }
+
+      .title {
+        margin-left: 5px;
+      }
+
+      .fold {
+        text-align: center;
+        width: 10px;
+      }
+
+      .content {
+        display: flex;
+        flex-flow: column nowrap;
+        padding: 5px 0px 5px 6px;
+        font-size: 0.8rem;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      :host[folded] .content{
+        display: none;
+      }
+
+      :host[focused] .fold{
+        color: #00a6ff;
+      }
+
+      :host[focused] .title{
+        color: #00a6ff;
+      }</style><div class="header" id="header" title="[[_T('INSPECTOR.component.header')]]" on-click="_onFoldClick" on-keydown="_onKeyDown" on-focus="_onFocus" on-blur="_onBlur"><div class="layout horizontal center flex-1"><i class$="{{_foldClass(folded)}}"></i><div class="title">Node</div></div><div id="dropdown" class="dropdown" on-click="_onMenuClick"><i class="fa fa-cog"></i></div></div><div class="content" id="content"><content></content></div></template><script>(() => {
+      'use strict';
+
+      Editor.polymerElement({
+        behaviors: [Editor.UI.PolymerFocusable],
+
+        listeners: {},
+
+        properties: {
+          target: {
+            type: Object,
+            value: null,
+            notify: true,
+          },
+
+          folded: {
+            type: Boolean,
+            value: false,
+            reflectToAttribute: true,
+          },
+        },
+
+        ready () {
+          this._initFocusable(this.$.header);
+        },
+
+        _onFoldClick () {
+          this.folded = !this.folded;
+        },
+
+        _foldClass ( folded ) {
+          if (folded) {
+            return 'fa fa-caret-right fold flex-none ';
+          }
+
+          return 'fa fa-caret-down fold flex-none';
+        },
+
+        _onKeyDown (event) {
+          // press 'enter' and 'space'
+          if (event.keyCode === 13 || event.keyCode === 32) {
+            event.preventDefault();
+            event.stopPropagation();
+            this.folded = !this.folded;
+          }
+          // press left
+          else if (event.keyCode === 37) {
+            event.preventDefault();
+            event.stopPropagation();
+            this.folded = true;
+          }
+          // press right
+          else if (event.keyCode === 39) {
+            event.preventDefault();
+            event.stopPropagation();
+            this.folded = false;
+          }
+        },
+
+        _onMenuClick (event) {
+          event.stopPropagation();
+
+          if (this._requestID) {
+            Editor.Ipc.cancelRequest(this._requestID);
+            this._requestID = null;
+          }
+
+          this._requestID = Editor.Ipc.sendToPanel(
+            'scene', 'scene:has-copied-component', (error, hasCopyComp) => {
+            let rect = this.$.dropdown.getBoundingClientRect();
+            this.fire('show-node-inspector-menu', {
+              uuid: this.target.uuid,
+              hasCopyComp: hasCopyComp,
+              x: rect.left,
+              y: rect.bottom + 5,
+            });
+          }, -1);
+        },
+      });
+    })();</script></dom-module>

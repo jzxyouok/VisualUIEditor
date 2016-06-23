@@ -1,0 +1,18 @@
+<dom-module id="editor-object-prop">
+    <link rel="import" type="css" href="object-prop.css">
+    <template>
+        <div id="focus" class="layout horizontal center-center" on-focus="_onFocus" on-blur="_onBlur" on-click="_onFoldClick" on-keydown="_onKeyDown" title$="{{prop.attrs.tooltip}}">
+            <i id="foldIcon" class$="[[_foldClass(folded)]]"></i>
+            <div class="layout horizontal center-center flex-1 group" readonly$="{{prop.attrs.readonly}}">
+                <div class$="{{_nameClass(prop.name)}}">{{_nameText(prop.name)}}</div>
+                <div class="label">readonly</div>
+            </div>
+        </div>
+        <div id="subProps" hidden="[[folded]]">
+            <template is="dom-repeat" items="{{prop.value.__props__}}">
+                <editor-prop prop="{{item}}" disabled="[[disabled]]"></editor-prop>
+            </template>
+        </div>
+    </template>
+    <script src="object-prop.js"></script>
+</dom-module>

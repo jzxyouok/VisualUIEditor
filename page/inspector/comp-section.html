@@ -1,0 +1,343 @@
+<dom-module id="inspector-comp-section">
+  <template>
+    <style>:host {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-items: stretch;
+        box-sizing: border-box;
+        margin-bottom: 1px;
+
+        font-size: 0.8rem;
+      }
+
+      .header {
+        display: flex;
+        flex-flow: row;
+        align-items: center;
+        padding: 4px 0px 4px 6px;
+        font-weight: 700;
+        font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
+
+        border-bottom: 1px solid #666;
+        margin-bottom: 5px;
+
+        color: #aaa;
+        font-weight: bold;
+        padding-bottom: 4px;
+        cursor: pointer;
+      }
+
+      .help {
+        text-align: center;
+        padding: 0px 4px;
+        width: 9px;
+        transition: width .5s ease;
+        overflow: hidden;
+        display: inline-block;
+        white-space: nowrap;
+        border-radius: 2px;
+      }
+
+      .help:hover {
+        color: #eee;
+      }
+
+      .dropdown {
+        text-align: center;
+        padding: 0px 4px;
+        width: 9px;
+        transition: width .5s ease;
+        overflow: hidden;
+        display: inline-block;
+        white-space: nowrap;
+        border-radius: 2px;
+      }
+
+      .dropdown:hover {
+        color: #eee;
+      }
+
+      .title {
+        margin-left: 5px;
+      }
+
+      .fold {
+        text-align: center;
+        width: 10px;
+      }
+
+      .content {
+        display: flex;
+        flex-flow: column nowrap;
+        padding: 5px 0px 5px 6px;
+        font-size: 0.8rem;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      editor-checkbox {
+        margin-left: 5px;
+      }
+
+      :host[folded] .content{
+        display: none;
+      }
+
+      :host[focused] .fold{
+        color: #00a6ff;
+      }
+
+      :host[focused] .title{
+        color: #00a6ff;
+      }
+    </style>
+    <div class="header" id="header" title="[[_T('INSPECTOR.component.header')]]" on-click="_onFoldClick" on-keydown="_onKeyDown" on-focus="_onFocus" on-blur="_onBlur">
+      <div class="layout horizontal center flex-1">
+        <i class$="{{_foldClass(folded)}}"></i>
+        <editor-checkbox checked="{{target.enabled}}" nofocus hidden="[[!target.__editor__._showTick]]" title="[[_T('INSPECTOR.component.enabled')]]"></editor-checkbox>
+        <div class="title">{{_targetName(target)}}</div>
+      </div>
+      <div class="help" title="[[_T('INSPECTOR.component.help')]]" hidden="[[!target.__editor__.help]]" on-click="_onOpenHelpClick">
+        <i class="fa fa-book"></i>
+      </div>
+      <p style="margin: 2px"></p>
+      <div id="dropdown" class="dropdown" title="" on-click="_onMenuClick">
+        <i class="fa fa-cog"></i>
+      </div>
+    </div>
+    <div class="content" id="content">
+      <template is="dom-if" if="{{!_customDraw(target)}}">
+        <template is="dom-repeat" items="{{target.__props__}}">
+          <editor-prop prop="{{item}}"></editor-prop>
+        </template>
+      </template>
+    </div>
+  </template>
+  <script>(() => {
+      'use strict';
+
+      let _url2imported = {};
+
+      Editor.polymerElement({
+        behaviors: [Editor.UI.PolymerFocusable],
+
+        listeners: {},
+
+        properties: {
+          target: {
+            type: Object,
+            value: null,
+            notify: true,
+            // observer: '_targetChanged'
+          },
+
+          folded: {
+            type: Boolean,
+            value: false,
+            reflectToAttribute: true,
+          },
+        },
+
+        observers: [
+          '_targetPropChanged(target.*)'
+        ],
+
+        ready () {
+          this._initFocusable(this.$.header);
+        },
+
+        _onFoldClick () {
+          this.folded = !this.folded;
+        },
+
+        _foldClass ( folded ) {
+          if (folded) {
+            return 'fa fa-caret-right fold flex-none ';
+          }
+
+          return 'fa fa-caret-down fold flex-none';
+        },
+
+        _iconClass (icon) {
+          if (icon) {
+            return 'icon';
+          }
+          return 'hidden';
+        },
+
+        _targetPropChanged ( info ) {
+          if (info.path === 'target') {
+            this._rebuild();
+            return;
+          }
+
+          this._forwardParentPath(info.path, info.value);
+        },
+
+        _forwardParentPath: function(path, value) {
+          if (this._el) {
+            this._el.notifyPath(path, value, true);
+          }
+        },
+
+        _rebuild () {
+          if ( !this.target || !this.target.__editor__ || !this.target.__editor__.inspector ) {
+            return;
+          }
+
+          let url = this.target.__editor__.inspector;
+
+          // NOTE: DO NOT import if we already load it. this is because when touch <head>, a page repaint will happen
+          if ( _url2imported[url] ) {
+            this._appendElement();
+            return;
+          }
+
+          Editor.UI.PolymerUtils.import( url, err => {
+            if ( err ) {
+              Editor.error(`${err.message}`);
+              return;
+            }
+
+            _url2imported[url] = true;
+            this._appendElement();
+          });
+        },
+
+        _appendElement () {
+          let prefix = Editor.UI._DomUtils.kebabCase(this.target.__type__);
+
+          // TODO
+          // let inst = Editor.UI.PolymerUtils.templatize(
+          //   this,
+          //   `<${prefix}-inspector target="{{target}}"></${prefix}-inspector>`,
+          //   {
+          //     target: this.target,
+          //   }
+          // );
+          // this._instance = inst;
+          // Polymer.dom(this.$.content).appendChild(this._instance.root);
+
+          let el = Polymer.Base.create( prefix + '-inspector', {
+            target: this.target,
+          });
+          if ( !el ) {
+            Editor.error(`Can not create <${prefix}-inspector>, tag not found. Make sure you register it same as the kebab-case of your classname`);
+          }
+
+          Editor.UI.PolymerUtils.bind( this, 'target', el, 'target' );
+          Polymer.dom(this.$.content).appendChild(el);
+          this._el = el;
+        },
+
+        _targetName ( target ) {
+          if ( target ) {
+            return target.__displayName__ || Editor.UI.DomUtils.toHumanText(target.__type__);
+          }
+
+          return 'Unknown';
+        },
+
+        _customDraw ( target ) {
+          if ( target && target.__editor__ && target.__editor__.inspector ) {
+            return true;
+          }
+          return false;
+        },
+
+        // DISABLE
+        // _props ( target ) {
+        //   var props = [];
+        //   for ( var p in target ) {
+        //     if ( p === '__type__' )
+        //       continue;
+
+        //     var prop = target[p];
+        //     if ( !prop.attrs || prop.attrs.visible === false )
+        //       continue;
+
+        //     props.push ( prop );
+        //   }
+        //   return props;
+        // },
+
+        // DISABLE
+        // _onValueChanged ( event ) {
+        //   var mixinType = this.target.__type__;
+        //   var propEL = Polymer.dom(event).localTarget
+        //   var subPath = event.detail.path;
+
+        //   if ( subPath ) {
+        //     this.notifyPath('target.' + propEL.name + '.' + subPath,
+        //             event.detail.value );
+        //   } else {
+        //     this.notifyPath('target.' + propEL.name + '.value',
+        //             event.detail.value );
+        //   }
+        // },
+
+        _onKeyDown (event) {
+          // press 'enter' and 'space'
+          if (event.keyCode === 13 || event.keyCode === 32) {
+            event.preventDefault();
+            event.stopPropagation();
+            this.folded = !this.folded;
+          }
+          // press left
+          else if (event.keyCode === 37) {
+            event.preventDefault();
+            event.stopPropagation();
+            this.folded = true;
+          }
+          // press right
+          else if (event.keyCode === 39) {
+            event.preventDefault();
+            event.stopPropagation();
+            this.folded = false;
+          }
+        },
+
+        _onMenuClick (event) {
+          event.stopPropagation();
+
+          if (this._requestID) {
+            Editor.Ipc.cancelRequest(this._requestID);
+            this._requestID = null;
+          }
+
+          this._requestID = Editor.Ipc.sendToPanel(
+          'scene', 'scene:has-copied-component', (error, hasCopiedComp) => {
+            let rect = this.$.dropdown.getBoundingClientRect();
+            let nodeUuid = this.target.node.uuid;
+            let compUuid = this.target.uuid;
+            let node = cc.engine.getInstanceById(nodeUuid);
+            let comp = cc.engine.getInstanceById(compUuid);
+            this.fire('show-comp-inspector-menu', {
+              nodeUuid: nodeUuid,
+              compUuid: compUuid,
+              hasCopyComp: hasCopiedComp,
+              compIndex: node._components.indexOf(comp),
+              compCount: node._components.length,
+              x: rect.left,
+              y: rect.bottom + 5,
+            });
+          }, -1);
+        },
+
+        _onOpenHelpClick (event) {
+          event.stopPropagation();
+          let url = this.target.__editor__.help;
+          if (url.startsWith('i18n:')) {
+            url = Editor.T(url.replace('i18n:', ''));
+          }
+          const Electron = require('electron');
+          Electron.shell.openExternal(url);
+        },
+
+      });
+    })();
+  </script>
+</dom-module>

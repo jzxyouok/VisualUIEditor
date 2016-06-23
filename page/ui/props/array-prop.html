@@ -1,0 +1,21 @@
+<dom-module id="editor-array-prop">
+    <link rel="import" type="css" href="array-prop.css">
+    <template>
+        <div id="mainProp" class="layout horizontal center-center" title$="{{prop.attrs.tooltip}}">
+            <i id="foldIcon" class$="[[_foldClass(folded)]]" on-mousedown="_onFoldMouseDown" on-click="_onFoldClick"></i>
+            <div id="focus" class="layout horizontal flex-1 center-center" on-focus="_onFocus" on-blur="_onBlur" on-focusin="_onFocusIn" on-focusout="_onFocusOut" on-mousedown="_onMouseDown" on-keydown="_onKeyDown" disabled="[[disabled]]">
+                <div class="layout horizontal flex-1 group" readonly$="{{prop.attrs.readonly}}"><div class$="{{_nameClass(prop.name)}}" on-mousedown="_onMouseDown">{{_nameText(prop.name)}}</div>
+                <div class="label">readonly</div>
+            </div>
+            <editor-error-field id="reset" path="[[prop.path]]" type="[[prop.type]]" message="Error: type not the same" resetable></editor-error-field>
+            <editor-unit-input id="field" class="flex-2" value="[[prop.value.length]]" min="0" step="1" precision="0" on-mousedown="_onFieldMouseDown" on-value-changed="_onArrayLengthChanged" disabled="[[disabled]]"></editor-unit-input>
+            </div>
+        </div>
+        <div id="subProps" hidden="[[folded]]">
+            <template is="dom-repeat" items="{{prop.value}}">
+                <editor-prop prop="{{item}}" disabled="[[disabled]]"></editor-prop>
+            </template>
+        </div>
+    </template>
+    <script src="array-prop.js"></script>
+</dom-module>

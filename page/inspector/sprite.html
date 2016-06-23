@@ -13,13 +13,13 @@
     <editor-custom-prop title="[[_T('COMPONENT.sprite.atlas')]]" name="Atlas">
       <div class="layout horizontal center">
         <fire-asset class="flex-1" value="{{target._atlas.value.uuid}}" type="sprite-atlas"></fire-asset>
-        <editor-button title="[[_T('COMPONENT.sprite.select_tooltip')]]" class="small" on-click="_selectAtlas">[[_T('COMPONENT.sprite.select_button')]]</editor-button>
+        <editor-button title="选择" class="small" on-click="_selectAtlas">选择</editor-button>
       </div>
     </editor-custom-prop>
     <editor-custom-prop title="[[_T('COMPONENT.sprite.sprite_frame')]]" name="Sprite Frame">
       <div class="layout horizontal center">
         <fire-asset class="flex-1" value="{{target.spriteFrame.ui/props.uuid}}" type="sprite-frame"></fire-asset>
-        <editor-button title="[[_T('COMPONENT.sprite.edit_tooltip')]]" class="small" on-click="_editSprite">[[_T('COMPONENT.sprite.edit_button')]]</editor-button>
+        <editor-button title="编辑" class="small" on-click="_editSprite">编辑</editor-button>
       </div>
     </editor-custom-prop>
     <editor-prop prop="{{target.type}}"></editor-prop>

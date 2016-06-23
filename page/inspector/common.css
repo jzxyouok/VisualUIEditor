@@ -1,0 +1,17 @@
+:host {
+	@apply(--layout-vertical);
+	@apply(--layout-fit)
+}
+.props {
+	overflow-x:hidden;
+	overflow-y:scroll;
+	padding-left:10px;
+	padding-right:5px
+}
+.add-comp-btn {
+	margin-top:10px;
+	margin-bottom:10px
+}
+.group-list {
+	margin-right:5px
+}

@@ -33,10 +33,58 @@ NodeData.prototype = {
             type: "Number",
             name: "Rotation",
             attrs: {
-                min: 1,
-                max: 100,
+                min: 0,
+                max: 360,
             },
             value: this._node.getRotation()
+        }
+    },
+
+    get scale() {
+        return {
+            path: "scale",
+            type: "vec2",
+            name: "Scale",
+            attrs: {
+                min: 0,
+                max: 360,
+            },
+            value: {
+                x: this._node.getScaleX(),
+                y: this._node.getScaleY(),
+            }
+        }
+    },
+
+    get anchor() {
+        return {
+            path: "anchor",
+            type: "vec2",
+            name: "Anchor",
+            attrs: {
+                min: 0,
+                max: 360,
+            },
+            value: {
+                x: this._node.anchorX,
+                y: this._node.anchorY,
+            }
+        }
+    },
+
+    get size() {
+        return {
+            path: "size",
+            type: "size",
+            name: "Size",
+            attrs: {
+                min: 0,
+                max: 360,
+            },
+            value: {
+                width: this._node.width,
+                height: this._node.height,
+            }
         }
     },
 

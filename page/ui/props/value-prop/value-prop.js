@@ -44,24 +44,25 @@ Editor.polymerElement({
         this._setFocused(!1), this.$.field.editing = !1
     },
     _onMouseDown: function(t) {
-        var o = this;
+        var _this = this;
         t.preventDefault(), t.stopPropagation();
-        var e = Editor.UI._DomUtils._getFirstFocusableChild(this.$.field);
-        if (e && e.focus() && this.slidable) {
-            var n = this.prop.value,
-                min = Number.NEGATIVE_INFINITY,
-                max = Number.POSITIVE_INFINITY;
-            "number" == typeof this.prop.attrs.min && (min = this.prop.attrs.min);
-            "number" == typeof this.prop.attrs.max && (max = this.prop.attrs.max);
+        // var e = Editor.UI._DomUtils._getFirstFocusableChild(this.$.field);
+        // e && e.focus();
+        // if (this.slidable) {
+        //     var n = this.prop.value,
+        //         min = Number.NEGATIVE_INFINITY,
+        //         max = Number.POSITIVE_INFINITY;
+        //     "number" == typeof this.prop.attrs.min && (min = this.prop.attrs.min);
+        //     "number" == typeof this.prop.attrs.max && (max = this.prop.attrs.max);
             
-            Editor.UI._DomUtils.startDrag("ew-resize", t, function(t, e, r, u, a) {
-                o.set("prop.value", Editor.Math.clamp(n + u, min, max))
-            }, function() {
-                o.async(function() {
-                    o.fire("end-editing")
-                }, 1)
-            })
-        }
+        //     Editor.UI._DomUtils.startDrag("ew-resize", t, function(t, e, r, u, a) {
+        //         _this.set("prop.value", Editor.Math.clamp(n + u, min, max))
+        //     }, function() {
+        //         _this.async(function() {
+        //             _this.fire("end-editing")
+        //         }, 1)
+        //     })
+        // }
     },
     _onFieldMouseDown: function(t) {
         t.stopPropagation()
@@ -69,7 +70,7 @@ Editor.polymerElement({
     _onKeyDown: function(t) {
         if (13 === t.keyCode) {
             t.preventDefault(), t.stopPropagation();
-            var o = Editor.UI._DomUtils.getFirstFocusableChild(this.$.field);
+            var o = Editor.UI._DomUtils._getFirstFocusableChild(this.$.field);
             o && o.focus()
         }
     }

@@ -45,6 +45,6 @@
 :host[disabled] .name {
 	color:#666
 }
-:host[slidable] .name {
+/*:host[slidable] .name {
 	cursor:ew-resize
-}
+}*/

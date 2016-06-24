@@ -29,6 +29,19 @@
 
     ready: function () {
         this._scene = null;
+        this._opnode = null;
+
+        this.addEventListener("end-editing", function(e) {
+            if(e.detail.cancel) {
+                return;
+            }
+            let path = e.target.path, value = e.target.value;
+            if(!path || !value) {
+                return;
+            }
+            this._opnode.setAttrib(path, value);
+            Editor.log("end-editing!!!!!!!!!!!!!!!");
+        });
         // var sprite = document.createElement('cc-sprite-inspector');
         // let subNode = this.$.node.$.addCompBtn;
         // let subParent = Polymer.dom(subNode).parentNode;
@@ -127,29 +140,33 @@
       'ui:scene_change' ( event, message ) {
         Editor.log("ui:scene_change");
         this._scene = window.runScene;
-        // this.$.node.target = this._scene;
-                let realValue = {
-            path: "cocos!!!!!!!!!!!!!",
-            type: "cc.Node",
-            name: "myName",
-            attrs: {
-                position : node._position,
-                rotation: 2,
-                size : node._size,
-            },
-            position: {
-                name: "vec2",
-                type: "Number",
-                attrs: {},
-                value: 10,
-            },
-            rotation: {
-                name: "vec2",
-                type: "Number",
-            },
-            value: null
-        };
-        this.$.node.target = realValue;
+        // cc.js.extend(this._scene.prototype, node_prototype);
+        // // this.$.node.target = this._scene;
+        //         let realValue = {
+        //     path: "cocos!!!!!!!!!!!!!",
+        //     type: "cc.Node",
+        //     name: "myName",
+        //     attrs: {
+        //         position : node._position,
+        //         rotation: 2,
+        //         size : node._size,
+        //         min: 1,
+        //         max: 100,
+        //     },
+        //     position: {
+        //         name: "vec2",
+        //         type: "Number",
+        //         attrs: {},
+        //         value: 10,
+        //     },
+        //     rotation: {
+        //         name: "vec2",
+        //         type: "Number",
+        //     },
+        //     value: null
+        // };
+        this._opnode = new NodeData(this._scene);
+        this.$.node.target = this._opnode;
       },
       'ui:select_items_change' (event, message) {
         Editor.log("ui:select_items_change");
@@ -163,6 +180,8 @@
                 position : node._position,
                 rotation: 2,
                 size : node._size,
+                min: 1,
+                max: 100,
             },
             position: {
                 name: "vec2",
@@ -174,7 +193,10 @@
             },
             value: null
         };
-        this.$.node.target = node;
+        
+        this._opnode = new NodeData(node);
+        this.$.node.target = this._opnode;
+        // this.$.node.target = new NodeData(node);
         // this.selectItemsByData(message.select_items);
       }
     },

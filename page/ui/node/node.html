@@ -1,1 +1,19 @@
-<dom-module id="fire-node"><link rel="import" type="css" href="node.css"><template><div id="dropArea" class="dropArea" on-dragover="_onDragOver"><div class="border"><div class="fit content layout horizontal center-center"><div class$="{{_nodeClass(value,_missed)}}">[[_nodeName]]</div><div class="label-wrapper flex-1 layout horizontal end-justified"><span class$="{{_labelLeftClass(value)}}" on-click="_onBrowseClick">[[typename]]</span> <span class$="{{_labelRightClass(value)}}" hidden="{{_shouldHide(value)}}" on-click="_onClearClick"><i class="fa fa-times"></i></span></div></div></div></div></template><script src="node.js"></script></dom-module>
+<dom-module id="fire-node">
+    <link rel="import" type="css" href="node.css">
+    <template>
+        <div id="dropArea" class="dropArea" on-dragover="_onDragOver">
+            <div class="border">
+                <div class="fit content layout horizontal center-center">
+                    <div class$="{{_nodeClass(value,_missed)}}">[[_nodeName]]</div>
+                    <div class="label-wrapper flex-1 layout horizontal end-justified">
+                        <span class$="{{_labelLeftClass(value)}}" on-click="_onBrowseClick">[[typename]]</span> 
+                        <span class$="{{_labelRightClass(value)}}" hidden="{{_shouldHide(value)}}" on-click="_onClearClick">
+                            <i class="fa fa-times"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+    <script src="node.js"></script>
+</dom-module>

@@ -66,7 +66,12 @@ Editor.polymerElement({
         if ("Object" !== this.type && "Array" !== this.type) {
             var t = Polymer.dom(this),
                 e = void 0;
-            if (t.firstChild && t.removeChild(t.firstChild), void 0 !== this.attrs && void 0 !== this.type) {
+            t.firstChild && t.removeChild(t.firstChild);
+            let child = document.createElement('ui-input');
+            child.value = "xxxx";
+            t.appendChild(child);
+
+            if (void 0 !== this.attrs && void 0 !== this.type) {
                 null !== this.value && void 0 !== this.value || (e = "null-or-undefined"), "error-unknown" === this.type && (e = "error-unknown"), this.attrs["extends"] && -1 !== this.attrs["extends"].indexOf("cc.Component") && (e = "cc.Component"), e || (this.attrs.type ? e = this.attrs.type : this.type ? e = this.type : (e = typeof this.value, e = e.charAt(0).toUpperCase() + e.slice(1)));
                 var r = void 0;
                 if ("error-unknown" === e && (r = Editor.properties.error("Unknown Type")), !r && null !== this.value && void 0 !== this.value) {

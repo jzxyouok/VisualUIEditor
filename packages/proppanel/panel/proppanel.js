@@ -174,7 +174,7 @@
             },
             value: null
         };
-        this.$.node.target = realValue;
+        this.$.node.target = node;
         // this.selectItemsByData(message.select_items);
       }
     },

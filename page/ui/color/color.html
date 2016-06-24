@@ -1,1 +1,16 @@
-<link rel="import" href="packages://color-picker/widget/color-picker.html"><dom-module id="fire-color"><link rel="import" type="css" href="color.css"><template><div class="border" on-click="_onColorClick"><div class="rgb-wrapper"><div id="previewRGB" style$="{{_backgroundStyle(value.r,value.g,value.b)}}"></div><i id="iconDown" class="fa fa-caret-down"></i><div id="alpha" style$="{{_alphaStyle(value.a)}}"></div></div><div class="mask fit"></div></div><content></content></template><script src="color.js"></script></dom-module>
+<link rel="import" href="packages://color-picker/widget/color-picker.html">
+<dom-module id="fire-color">
+    <link rel="import" type="css" href="color.css">
+    <template>
+        <div class="border" on-click="_onColorClick">
+            <div class="rgb-wrapper">
+                <div id="previewRGB" style$="{{_backgroundStyle(value.r,value.g,value.b)}}"></div>
+                <i id="iconDown" class="fa fa-caret-down"></i>
+                <div id="alpha" style$="{{_alphaStyle(value.a)}}"></div>
+            </div>
+            <div class="mask fit"></div>
+        </div>
+        <content></content>
+    </template>
+    <script src="color.js"></script>
+</dom-module>

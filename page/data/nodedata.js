@@ -88,6 +88,49 @@ NodeData.prototype = {
         }
     },
 
+
+    get opacity() {
+        return {
+            path: "opacity",
+            type: "Number",
+            name: "Opacity",
+            attrs: {
+                min: 0,
+                max: 255,
+            },
+            value: this._node.opacity
+        }
+    },
+
+    get skew() {
+        return {
+            path: "skew",
+            type: "vec2",
+            name: "Skew",
+            attrs: {
+                min: 0,
+                max: 360,
+            },
+            value: {
+                x: this._node.skewX,
+                y: this._node.skewY,
+            }
+        }
+    },
+
+    get color() {
+        return {
+            path: "color",
+            type: "color",
+            name: "Color",
+            attrs: {
+                min: 0,
+                max: 360,
+            },
+            value: this._node.color
+        }
+    },
+
     setAttrib(path, value) {
         if(path == "position.x") {
             this._node.setPositionX(value);

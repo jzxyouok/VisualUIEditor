@@ -46,14 +46,16 @@ Editor.polymerElement({
     _onMouseDown: function(t) {
         var o = this;
         t.preventDefault(), t.stopPropagation();
-        var e = Editor.UI._DomUtils.getFirstFocusableChild(this.$.field);
-        if (e && e.focus(), this.slidable) {
+        var e = Editor.UI._DomUtils._getFirstFocusableChild(this.$.field);
+        if (e && e.focus() && this.slidable) {
             var n = this.prop.value,
-                i = Number.NEGATIVE_INFINITY;
-            "number" == typeof this.prop.attrs.min && (i = this.prop.attrs.min);
-            var s = Number.POSITIVE_INFINITY;
-            "number" == typeof this.prop.attrs.max && (s = this.prop.attrs.max), Editor.UI._DomUtils.startDrag("ew-resize", t, function(t, e, r, u, a) {
-                o.set("prop.value", Editor.Math.clamp(n + u, i, s))
+                min = Number.NEGATIVE_INFINITY,
+                max = Number.POSITIVE_INFINITY;
+            "number" == typeof this.prop.attrs.min && (min = this.prop.attrs.min);
+            "number" == typeof this.prop.attrs.max && (max = this.prop.attrs.max);
+            
+            Editor.UI._DomUtils.startDrag("ew-resize", t, function(t, e, r, u, a) {
+                o.set("prop.value", Editor.Math.clamp(n + u, min, max))
             }, function() {
                 o.async(function() {
                     o.fire("end-editing")

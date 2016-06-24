@@ -13,6 +13,7 @@ Editor.App.extend({
     Editor.init({
       'package-search-path': [
         Editor.url('app://packages/'),
+        Editor.url('app://third/packages/'),
       ],
       'panel-window': 'app://window.html',
       'layout': Editor.url('app://layout.json'),

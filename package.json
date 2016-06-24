@@ -26,12 +26,15 @@
     "tap": "5.x",
     "tap-mocha-reporter": "https://github.com/jwu/tap-mocha-reporter.git",
     "winston": "^2.2.0",
+    "gulp": "3.9.0",
+    "glob-stream": "5.3.2",
+    "vinyl-fs": "2.4.3",
+    
     "yargs": "^4.3.1"
   },
   "devDependencies": {
     "devtron": "^1.1.0",
     "electron-prebuilt": "1.2.1",
-    "gulp": "3.9.0",
     "gulp-babel": "6.1.1",
     "gulp-less": "3.0.5",
     "gulp-sequence": "0.4.4",

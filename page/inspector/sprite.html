@@ -23,19 +23,19 @@
       </div>
     </editor-custom-prop>
     <editor-prop prop="{{target.type}}"></editor-prop>
-      <div hidden="[[!_isFilledType(target.type.value)]]">
-        <editor-prop prop="{{target.fillType}}"></editor-prop>
-          <div hidden="[[!_isRadialFilled(target.fillType.value)]]">
-            <editor-prop prop="{{target.fillCenter}}"></editor-prop>
-          </div>
-          <editor-prop prop="{{target.fillStart}}"></editor-prop>
-          <editor-prop prop="{{target.fillRange}}"></editor-prop>
-      </div>
-      <editor-prop prop="{{target.sizeMode}}"></editor-prop>
-      <editor-prop prop="{{target.trim}}">Trim</editor-prop>
-      <div class="line"></div>
-      <editor-prop prop="{{target.srcBlendFactor}}"></editor-prop>
-      <editor-prop prop="{{target.dstBlendFactor}}"></editor-prop>
+    <div hidden="[[!_isFilledType(target.type.value)]]">
+      <editor-prop prop="{{target.fillType}}"></editor-prop>
+        <div hidden="[[!_isRadialFilled(target.fillType.value)]]">
+          <editor-prop prop="{{target.fillCenter}}"></editor-prop>
+        </div>
+        <editor-prop prop="{{target.fillStart}}"></editor-prop>
+        <editor-prop prop="{{target.fillRange}}"></editor-prop>
+    </div>
+    <editor-prop prop="{{target.sizeMode}}"></editor-prop>
+    <editor-prop prop="{{target.trim}}">Trim</editor-prop>
+    <div class="line"></div>
+    <editor-prop prop="{{target.srcBlendFactor}}"></editor-prop>
+    <editor-prop prop="{{target.dstBlendFactor}}"></editor-prop>
   </template>
   <script>
     'use strict';

@@ -189,22 +189,7 @@
           }
 
           let url = this.target.__editor__.inspector;
-
-          // NOTE: DO NOT import if we already load it. this is because when touch <head>, a page repaint will happen
-          if ( _url2imported[url] ) {
-            this._appendElement();
-            return;
-          }
-
-          Editor.UI.PolymerUtils.import( url, err => {
-            if ( err ) {
-              Editor.error(`${err.message}`);
-              return;
-            }
-
-            _url2imported[url] = true;
-            this._appendElement();
-          });
+          this._appendElement();
         },
 
         _appendElement () {
@@ -235,7 +220,7 @@
 
         _targetName ( target ) {
           if ( target ) {
-            return target.__displayName__ || Editor.UI.DomUtils.toHumanText(target.__type__);
+            return target.__displayName__ || Editor.UI._DomUtils.toHumanText(target.__type__);
           }
 
           return 'Unknown';

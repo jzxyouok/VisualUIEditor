@@ -72,12 +72,25 @@ Editor.polymerElement({
                 element_name = "fire-vec2";
             } else if(this.type == "size") {
                 element_name = "fire-size";
+            } else if(this.type == "color") {
+                element_name = "fire-color";
+            } else if(this.type == "select") {
+                element_name = "editor-select";
+            } else if(this.type == "check") {
+                element_name = "editor-checkbox";
             }
-
-            let child = document.createElement(element_name);
+            let child = document.createElement(element_name);    
             child.value = this.value;
             child.attrs = this.attrs;
-            child.path = this.path;
+            child.path = this.path;        
+            if(this.type == "select") {
+                let selects = this.attrs.selects || {};
+                for(var k in selects) {
+                    child.add(k, selects[k]);
+                }
+                child.text = selects[this.value];
+            }
+
             t.appendChild(child);
 
         }

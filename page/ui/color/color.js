@@ -52,7 +52,7 @@
             }.bind(this))
         },
         _openColorPicker: function() {
-            Editor.UI.DomUtils.addHitGhost("cursor", "998", function() {
+            Editor.UI._DomUtils.addHitGhost("cursor", "998", function() {
                 this._closeColorPicker()
             }.bind(this)), this._colorPicker = document.createElement("color-picker"), this._colorPicker.noAlpha = this.noAlpha, this._colorPicker.setColor({
                 r: 0 | this.value.r,
@@ -76,7 +76,7 @@
         },
         _closeColorPicker: function() {
             var o = this;
-            this._colorPicker && (Polymer.dom(this).removeChild(this._colorPicker), this._colorPicker = null), Editor.UI.DomUtils.removeHitGhost(), this.focus(), this.async(function() {
+            this._colorPicker && (Polymer.dom(this).removeChild(this._colorPicker), this._colorPicker = null), Editor.UI._DomUtils.removeHitGhost(), this.focus(), this.async(function() {
                 o.fire("end-editing")
             }, 1)
         },

@@ -1,8 +1,8 @@
 (() => {
   'use strict';
 
+//   var RenderUndo = require('../../../js/renderUndo.js');
   var Fs = require('fire-fs');
-
   var dragIdName = "NodeMoveUUID";
   
   Editor.polymerPanel('renderpanel', {
@@ -229,6 +229,8 @@
     },
 
     ready: function () {
+        this._undo = new RenderUndo();
+
         this.$.zoomSlider.addEventListener('change', (event => {
             event.stopPropagation();
             this._zoomScaleChange(event.detail.value);

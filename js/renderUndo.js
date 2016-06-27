@@ -80,6 +80,7 @@ class Command {
 class CommandGroup {
   constructor () {
     this._commands = [];
+    this._time = null;
     this.desc = '';
   }
 
@@ -106,6 +107,7 @@ class CommandGroup {
 
   add ( cmd ) {
     this._commands.push(cmd);
+    this._time = cmd.info.time;
   }
 
   clear () {
@@ -125,6 +127,9 @@ class CommandGroup {
         return true;
       }
     }
+    if (this._time && Math.abs(this._time - other.info.time) < 1000) {
+      return true;
+    }
     return false;
   }
 
@@ -135,8 +140,14 @@ class CommandGroup {
     }
     for ( let i = 0; i < this._commands.length; ++i ) {
       if ( this._commands[i].isCanCombine(other) && this._commands[i].combineCommand(other) ) {
+        this._time = other.info.time;
         return true;
       }
+    }
+
+    if (this._time && Math.abs(this._time - other.info.time) < 1000) {
+      this.add(other);
+      return true;
     }
     return false;
   }

@@ -27,12 +27,10 @@
     },
 
     _mouseDown : function(ev) {
-        Editor.log("_mouseDown");  
     },
 
     _zoomScaleChange: function(newValue, location) {
         let gameCanvas = this.$.scene.$.gameCanvas;
-        Editor.log("zoomChange " + newValue);
         let isNeedFix = false;
         let preLocation = null;
         if(location) {
@@ -55,7 +53,6 @@
     },
 
     _mouseWheel: function(ev) {
-        Editor.log("_mouseWheel");
         this.$.zoomSlider.value = this.$.zoomSlider.value + (ev.deltaY < 0 ? 0.05 : -0.05);
         this._zoomScaleChange(this.$.zoomSlider.value, {x : ev.clientX, y : ev.clientY});
 
@@ -323,7 +320,6 @@
 
 
         Editor.Ipc.sendToAll("ui:select_items_change", {select_items : select_items});
-        Editor.log("extPreSelector!!!!!!!!!!!!!!!!!");
     },
 
     canvasTargetChange: function(target, group) {
@@ -341,10 +337,7 @@
             scaleY: target.scaleY,
             angle: target.getAngle(),
         };
-        Editor.log("target canvas " + JSON.stringify(curInfo));
 
-        
-        Editor.log("child position canvas " + JSON.stringify(child.getPosition()));
         if(group) {
             curInfo.left = group.left + group.width / 2 + target.left;
             curInfo.top = group.top + group.height / 2 + target.top;
@@ -360,39 +353,40 @@
         }   
 
         if(curInfo.top != preInfo.top) {
+            let oldValue = child.y;
             child.setPositionY(child.getPositionY() - (curInfo.top - preInfo.top) / ratio);
+            undo.add(newPropCommandChange(runScene, child.uuid, 'y', oldValue, child.y));
         }
 
         if(curInfo.scaleX != preInfo.scaleX) {
+            let oldValue = child.scaleX;
             child.setScaleX(child.getScaleX() * (curInfo.scaleX / preInfo.scaleX));
+            undo.add(newPropCommandChange(runScene, child.uuid, 'scaleX', oldValue, child.scaleX));
         }
 
         if(curInfo.scaleY != preInfo.scaleY) {
+            let oldValue = child.scaleY;
             child.setScaleY(child.getScaleY() * (curInfo.scaleY / preInfo.scaleY));
+            undo.add(newPropCommandChange(runScene, child.uuid, 'scaleY', oldValue, child.scaleY));
         }
         preInfo.angle = preInfo.angle || 0;
         if(curInfo.angle != preInfo.angle) {
+            let oldValue = child.rotation;
             child.setRotation(child.getRotation() + (curInfo.angle - preInfo.angle));
+            undo.add(newPropCommandChange(runScene, child.uuid, 'rotation', oldValue, child.rotation));
         }
         // curInfo.left -= group.left || 0;
         // curInfo.top -= group.top || 0;
         target._preInfo = curInfo;
-        Editor.log("canvasItemChange!!!!!!!!!!!111111111111");
     },
 
     canvasItemChange: function(options) {
-        Editor.log("canvasItemChange!!!!!!!!!!!");
         if (options.target._objects) {
             options.target._objects.forEach(function(target) {
                 this.canvasTargetChange(target, options.target)
             }, this);
         }
         this.canvasTargetChange(options.target);
-        // options.target.setCoords();
-        // canvas.forEachObject(function(obj) {
-        // if (obj === options.target) return;
-        // obj.setOpacity(options.target.intersectsWithObject(obj) ? 0.5 : 1);
-        // });
     },
 
 

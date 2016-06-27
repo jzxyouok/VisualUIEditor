@@ -4,7 +4,6 @@
 
 // const Editor = require('editor-framework');
 const Editor = require('./editor-framework/index');
-const RenderUndo = require('app://js/renderUndo.js');
 const Path = require('fire-path');
 
 Editor.App.extend({

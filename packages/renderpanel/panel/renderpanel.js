@@ -309,10 +309,13 @@
 
     mouseupTouchnull: function(e) {
         let canvas = this.$.scene.getFabricCanvas();
-        if(!e.ctrlKey) {
+        if(e.ctrlKey || canvas.getActiveObject() || canvas.getActiveGroup()) {
+
+        } else {
             canvas.clear();
         }
 
+        Editor.log("mouseupTouchnull");
         this.preSelectorRect({selector: {
             ex : e.offsetX,
             ey : e.offsetY,
@@ -322,6 +325,7 @@
     },
 
     preSelectorRect: function(object) {
+        Editor.log("preSelectorRect");
         let rect = object.selector;
         let left = Math.min(rect.ex, rect.ex + rect.left);
         let top = Math.min(rect.ey, rect.ey + rect.top);
@@ -334,7 +338,10 @@
         let children = runScene.getChildren();
 
         let canvas = this.$.scene.getFabricCanvas();
-        if(!e.ctrlKey) {
+        let activeGroup = canvas.getActiveGroup();
+        if(e.ctrlKey || canvas.getActiveObject() || canvas.getActiveGroup()) {
+
+        } else {
             canvas.clear();
         }
 
@@ -372,6 +379,9 @@
         if(group) {
             curInfo.left = group.left + group.width / 2 + target.left;
             curInfo.top = group.top + group.height / 2 + target.top;
+
+            curInfo.scaleX = curInfo.scaleX * group.scaleX;
+            curInfo.scaleY = curInfo.scaleY * group.scaleY;
         }
         let ratio = this.calcGameCanvasZoom();
         let runScene = this.$.scene.getRunScene();
@@ -534,6 +544,7 @@
             this.$.scene.getFabricCanvas().clear();
         }
         this.addNodeControl(sourceNode);
+        this.updateForgeCanvas();
     },
 
     messages: {

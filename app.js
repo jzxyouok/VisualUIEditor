@@ -7,8 +7,6 @@ const Editor = require('./editor-framework/index');
 const RenderUndo = require('app://js/renderUndo.js');
 const Path = require('fire-path');
 
-let xx = new RenderUndo();
-
 Editor.App.extend({
   init ( opts, cb ) {
     let settingsPath = Path.join(Editor.App.path, '.settings');

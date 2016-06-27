@@ -229,7 +229,7 @@
     },
 
     ready: function () {
-        this._undo = new RenderUndo();
+
 
         this.$.zoomSlider.addEventListener('change', (event => {
             event.stopPropagation();
@@ -250,7 +250,31 @@
        this['ondrop'] = this.dragDrop.bind(this);
        this['ondragleave'] = this.dragLeave.bind(this);
 
+       this['onkeydown'] = function(event) {
+           if(event.keyCode == Editor.KeyCode('z') && event.ctrlKey) {
+               this.undoScene();
+           } else if(event.keyCode == Editor.KeyCode('y') && event.ctrlKey) {
+               this.redoScene();
+           }
+       }.bind(this);
+    },
 
+    undoScene: function() {
+        Editor.log("undoScene!!!!!!");
+        let runScene = this.$.scene.getRunScene();
+        if(!runScene) {
+            return;
+        }
+        runScene._undo.undo();
+    },
+
+    redoScene: function() {
+        Editor.log("redoScene!!!!!!");
+        let runScene = this.$.scene.getRunScene();
+        if(!runScene) {
+            return;
+        }
+        runScene._undo.redo();
     },
 
     mouseupTouchnull: function(e) {
@@ -263,7 +287,6 @@
             left: 0,
             top: 0,
         }});
-
     },
 
     preSelectorRect: function(object) {
@@ -327,21 +350,25 @@
             curInfo.top = group.top + group.height / 2 + target.top;
         }
         let ratio = this.calcGameCanvasZoom();
+        let runScene = this.$.scene.getRunScene();
+        let undo = runScene._undo;
 
         if(curInfo.left != preInfo.left) {
-            child.setPositionX(child.getPositionX() + (curInfo.left - preInfo.left) / ratio)
-        }
+            let oldValue = child.x;
+            child.setPositionX(child.getPositionX() + (curInfo.left - preInfo.left) / ratio);
+            undo.add(newPropCommandChange(runScene, child.uuid, 'x', oldValue, child.x));
+        }   
 
         if(curInfo.top != preInfo.top) {
-            child.setPositionY(child.getPositionY() - (curInfo.top - preInfo.top) / ratio)
+            child.setPositionY(child.getPositionY() - (curInfo.top - preInfo.top) / ratio);
         }
 
         if(curInfo.scaleX != preInfo.scaleX) {
-            child.setScaleX(child.getScaleX() * (curInfo.scaleX / preInfo.scaleX))
+            child.setScaleX(child.getScaleX() * (curInfo.scaleX / preInfo.scaleX));
         }
 
         if(curInfo.scaleY != preInfo.scaleY) {
-            child.setScaleY(child.getScaleY() * (curInfo.scaleY / preInfo.scaleY))
+            child.setScaleY(child.getScaleY() * (curInfo.scaleY / preInfo.scaleY));
         }
         preInfo.angle = preInfo.angle || 0;
         if(curInfo.angle != preInfo.angle) {
@@ -491,6 +518,12 @@
         "ui:select_item" (event, message) {
             this.changeItemSelect(message);
         },
+        "ui:scene_change"(event, message) {
+            let runScene = this.$.scene.getRunScene();
+            if(!runScene._undo)
+                runScene._undo =  new UndoObj();
+        }
+
     },
 
   });

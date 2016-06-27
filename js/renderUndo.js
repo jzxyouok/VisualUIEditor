@@ -134,7 +134,7 @@ class CommandGroup {
       return true;
     }
     for ( let i = 0; i < this._commands.length; ++i ) {
-      if ( this._commands[i].isCanCombine(other) && this._commands[i].combnineCommand(other) ) {
+      if ( this._commands[i].isCanCombine(other) && this._commands[i].combineCommand(other) ) {
         return true;
       }
     }
@@ -284,60 +284,72 @@ class UndoList extends EventEmitter {
 // ==========================
 // exports
 // ==========================
-let RenderUndo = {
+
+class UndoObj {
   constructor () {
     this._undoList = new UndoList("local");
-  },
+  }
   undo () {
     this._undoList.undo();
-  },
+  }
 
   redo () {
     this._undoList.redo();
-  },
+  }
 
   add ( id, info ) {
     this._undoList.add(id, info);
-  },
+  }
 
   commit () {
     this._undoList.commit();
-  },
+  }
 
   cancel () {
     this._undoList.cancel();
-  },
+  }
 
   collapseTo ( index ) {
     this._undoList.collapseTo(index);
-  },
+  }
 
   save () {
     this._undoList.save();
-  },
+  }
 
   clear () {
     this._undoList.clear();
-  },
+  }
 
   reset () {
     return this._undoList.reset();
-  },
+  }
 
   dirty () {
     return this._undoList.dirty();
-  },
+  }
 
   setCurrentDescription ( desc ) {
     return this._undoList.setCurrentDescription( desc );
-  },
+  }
 
   local () {
     return new UndoList('local');
-  },
+  }
 
-  Command: Command,
 };
 
-// window.RenderUndo = RenderUndo;
-module.exports = RenderUndo;
+  //{op=xx,scene=xx,uuid=xx,prop=xx,oldValue=xx,newValue=xx,time=xx}
+function newPropCommandChange(scene, uuid, prop, oldValue, newValue) {
+  return new Command({op:"prop", scene:scene, uuid:uuid, prop:prop, oldValue:oldValue, newValue: newValue, time : new Date().getTime()})
+}
+// let RenderUndo = {
+//   UndoObj: UndoObj,
+//   Command: Command,
+//   newUndo() {
+//     return new UndoObj();
+//   }
+// };
+
+// // window.RenderUndo = RenderUndo;
+// module.exports = RenderUndo;

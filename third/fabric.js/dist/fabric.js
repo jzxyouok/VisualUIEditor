@@ -13110,7 +13110,7 @@ fabric.PatternBrush = fabric.util.createClass(fabric.PencilBrush, /** @lends fab
      */
     _maybeGroupObjects: function(e) {
       if (this.selection && this._groupSelector) {
-        this.fire('selection:preselect', { selector: this._groupSelector });
+        this.fire('selection:preselect', { selector: this._groupSelector, e: e });
         this._groupSelectedObjects(e);
       }
 

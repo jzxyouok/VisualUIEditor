@@ -106,7 +106,6 @@
 
     addNodeControl: function(node) {
         let canvas = this.$.scene.getFabricCanvas();
-
         let forgeRect = this.$.scene.$.forgeCanvas.getBoundingClientRect();
         let nodeRect = this.getNodeWorldRectToFabric(node);
         nodeRect.left -= forgeRect.left;
@@ -149,20 +148,54 @@
         return false;
     },
 
+    getSelectItems: function() {
+        let canvas = this.$.scene.getFabricCanvas();
+
+        let objects = canvas.getObjects();
+        let select_items = [];
+        for(var i = 0; i < objects.length; i++) {
+            let uuid = objects[i]._innerItem.uuid;
+            if(uuid) 
+                select_items.push(uuid);
+        }
+
+        return select_items;
+    },
+
     updateForgeCanvas: function() {
-        // let runScene = this.$.scene.getRunScene();
-        // let children = runScene.getChildren();
 
-        // var ctx = this.$.scene.$.forgeCanvas.getContext('2d');
+        let canvas = this.$.scene.getFabricCanvas();
+        let select_items = this.getSelectItems();
+        canvas.clear();
 
-        // let canvas = this.$.scene.getFabricCanvas();
-        // canvas.clear();
+        for(var i = 0; i < select_items.length; i++) {
+            let sourceNode = cocosGetItemByUUID(this.$.scene.getRunScene(),select_items[i]);
+            if(!sourceNode) {
+                continue;
+            }
+            this.addNodeControl(sourceNode);
+        }
 
-        // let forgeRect = this.$.scene.$.forgeCanvas.getBoundingClientRect();
-        // children.forEach(function(element) {
-        //     this.recursiveAddChild(element);
-        // }, this);
+        this.updateAllObjectSelect();
+    },
 
+    updateAllObjectSelect: function() {
+        let canvas = this.$.scene.getFabricCanvas();
+        var group = canvas.getObjects();
+        // do not create group for 1 element only
+        if (group.length === 1) {
+            canvas.setActiveObject(group[0], null);
+        }
+        else if (group.length > 1) {
+            group = new fabric.Group(group.reverse(), {
+                canvas: canvas
+            });
+            group.addWithUpdate();
+            canvas.setActiveGroup(group, null);
+            group.saveCoords();
+            canvas.fire('selection:created', { target: group });
+            canvas.renderAll();
+        }
     },
 
     isBaseType: function(node) {
@@ -276,14 +309,16 @@
 
     mouseupTouchnull: function(e) {
         let canvas = this.$.scene.getFabricCanvas();
-        canvas.clear();
+        if(!e.ctrlKey) {
+            canvas.clear();
+        }
 
         this.preSelectorRect({selector: {
             ex : e.offsetX,
             ey : e.offsetY,
             left: 0,
             top: 0,
-        }});
+        }, e : e});
     },
 
     preSelectorRect: function(object) {
@@ -292,33 +327,29 @@
         let top = Math.min(rect.ey, rect.ey + rect.top);
         let isClick = rect.left == 0 && rect.top == 0;
         let width = Math.abs(rect.left), height = Math.abs(rect.top);
-        
+        let e = object.e;
         rect = {left:left, top:top, width: width, height: height};
 
         let runScene = this.$.scene.getRunScene();
         let children = runScene.getChildren();
 
         let canvas = this.$.scene.getFabricCanvas();
-        canvas.clear();
+        if(!e.ctrlKey) {
+            canvas.clear();
+        }
 
         let forgeRect = this.$.scene.$.forgeCanvas.getBoundingClientRect();
-
+        let objectLen = canvas.getObjects().length;
         for(var i = 0; i < children.length; i++) {
             let isSuccessAdd = this.recursiveAddChild(children[i], rect, isClick);
             if(isClick && isSuccessAdd) {
                 break;
             }
         }
+        if(canvas.getObjects().length != objectLen)
+            this.updateAllObjectSelect();
 
-        let objects = canvas.getObjects();
-        let select_items = [];
-        for(var i = 0; i < objects.length; i++) {
-            let uuid = objects[i]._innerItem.uuid;
-            if(uuid) 
-                select_items.push(uuid);
-        }
-
-
+        let select_items = this.getSelectItems();
         Editor.Ipc.sendToAll("ui:select_items_change", {select_items : select_items});
     },
 
@@ -508,6 +539,7 @@
     messages: {
         "ui:change_item_position" (event, message) {
             this.changeItemPosition(message.sourceUUID, message.compareUUID, message.mode);
+            this.updateForgeCanvas();
         },
         "ui:select_item" (event, message) {
             this.changeItemSelect(message);
@@ -516,6 +548,9 @@
             let runScene = this.$.scene.getRunScene();
             if(!runScene._undo)
                 runScene._undo =  new UndoObj();
+        },
+        "ui:has_item_change"(event, message) {
+            this.updateForgeCanvas();
         }
 
     },

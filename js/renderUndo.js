@@ -180,24 +180,25 @@ class UndoList extends EventEmitter {
       this._curGroup.undo();
       this._changed('undo-cache');
       this._curGroup.clear();
-      return;
+      return true;
     }
 
     // check if can undo
     if ( this._position < 0 ) {
-      return;
+      return false;
     }
 
     let group = this._groups[this._position];
     group.undo();
     this._position--;
     this._changed('undo');
+    return true;
   }
 
   redo () {
     // check if can redo
     if ( this._position >= this._groups.length-1 ) {
-      return;
+      return false;
     }
 
     this._position++;
@@ -205,6 +206,7 @@ class UndoList extends EventEmitter {
     group.redo();
 
     this._changed('redo');
+    return true;
   }
 
   add ( cmd ) {
@@ -301,11 +303,15 @@ class UndoObj {
     this._undoList = new UndoList("local");
   }
   undo () {
-    this._undoList.undo();
+    if(this._undoList.undo()) {
+      Editor.Ipc.sendToAll("ui:has_item_change", {});
+    }
   }
 
   redo () {
-    this._undoList.redo();
+    if(this._undoList.redo()){
+      Editor.Ipc.sendToAll("ui:has_item_change", {});
+    }
   }
 
   add ( id, info ) {

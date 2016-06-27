@@ -142,7 +142,7 @@ NodeData.prototype = {
         if(this._node._className == "Node") {
             return [];
         } else if(this._node._className == "Sprite") {
-            return [ new SpriteData(this._node) ];
+            return [ new SpriteData(this._node), new SpriteData(this._node) ];
         }
         return [];
     },

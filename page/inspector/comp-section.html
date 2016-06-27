@@ -213,6 +213,11 @@
             Editor.error(`Can not create <${prefix}-inspector>, tag not found. Make sure you register it same as the kebab-case of your classname`);
           }
 
+          if(this._el) {
+            Polymer.dom(this.$.content).removeChild(this._el);
+            this._el = null;
+          }
+
           Editor.UI.PolymerUtils.bind( this, 'target', el, 'target' );
           Polymer.dom(this.$.content).appendChild(el);
           this._el = el;

@@ -1,0 +1,222 @@
+<dom-module id="alignment-preview">
+    <template>
+        <style>
+            #container {
+                margin: 9px;
+                background-color: #555556;
+                border: 1px solid #2a2a2a;
+                box-shadow: 0px 0px 4px #333;
+                box-sizing: border-box;
+                position: relative;
+            }
+            #container-size {
+                width: 120px;
+                height: 120px;
+            }
+            #widget {
+                width: 80px;
+                height: 80px;
+                margin: 20px 20px 20px 20px;
+                background-color: #7d7d7d;
+                border: 1px solid #2a2a2a;
+                border-radius: 5px;
+                box-sizing: inherit;
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+
+            .line {
+                border: dashed 0px #ccc;
+                width: 0;
+                height: 0;
+                position: absolute;
+            }
+            .line.h {
+                width: 120px;
+                border-top-width: 1px;
+            }
+            .line.v {
+                height: 120px;
+                border-left-width: 1px;
+            }
+            #top-line {
+                top: 15px;
+                left: 0;
+            }
+            #left-line {
+                left: 15px;
+                top: 0;
+            }
+            #right-line {
+                right: 15px;
+                top: 0;
+            }
+            #bottom-line {
+                bottom: 15px;
+                left: 0;
+            }
+            #hc-line {
+                top: 0;
+                left: 50%;
+                z-index: 1;
+            }
+            #vc-line {
+                top: 50%;
+                left: 0;
+                z-index: 1;
+            }
+
+            .arrow {
+                position: absolute;
+            }
+            .arrow.left {
+                left: -4px;
+                top: -3px;
+            }
+            .arrow.left:after {
+                border: 4px solid transparent;
+                border-right: 4px solid #ccc;
+                position: absolute;
+                content: ' '
+            }
+            .arrow.right {
+                right: 4px;
+                top: -3px;
+            }
+            .arrow.right:before {
+                border: 4px solid transparent;
+                border-left: 4px solid #ccc;
+                position: absolute;
+                content: ' '
+            }
+            .arrow.up {
+                top: -4px;
+                left: -4px;
+            }
+            .arrow.up:after {
+                border: 4px solid transparent;
+                border-bottom: 4px solid #ccc;
+                position: absolute;
+                content: ' '
+            }
+            .arrow.down {
+                bottom: 4px;
+                left: -4px;
+            }
+            .arrow.down:before {
+                border: 4px solid transparent;
+                border-top: 4px solid #ccc;
+                position: absolute;
+                content: ' '
+            }
+
+            .h-arrow-line {
+                width: 9px;
+                margin: 0 3px 0 3px;
+                border-top: 1px solid #ccc;
+            }
+            .v-arrow-line {
+                height: 9px;
+                margin: 3px 0 3px 0;
+                border-left: 1px solid #ccc;
+            }
+
+            #left-arrow {
+                position: absolute;
+                top: 50%;
+                left: -16px;
+            }
+            #right-arrow {
+                position: absolute;
+                top: 50%;
+                right: -16px;
+            }
+            #top-arrow {
+                position: absolute;
+                top: -16px;
+                left: 50%;
+            }
+            #bottom-arrow {
+                position: absolute;
+                left: 50%;
+                bottom: -16px;
+            }
+        </style>
+        <div id="container">
+            <div id="container-size" style="visibility: hidden"></div>
+            <div id="top-line" class="line h" hidden="{{!_is(target.isAlignTop.value)}}"></div>
+            <div id="left-line" class="line v" hidden="{{!_is(target.isAlignLeft.value)}}"></div>
+            <div id="right-line" class="line v" hidden="{{!_is(target.isAlignRight.value)}}"></div>
+            <div id="bottom-line" class="line h" hidden="{{!_is(target.isAlignBottom.value)}}"></div>
+            <div id="hc-line" class="line v" hidden="{{!_is(target.isAlignHorizontalCenter.value)}}"></div>
+            <div id="vc-line" class="line h" hidden="{{!_is(target.isAlignVerticalCenter.value)}}"></div>
+            <div id="widget" style$="{{_alignStyle(target.isAlignTop.value, target.isAlignLeft.value, target.isAlignRight.value, target.isAlignBottom.value)}}">
+                <div id="left-arrow" hidden="{{!_is(target.isAlignLeft.value)}}">
+                    <div class="h-arrow-line"></div>
+                    <div class="arrow left"></div>
+                    <div class="arrow right"></div>
+                </div>
+                <div id="right-arrow" hidden="{{!_is(target.isAlignRight.value)}}">
+                    <div class="h-arrow-line"></div>
+                    <div class="arrow left"></div>
+                    <div class="arrow right"></div>
+                </div>
+                <div id="top-arrow" hidden="{{!_is(target.isAlignTop.value)}}">
+                    <div class="v-arrow-line"></div>
+                    <div class="arrow up"></div>
+                    <div class="arrow down"></div>
+                </div>
+                <div id="bottom-arrow" hidden="{{!_is(target.isAlignBottom.value)}}">
+                    <div class="v-arrow-line"></div>
+                    <div class="arrow up"></div>
+                    <div class="arrow down"></div>
+                </div>
+            </div>
+        </div>
+    </template>
+    <script>(function () {
+            const MinMargin = 15;
+            const WidgetSize = 60;
+            const ContainerSize = 120;
+            const FarMargin = ContainerSize - MinMargin - WidgetSize;
+            const FreeMargin = (ContainerSize - WidgetSize) / 2;
+
+            function getMargin (isAlign, isOppositeAlign) {
+                if (isAlign) {
+                    return MinMargin;
+                }
+                return isOppositeAlign ? FarMargin : FreeMargin;
+            }
+
+            Editor.polymerElement({
+                properties: {
+                    target: {
+                        type: Object,
+                        value: null,
+                        notify: true,
+                    },
+                },
+
+                _is: function (value) {
+                    return !!value;
+                },
+
+                _alignStyle: function (top, left, right, bottom) {
+                    var marginTop = getMargin(top, bottom);
+                    var marginBottom = getMargin(bottom, top);
+                    var marginLeft = getMargin(left, right);
+                    var marginRight = getMargin(right, left);
+                    var height = ContainerSize - marginTop - marginBottom;
+                    var width = ContainerSize - marginLeft - marginRight;
+
+                    return `width: ${width}px;\
+                    height: ${height}px;\
+                    margin-right: ${marginRight}px;\
+                    margin-left: ${marginLeft}px;\
+                    margin-top: ${marginTop}px;\
+                    margin-bottom: ${marginBottom}px;`;
+                }
+
+            });
+        })();</script></dom-module>

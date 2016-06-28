@@ -27,6 +27,10 @@ function LabelData(node) {
     this._node = node;
 }
 
+function WidgetData(node) {
+    this._node = node;
+}
+
 NodeData.prototype = {
     get uuid() {
         return this._node.uuid;
@@ -161,7 +165,7 @@ NodeData.prototype = {
         if(this._node._className == "Node") {
             return [];
         } else if(this._node._className == "Sprite") {
-            return [ new SpriteData(this._node), new SpriteData(this._node) ];
+            return [ new SpriteData(this._node), new WidgetData(this._node) ];
         }
         return [];
     },
@@ -234,6 +238,27 @@ SpriteData.prototype = {
                 max: 360,
             },
             value: this._node.trim,
+        };
+    }
+
+}
+
+
+WidgetData.prototype = {
+    __editor__ : {
+        "inspector": "cc.Widget",
+    },
+    __displayName__: "Widget",
+    __type__: "cc.Widget",
+
+    get isRelativePos() {
+        return {
+            path: "isRelativePos",
+            type: "check",
+            name: "RelativePos",
+            attrs: {
+            },
+            value: this._node.isRelativePos || false,
         };
     }
 

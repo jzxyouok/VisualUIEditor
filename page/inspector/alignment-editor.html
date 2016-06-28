@@ -1,0 +1,76 @@
+<link rel="import" href="./alignment-preview.html">
+<dom-module id="alignment-editor">
+    <template>
+        <style>
+            #outer {
+                width: 235px;
+                margin: 0 auto;
+            }
+            #upper {
+                margin: 0 auto 12px auto;
+            }
+            #lower {
+                padding-right: 2px;
+            }
+
+            /* set width and min-width at the same time to make size unchanged */
+            editor-input {
+                width: 47px;
+                min-width: 47px;
+            }
+            editor-input::shadow #input {
+                padding: 2px;
+            }
+
+            .h-control-group {
+                width: 60px;
+                height: 26px;
+                position: relative;
+                margin: auto;
+            }
+            .v-control-group {
+                width: 47px;
+                height: 40px;
+            }
+            .bottom-input {
+                margin-top: 4px;
+            }
+            .right-input {
+                position: absolute;
+                top: 2px
+            }
+            .h-checkbox {
+                min-width: 60px;
+            }
+        </style>
+        <div id="outer">
+            <div id="upper">
+                <div class="h-control-group layout horizontal center">
+                    <editor-checkbox class="h-checkbox" checked="{{target.isAlignTop.value}}" on-checked-changed="_onTopBottomChecked" title="[[_T('COMPONENT.widget.align_top')]]">Top</editor-checkbox>
+                    <editor-input class="right-input" value="{{_compose(target.top.value, target.isAbsoluteTop.value)}}" title="[[_T('COMPONENT.widget.top')]]" on-value-changed="_onTopChanged" hidden="{{!_is(target.isAlignTop.value)}}"></editor-input>
+                </div>
+                <div class="layout horizontal center">
+                    <div class="v-control-group layout vertical">
+                        <editor-checkbox checked="{{target.isAlignLeft.value}}" on-checked-changed="_onLeftRightChecked" title="[[_T('COMPONENT.widget.align_left')]]">Left</editor-checkbox>
+                        <editor-input class="bottom-input" value="{{_compose(target.left.value, target.isAbsoluteLeft.value)}}" on-value-changed="_onLeftChanged" title="[[_T('COMPONENT.widget.left')]]" hidden="{{!_is(target.isAlignLeft.value)}}"></editor-input>
+                    </div>
+                    <alignment-preview target="[[target]]"></alignment-preview>
+                    <div class="v-control-group layout vertical">
+                        <editor-checkbox checked="{{target.isAlignRight.value}}" on-checked-changed="_onLeftRightChecked" title="[[_T('COMPONENT.widget.align_right')]]">Right</editor-checkbox>
+                        <editor-input class="bottom-input" value="{{_compose(target.right.value, target.isAbsoluteRight.value)}}" on-value-changed="_onRightChanged" title="[[_T('COMPONENT.widget.right')]]" hidden="{{!_is(target.isAlignRight.value)}}"></editor-input>
+                    </div>
+                </div>
+                <div class="h-control-group layout horizontal center">
+                    <editor-checkbox class="h-checkbox" checked="{{target.isAlignBottom.value}}" on-checked-changed="_onTopBottomChecked" title="[[_T('COMPONENT.widget.align_bottom')]]">Bottom</editor-checkbox>
+                    <editor-input class="right-input" value="{{_compose(target.bottom.value, target.isAbsoluteBottom.value)}}" on-value-changed="_onBottomChanged" title="[[_T('COMPONENT.widget.bottom')]]" hidden="{{!_is(target.isAlignBottom.value)}}"></editor-input>
+                </div>
+            </div>
+            <div id="lower" class="layout horizontal center">
+                <editor-checkbox checked="{{target.isAlignHorizontalCenter.value}}" on-checked-changed="_onHorizontalCenterChecked" title="[[_T('COMPONENT.widget.align_h_center')]]">Horizontal Center</editor-checkbox>
+                <span class="flex-1"></span>
+                <editor-checkbox checked="{{target.isAlignVerticalCenter.value}}" on-checked-changed="_onVerticalCenterChecked" title="[[_T('COMPONENT.widget.align_v_center')]]">Vertical Center</editor-checkbox>
+            </div>
+        </div>
+    </template>
+    <script src="alignment-editor.js"></script>
+</dom-module>

@@ -1,0 +1,26 @@
+<link rel="import" href="./alignment-editor.html">
+<dom-module id="cc-widget-inspector">
+    <style>
+        .line {
+            border-bottom: 1px solid #666;
+            margin: 9px 15px 3px 13px;
+        }
+    </style>
+    <template>
+        <editor-prop prop="{{target.isRelativePos}}"></editor-prop>
+        <div class="line"></div>
+        <alignment-editor target="{{target}}"></alignment-editor>
+        <div class="line"></div>
+        <!--<editor-prop prop="{{target.isAlignOnce}}"></editor-prop>-->
+        </template>
+    <script>
+        Editor.polymerElement(
+            {
+                target: {
+                    type:Object,
+                    value:null,
+                    notify:!0
+                }
+            });
+    </script>
+</dom-module>

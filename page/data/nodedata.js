@@ -20,6 +20,7 @@ NodeData.prototype = {
         return this._node.uuid;
     },
     get position() {
+        let t = typeof this._node.x;
         return {
             path: "position",
             type: "vec2",
@@ -211,7 +212,42 @@ NodeData.prototype = {
                 let val = value * parent.height / 100;
                 this._node.height = parseFloat(val.toFixed(0));
             }
+        } else if(path == "relativePosition.checkTop") {
+            if(!value) {
+                this._node.top = null;
+            }
+        } else if(path == "relativePosition.checkLeft") {
+            if(!value) {
+                this._node.left = null;
+            }
+        } else if(path == "relativePosition.checkRight") {
+            if(!value) {
+                this._node.right = null;
+            }
+        } else if(path == "relativePosition.checkBottom") {
+            if(!value) {
+                this._node.bottom = null;
+            }
         }
+        //  else if(path == "relativePosition.top") {
+        //     let parent = this._node.getParent();
+        //     if(parent && parent.height) {
+        //         this._node.y = parent.height - value;
+        //         this._node.top = value;
+        //     }
+        // } else if(path == "relativePosition.bottom") {
+        //     this._node.y = value;
+        //     this._node.bottom = value;
+        // } else if(path == "relativePosition.left") {
+        //     this._node.x = value;
+        //     this._node.left = value;
+        // } else if(path == "relativePosition.right") {
+        //     let parent = this._node.getParent();
+        //     if(parent && parent.width) {
+        //         this._node.x = parent.width - value;
+        //         this._node.right = value;
+        //     }
+        // }
     },
 }
 
@@ -274,8 +310,29 @@ WidgetData.prototype = {
             },
             value: this._node.isRelativePos || false,
         };
-    }
+    },
 
+    get relativePosition() {
+        return {
+            path: "relativePosition",
+            type: "vec2",
+            name: "relativePosition",
+            attrs: {
+                min: 1,
+                max: 100,
+            },
+            value: {
+                isAlignLeft: "number" == typeof this._node.left,
+                isAlignTop: "number" == typeof this._node.top,
+                isAlignRight: "number" == typeof this._node.right,
+                isAlignBottom: "number" == typeof this._node.bottom,
+                left:this._node.left || 0,
+                top:this._node.top || 0,
+                right:this._node.right || 0,
+                bottom:this._node.bottom || 0,
+            }
+        }
+    },
 }
         // <editor-prop title="Position" prop="{{target.position}}"></editor-prop>
         // <editor-prop title="Rotation" prop="{{target.rotation}}"></editor-prop>

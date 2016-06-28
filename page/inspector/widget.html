@@ -7,9 +7,7 @@
         }
     </style>
     <template>
-        <editor-prop prop="{{target.isRelativePos}}"></editor-prop>
-        <div class="line"></div>
-        <alignment-editor target="{{target}}"></alignment-editor>
+        <alignment-editor value="{{target.relativePosition.value}}" path="{{target.relativePosition.path}}"></alignment-editor>
         <div class="line"></div>
         <!--<editor-prop prop="{{target.isAlignOnce}}"></editor-prop>-->
         </template>
@@ -19,7 +17,7 @@
                 target: {
                     type:Object,
                     value:null,
-                    notify:!0
+                    notify:true
                 }
             });
     </script>

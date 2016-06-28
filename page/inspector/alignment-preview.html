@@ -145,29 +145,29 @@
         </style>
         <div id="container">
             <div id="container-size" style="visibility: hidden"></div>
-            <div id="top-line" class="line h" hidden="{{!_is(target.isAlignTop.value)}}"></div>
-            <div id="left-line" class="line v" hidden="{{!_is(target.isAlignLeft.value)}}"></div>
-            <div id="right-line" class="line v" hidden="{{!_is(target.isAlignRight.value)}}"></div>
-            <div id="bottom-line" class="line h" hidden="{{!_is(target.isAlignBottom.value)}}"></div>
-            <div id="hc-line" class="line v" hidden="{{!_is(target.isAlignHorizontalCenter.value)}}"></div>
-            <div id="vc-line" class="line h" hidden="{{!_is(target.isAlignVerticalCenter.value)}}"></div>
-            <div id="widget" style$="{{_alignStyle(target.isAlignTop.value, target.isAlignLeft.value, target.isAlignRight.value, target.isAlignBottom.value)}}">
-                <div id="left-arrow" hidden="{{!_is(target.isAlignLeft.value)}}">
+            <div id="top-line" class="line h" hidden="{{!_is(value.isAlignTop)}}"></div>
+            <div id="left-line" class="line v" hidden="{{!_is(value.isAlignLeft)}}"></div>
+            <div id="right-line" class="line v" hidden="{{!_is(value.isAlignRight)}}"></div>
+            <div id="bottom-line" class="line h" hidden="{{!_is(value.isAlignBottom)}}"></div>
+            <div id="hc-line" class="line v" hidden="{{!_is(value.isAlignHorizontalCenter)}}"></div>
+            <div id="vc-line" class="line h" hidden="{{!_is(value.isAlignVerticalCenter)}}"></div>
+            <div id="widget" style$="{{_alignStyle(value.isAlignTop, value.isAlignLeft, value.isAlignRight, value.isAlignBottom)}}">
+                <div id="left-arrow" hidden="{{!_is(value.isAlignLeft)}}">
                     <div class="h-arrow-line"></div>
                     <div class="arrow left"></div>
                     <div class="arrow right"></div>
                 </div>
-                <div id="right-arrow" hidden="{{!_is(target.isAlignRight.value)}}">
+                <div id="right-arrow" hidden="{{!_is(value.isAlignRight)}}">
                     <div class="h-arrow-line"></div>
                     <div class="arrow left"></div>
                     <div class="arrow right"></div>
                 </div>
-                <div id="top-arrow" hidden="{{!_is(target.isAlignTop.value)}}">
+                <div id="top-arrow" hidden="{{!_is(value.isAlignTop)}}">
                     <div class="v-arrow-line"></div>
                     <div class="arrow up"></div>
                     <div class="arrow down"></div>
                 </div>
-                <div id="bottom-arrow" hidden="{{!_is(target.isAlignBottom.value)}}">
+                <div id="bottom-arrow" hidden="{{!_is(value.isAlignBottom)}}">
                     <div class="v-arrow-line"></div>
                     <div class="arrow up"></div>
                     <div class="arrow down"></div>

@@ -46,29 +46,29 @@
         <div id="outer">
             <div id="upper">
                 <div class="h-control-group layout horizontal center">
-                    <editor-checkbox class="h-checkbox" checked="{{target.isAlignTop.value}}" on-checked-changed="_onTopBottomChecked" title="[[_T('COMPONENT.widget.align_top')]]">Top</editor-checkbox>
-                    <editor-input class="right-input" value="{{_compose(target.top.value, target.isAbsoluteTop.value)}}" title="[[_T('COMPONENT.widget.top')]]" on-value-changed="_onTopChanged" hidden="{{!_is(target.isAlignTop.value)}}"></editor-input>
+                    <editor-checkbox class="h-checkbox" path="{{path}}.checkTop" checked="{{value.isAlignTop}}" on-checked-changed="_onTopBottomChecked">Top</editor-checkbox>
+                    <editor-input class="right-input" value="{{value.top}}" path="{{path}}.top" on-value-changed="_onTopChanged" hidden="{{!_is(value.isAlignTop)}}"></editor-input>
                 </div>
                 <div class="layout horizontal center">
                     <div class="v-control-group layout vertical">
-                        <editor-checkbox checked="{{target.isAlignLeft.value}}" on-checked-changed="_onLeftRightChecked" title="[[_T('COMPONENT.widget.align_left')]]">Left</editor-checkbox>
-                        <editor-input class="bottom-input" value="{{_compose(target.left.value, target.isAbsoluteLeft.value)}}" on-value-changed="_onLeftChanged" title="[[_T('COMPONENT.widget.left')]]" hidden="{{!_is(target.isAlignLeft.value)}}"></editor-input>
+                        <editor-checkbox checked="{{value.isAlignLeft}}" path="{{path}}.checkLeft" on-checked-changed="_onLeftRightChecked">Left</editor-checkbox>
+                        <editor-input class="bottom-input" value="{{value.left}}" path="{{path}}.left" on-value-changed="_onLeftChanged" hidden="{{!_is(value.isAlignLeft)}}"></editor-input>
                     </div>
-                    <alignment-preview target="[[target]]"></alignment-preview>
+                    <alignment-preview value="{{value}}"></alignment-preview>
                     <div class="v-control-group layout vertical">
-                        <editor-checkbox checked="{{target.isAlignRight.value}}" on-checked-changed="_onLeftRightChecked" title="[[_T('COMPONENT.widget.align_right')]]">Right</editor-checkbox>
-                        <editor-input class="bottom-input" value="{{_compose(target.right.value, target.isAbsoluteRight.value)}}" on-value-changed="_onRightChanged" title="[[_T('COMPONENT.widget.right')]]" hidden="{{!_is(target.isAlignRight.value)}}"></editor-input>
+                        <editor-checkbox checked="{{value.isAlignRight}}" path="{{path}}.checkRight" on-checked-changed="_onLeftRightChecked">Right</editor-checkbox>
+                        <editor-input class="bottom-input" value="{{value.right}}" path="{{path}}.right" on-value-changed="_onRightChanged" hidden="{{!_is(value.isAlignRight)}}"></editor-input>
                     </div>
                 </div>
                 <div class="h-control-group layout horizontal center">
-                    <editor-checkbox class="h-checkbox" checked="{{target.isAlignBottom.value}}" on-checked-changed="_onTopBottomChecked" title="[[_T('COMPONENT.widget.align_bottom')]]">Bottom</editor-checkbox>
-                    <editor-input class="right-input" value="{{_compose(target.bottom.value, target.isAbsoluteBottom.value)}}" on-value-changed="_onBottomChanged" title="[[_T('COMPONENT.widget.bottom')]]" hidden="{{!_is(target.isAlignBottom.value)}}"></editor-input>
+                    <editor-checkbox class="h-checkbox" path="{{path}}.checkBottom" checked="{{value.isAlignBottom}}" on-checked-changed="_onTopBottomChecked">Bottom</editor-checkbox>
+                    <editor-input class="right-input" value="{{value.bottom}}" path="{{path}}.bottom" on-value-changed="_onBottomChanged" hidden="{{!_is(value.isAlignBottom)}}"></editor-input>
                 </div>
             </div>
             <div id="lower" class="layout horizontal center">
-                <editor-checkbox checked="{{target.isAlignHorizontalCenter.value}}" on-checked-changed="_onHorizontalCenterChecked" title="[[_T('COMPONENT.widget.align_h_center')]]">Horizontal Center</editor-checkbox>
+                <editor-checkbox checked="{{value.isAlignHorizontalCenter}}" on-checked-changed="_onHorizontalCenterChecked">Horizontal Center</editor-checkbox>
                 <span class="flex-1"></span>
-                <editor-checkbox checked="{{target.isAlignVerticalCenter.value}}" on-checked-changed="_onVerticalCenterChecked" title="[[_T('COMPONENT.widget.align_v_center')]]">Vertical Center</editor-checkbox>
+                <editor-checkbox checked="{{value.isAlignVerticalCenter}}" on-checked-changed="_onVerticalCenterChecked">Vertical Center</editor-checkbox>
             </div>
         </div>
     </template>

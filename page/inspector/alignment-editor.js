@@ -1,10 +1,10 @@
 "use strict";
 Editor.polymerElement({
     properties: {
-        target: {
+        value: {
             type: Object,
-            value: null,
-            notify: !0
+            value: {},
+            notify: true
         }
     },
     _is: function(t) {
@@ -26,7 +26,7 @@ Editor.polymerElement({
         if (this.target) {
             var n = this._decompose(t);
             if (isNaN(n.value)) return Editor.warn('Invalid input: "%s"', t), !1;
-            n.value !== this.target[e].value && this.set("target." + e + ".value", n.value), n.isAbsolute !== this.target[i].value && this.set("target." + i + ".value", n.isAbsolute)
+            n.value !== this.target[e].value && this.set("value." + e + ".value", n.value), n.isAbsolute !== this.target[i].value && this.set("value." + i + ".value", n.isAbsolute)
         }
         return !0
     },
@@ -43,15 +43,21 @@ Editor.polymerElement({
         this._changeMargin(e.value, "bottom", "isAbsoluteBottom")
     },
     _onLeftRightChecked: function(t, e) {
-        e.value && this.target && this.target.isAlignHorizontalCenter.value && this.set("target.isAlignHorizontalCenter.value", !1)
+        this.set("value.isAlignHorizontalCenter", false)
     },
     _onTopBottomChecked: function(t, e) {
-        e.value && this.target && this.target.isAlignVerticalCenter.value && this.set("target.isAlignVerticalCenter.value", !1)
+        this.set("value.isAlignVerticalCenter", false)
     },
     _onHorizontalCenterChecked: function(t, e) {
-        e.value && this.target && (this.target.isAlignLeft.value || this.target.isAlignRight.value) && (this.set("target.isAlignLeft.value", !1), this.set("target.isAlignRight.value", !1))
+        if(e.value) {
+            this.set("value.isAlignLeft", false);
+            this.set("value.isAlignRight", false);
+        }
     },
     _onVerticalCenterChecked: function(t, e) {
-        e.value && this.target && (this.target.isAlignTop.value || this.target.isAlignBottom.value) && (this.set("target.isAlignTop.value", !1), this.set("target.isAlignBottom.value", !1))
+        if(e.value) {
+            this.set("value.isAlignTop", false);
+            this.set("value.isAlignBottom", false);
+        }
     }
 });

@@ -6,21 +6,14 @@ Editor.polymerElement(
 				value:function(){
 					return {path:"",type:"",name:"",attrs:{},value:null}
 				},
-				notify:!0
+				notify:true
 			},
 			disabled:{
 				type:Boolean,
-				value:!1,
-				notify:!0,
-				reflectToAttribute:!0
+				value:false,
+				notify:true,
+				reflectToAttribute:true
 			}
-		},
-
-		observers: [
-			'knowPropChange(prop)'
-		],
-		knowPropChange: function(prop) {
-			Editor.log(JSON.stringify(prop));
 		},
 
 		ready:function(){},

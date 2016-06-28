@@ -140,33 +140,23 @@
       'ui:scene_change' ( event, message ) {
         Editor.log("ui:scene_change");
         this._scene = window.runScene;
-        // cc.js.extend(this._scene.prototype, node_prototype);
-        // // this.$.node.target = this._scene;
-        //         let realValue = {
-        //     path: "cocos!!!!!!!!!!!!!",
-        //     type: "cc.Node",
-        //     name: "myName",
-        //     attrs: {
-        //         position : node._position,
-        //         rotation: 2,
-        //         size : node._size,
-        //         min: 1,
-        //         max: 100,
-        //     },
-        //     position: {
-        //         name: "vec2",
-        //         type: "Number",
-        //         attrs: {},
-        //         value: 10,
-        //     },
-        //     rotation: {
-        //         name: "vec2",
-        //         type: "Number",
-        //     },
-        //     value: null
-        // };
         this._opnode = new NodeData(this._scene);
         this.$.node.target = this._opnode;
+      },
+      'ui:item_prop_change'(event, message) {
+          if(this._opnode && this._opnode.uuid == message.uuid) {
+            //   initNodeData(this._opnode);
+            if(this._propUpdateTimeId) {
+                return;
+            }
+            this._propUpdateTimeId = setTimeout((() => {
+                if(this._opnode) {
+                    this._opnode = new NodeData(this._opnode._node);
+                    this.$.node.target = this._opnode;
+                }
+                this._propUpdateTimeId = null;
+            }).bind(this), 200);
+          }
       },
       'ui:select_items_change' (event, message) {
         Editor.log("ui:select_items_change");

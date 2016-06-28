@@ -416,6 +416,9 @@
             child.setRotation(child.getRotation() + (curInfo.angle - preInfo.angle));
             undo.add(newPropCommandChange(runScene, child.uuid, 'rotation', oldValue, child.rotation));
         }
+
+        
+        Editor.Ipc.sendToAll("ui:item_prop_change", {uuid:child.uuid});
         // curInfo.left -= group.left || 0;
         // curInfo.top -= group.top || 0;
         target._preInfo = curInfo;

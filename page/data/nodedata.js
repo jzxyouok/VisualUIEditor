@@ -1,6 +1,22 @@
+function initNodeData(node) {
+    node.position = {
+        path: "position",
+        type: "vec2",
+        name: "Position",
+        attrs: {
+            min: 1,
+            max: 100,
+        },
+        value: {
+            x: node._node.getPositionX(),
+            y: node._node.getPositionY(),
+        }
+    }
+}
 
 function NodeData(node) {
     this._node = node;
+    initNodeData(this);
 }
 
 function SpriteData(node) {
@@ -12,21 +28,24 @@ function LabelData(node) {
 }
 
 NodeData.prototype = {
-    get position() {
-        return {
-            path: "position",
-            type: "vec2",
-            name: "Position",
-            attrs: {
-                min: 1,
-                max: 100,
-            },
-            value: {
-                x: this._node.getPositionX(),
-                y: this._node.getPositionY(),
-            }
-        }
+    get uuid() {
+        return this._node.uuid;
     },
+    // get position() {
+    //     return {
+    //         path: "position",
+    //         type: "vec2",
+    //         name: "Position",
+    //         attrs: {
+    //             min: 1,
+    //             max: 100,
+    //         },
+    //         value: {
+    //             x: this._node.getPositionX(),
+    //             y: this._node.getPositionY(),
+    //         }
+    //     }
+    // },
 
     get rotation() {
         return {

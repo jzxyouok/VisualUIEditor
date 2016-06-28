@@ -66,7 +66,6 @@ Editor.polymerElement({
         if ("Object" !== this.type && "Array" !== this.type) {
             var t = Polymer.dom(this),
                 e = void 0;
-            t.firstChild && t.removeChild(t.firstChild);
             let element_name = "editor-unit-input"
             if(this.type == "vec2") {
                 element_name = "fire-vec2";
@@ -79,7 +78,11 @@ Editor.polymerElement({
             } else if(this.type == "check") {
                 element_name = "editor-checkbox";
             }
-            let child = document.createElement(element_name);    
+            let child = t.firstChild;
+            if(!t.firstChild || t.firstChild.localName != element_name) {
+                child = document.createElement(element_name);
+            }
+            t.firstChild && t.removeChild(t.firstChild);    
             child.value = this.value;
             child.attrs = this.attrs;
             child.path = this.path;        

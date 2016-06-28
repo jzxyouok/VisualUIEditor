@@ -205,7 +205,11 @@
           // );
           // this._instance = inst;
           // Polymer.dom(this.$.content).appendChild(this._instance.root);
-
+          let name = prefix + '-inspector';
+          if(this._el && this._el.localName == name) {
+            this._el.target = this.target;
+            return;
+          }
           let el = Polymer.Base.create( prefix + '-inspector', {
             target: this.target,
           });

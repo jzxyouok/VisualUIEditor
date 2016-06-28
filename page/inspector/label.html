@@ -1,7 +1,28 @@
-<dom-module id="cc-label-inspector"><template><style>.info {
+<dom-module id="cc-label-inspector">
+    <template>
+        <style>
+            .info {
                 text-align: center;
                 color: #aaa;
-            }</style><editor-prop prop="{{target.string}}"></editor-prop><editor-prop prop="{{target.horizontalAlign}}"></editor-prop><editor-prop prop="{{target.verticalAlign}}"></editor-prop><editor-prop prop="{{target.fontSize}}"></editor-prop><div hidden="[[!_isBMFont(target._bmFontOriginalSize.value)]]"><editor-prop prop="{{target._bmFontOriginalSize}}"></editor-prop></div><editor-prop prop="{{target.lineHeight}}"></editor-prop><editor-prop prop="{{target.overflow}}"></editor-prop><div hidden="[[_hiddenWrapText(target.overflow.value)]]"><editor-prop prop="{{target.enableWrapText}}"></editor-prop></div><editor-prop prop="{{target.font}}"></editor-prop><editor-prop prop="{{target.useSystemFont}}"></editor-prop></template><script>'use strict';
+            }
+        </style>
+        <editor-prop prop="{{target.string}}"></editor-prop>
+        <editor-prop prop="{{target.horizontalAlign}}"></editor-prop>
+        <editor-prop prop="{{target.verticalAlign}}"></editor-prop>
+        <editor-prop prop="{{target.fontSize}}"></editor-prop>
+        <div hidden="[[!_isBMFont(target._bmFontOriginalSize.value)]]">
+            <editor-prop prop="{{target._bmFontOriginalSize}}"></editor-prop>
+        </div>
+        <editor-prop prop="{{target.lineHeight}}"></editor-prop>
+        <editor-prop prop="{{target.overflow}}"></editor-prop>
+        <div hidden="[[_hiddenWrapText(target.overflow.value)]]">
+            <editor-prop prop="{{target.enableWrapText}}"></editor-prop>
+        </div>
+        <editor-prop prop="{{target.font}}"></editor-prop>
+        <editor-prop prop="{{target.useSystemFont}}"></editor-prop>
+    </template>
+    <script>
+        'use strict';
 
         Editor.polymerElement({
 
@@ -20,4 +41,6 @@
             _hiddenWrapText(overflow) {
                 return overflow === 0 || overflow === 3;
             }
-        });</script></dom-module>
+        });
+    </script>
+</dom-module>

@@ -1,22 +1,6 @@
-function initNodeData(node) {
-    node.position = {
-        path: "position",
-        type: "vec2",
-        name: "Position",
-        attrs: {
-            min: 1,
-            max: 100,
-        },
-        value: {
-            x: node._node.getPositionX(),
-            y: node._node.getPositionY(),
-        }
-    }
-}
 
 function NodeData(node) {
     this._node = node;
-    initNodeData(this);
 }
 
 function SpriteData(node) {
@@ -35,21 +19,21 @@ NodeData.prototype = {
     get uuid() {
         return this._node.uuid;
     },
-    // get position() {
-    //     return {
-    //         path: "position",
-    //         type: "vec2",
-    //         name: "Position",
-    //         attrs: {
-    //             min: 1,
-    //             max: 100,
-    //         },
-    //         value: {
-    //             x: this._node.getPositionX(),
-    //             y: this._node.getPositionY(),
-    //         }
-    //     }
-    // },
+    get position() {
+        return {
+            path: "position",
+            type: "vec2",
+            name: "Position",
+            attrs: {
+                min: 1,
+                max: 100,
+            },
+            value: {
+                x: this._node.getPositionX(),
+                y: this._node.getPositionY(),
+            }
+        }
+    },
 
     get rotation() {
         return {
@@ -97,17 +81,31 @@ NodeData.prototype = {
     },
 
     get size() {
+        let parent = this._node.getParent();
+        let heightPer = 100;
+        let widthPer = 100;
+        if(parent && parent.width) {
+            widthPer = this._node.width / parent.width * 100;
+        }
+        if(parent && parent.height) {
+            heightPer = this._node.height / parent.height * 100;
+        }
         return {
             path: "size",
             type: "size",
             name: "Size",
             attrs: {
+                hasParent : parent != null,
                 min: 0,
                 max: 360,
             },
             value: {
+                isWidthPer: this._node.isWidthPer,
                 width: this._node.width,
+                widthPer: widthPer,
+                isHeightPer: this._node.isHeightPer,
                 height: this._node.height,
+                heightPer: heightPer,
             }
         }
     },
@@ -197,6 +195,22 @@ NodeData.prototype = {
             this._node.opacity = value;
         } else if(path == "color") {
             this._node.color = new cc.Color(value.r, value.g, value.b, value.a);
+        } else if(path == "size.isWidthPer") {
+            this._node.isWidthPer = !this._node.isWidthPer;
+        } else if(path == "size.isHeightPer") {
+            this._node.isWidthPer = !this._node.isWidthPer;
+        } else if(path == "size.widthPer") {
+            let parent = this._node.getParent();
+            if(parent && parent.width) {
+                let val = value * parent.width / 100;
+                this._node.width = parseFloat(val.toFixed(0));
+            }
+        } else if(path == "size.heightPer") {
+            let parent = this._node.getParent();
+            if(parent && parent.height) {
+                let val = value * parent.height / 100;
+                this._node.height = parseFloat(val.toFixed(0));
+            }
         }
     },
 }

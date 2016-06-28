@@ -6,7 +6,9 @@ Editor.polymerElement({
             value: function() {
                 return {
                     width: 0,
-                    height: 0
+                    height: 0,
+                    isWidthPer:false,
+                    isHeightPer:false
                 }
             },
             notify: !0

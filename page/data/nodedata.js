@@ -229,25 +229,25 @@ NodeData.prototype = {
                 this._node.bottom = null;
             }
         }
-        //  else if(path == "relativePosition.top") {
-        //     let parent = this._node.getParent();
-        //     if(parent && parent.height) {
-        //         this._node.y = parent.height - value;
-        //         this._node.top = value;
-        //     }
-        // } else if(path == "relativePosition.bottom") {
-        //     this._node.y = value;
-        //     this._node.bottom = value;
-        // } else if(path == "relativePosition.left") {
-        //     this._node.x = value;
-        //     this._node.left = value;
-        // } else if(path == "relativePosition.right") {
-        //     let parent = this._node.getParent();
-        //     if(parent && parent.width) {
-        //         this._node.x = parent.width - value;
-        //         this._node.right = value;
-        //     }
-        // }
+         else if(path == "relativePosition.top") {
+            let parent = this._node.getParent();
+            if(parent && parent.height) {
+                this._node.y = parent.height - value;
+                this._node.top = value;
+            }
+        } else if(path == "relativePosition.bottom") {
+            this._node.y = value;
+            this._node.bottom = value;
+        } else if(path == "relativePosition.left") {
+            this._node.x = value;
+            this._node.left = value;
+        } else if(path == "relativePosition.right") {
+            let parent = this._node.getParent();
+            if(parent && parent.width) {
+                this._node.x = parent.width - value;
+                this._node.right = value;
+            }
+        }
     },
 }
 

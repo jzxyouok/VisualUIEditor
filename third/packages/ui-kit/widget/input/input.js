@@ -50,8 +50,13 @@ Editor.polymerElement({
     }
   },
 
+  created () {
+    this._inited = false;
+  },
+
   ready () {
     this._initFocusable(this.$.input);
+    this._inited = true;
   },
 
   _valueChanged () {
@@ -117,6 +122,9 @@ Editor.polymerElement({
   },
 
   _onFocusedChanged ( event ) {
+    if(!this._inited) {
+      return;
+    }
     this._lastFocused = event.detail.value;
 
     setTimeout(() => {

@@ -36,7 +36,7 @@
                 return;
             }
             let path = e.target.path, value = e.target.value;
-            if(!path || !value) {
+            if(!path) {
                 return;
             }
             this._opnode.setAttrib(path, value);
@@ -161,29 +161,6 @@
       'ui:select_items_change' (event, message) {
         Editor.log("ui:select_items_change");
         let node = cocosGetItemByUUID(this._scene, message.select_items[0]);
-        let position = node._position;
-        let realValue = {
-            path: "cocos!!!!!!!!!!!!!",
-            type: "cc.Node",
-            name: "myName",
-            attrs: {
-                position : node._position,
-                rotation: 2,
-                size : node._size,
-                min: 1,
-                max: 100,
-            },
-            position: {
-                name: "vec2",
-                type: "Number",
-            },
-            rotation: {
-                name: "vec2",
-                type: "Number",
-            },
-            value: null
-        };
-        
         this._opnode = new NodeData(node);
         this.$.node.target = this._opnode;
         // this.$.node.target = new NodeData(node);

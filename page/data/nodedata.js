@@ -247,7 +247,10 @@ NodeData.prototype = {
                 this._node.x = parent.width - value;
                 this._node.right = value;
             }
+        } else {
+            return;
         }
+        Editor.Ipc.sendToAll("ui:has_item_change", {});
     },
 }
 

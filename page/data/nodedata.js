@@ -425,47 +425,37 @@ LabelData.prototype = {
         };
     },
 
-}
-        // <editor-prop title="Position" prop="{{target.position}}"></editor-prop>
-        // <editor-prop title="Rotation" prop="{{target.rotation}}"></editor-prop>
-        //  <!--<editor-prop title="Scale" prop="{{target.scale}}"></editor-prop>
-        // <editor-prop title="Anchor" prop="{{target.anchor}}"></editor-prop>
-        // <editor-prop title="Size" prop="{{target.size}}"></editor-prop>
-        // <editor-prop title="Color" prop="{{target.color}}"></editor-prop>
-        // <editor-prop title="Opacity" prop="{{target.opacity}}"></editor-prop>
-        // <editor-prop title="Skew" prop="{{target.skew}}"></editor-prop>
-            
+    get horizontalAlign() {
+        return {
+            path: "textAlign",
+            type: "select",
+            name: "HorizontalAlign",
+            attrs: {
+                selects: {
+                    0: "LEFT",
+                    1: "CENTER",
+                    2: "RIGHT",
+                }
+            },
+            value: this._node.textAlign,
+        };
+    }
 
-//  * @property {Number}               x                   - x axis position of node
-//  * @property {Number}               y                   - y axis position of node
-//  * @property {Number}               width               - Width of node
-//  * @property {Number}               height              - Height of node
-//  * @property {Number}               anchorX             - Anchor point's position on x axis
-//  * @property {Number}               anchorY             - Anchor point's position on y axis
-//  * @property {Boolean}              ignoreAnchor        - Indicate whether ignore the anchor point property for positioning
-//  * @property {Number}               skewX               - Skew x
-//  * @property {Number}               skewY               - Skew y
-//  * @property {Number}               zIndex              - Z order in depth which stands for the drawing order
-//  * @property {Number}               vertexZ             - WebGL Z vertex of this node, z order works OK if all the nodes uses the same openGL Z vertex
-//  * @property {Number}               rotation            - Rotation of node
-//  * @property {Number}               rotationX           - Rotation on x axis
-//  * @property {Number}               rotationY           - Rotation on y axis
-//  * @property {Number}               scale               - Scale of node
-//  * @property {Number}               scaleX              - Scale on x axis
-//  * @property {Number}               scaleY              - Scale on y axis
-//  * @property {Boolean}              visible             - Indicate whether node is visible or not
-//  * @property {cc.Color}             color               - Color of node, default value is white: (255, 255, 255)
-//  * @property {Boolean}              cascadeColor        - Indicate whether node's color value affect its child nodes, default value is false
-//  * @property {Number}               opacity             - Opacity of node, default value is 255
-//  * @property {Boolean}              opacityModifyRGB    - Indicate whether opacity affect the color value, default value is false
-//  * @property {Boolean}              cascadeOpacity      - Indicate whether node's opacity value affect its child nodes, default value is false
-//  * @property {Array}                children            - <@readonly> All children nodes
-//  * @property {Number}               childrenCount       - <@readonly> Number of children
-//  * @property {_ccsg.Node}           parent              - Parent node
-//  * @property {Boolean}              running             - <@readonly> Indicate whether node is running or not
-//  * @property {Number}               tag                 - Tag of node
-//  * @property {Number}               arrivalOrder        - The arrival order, indicates which children is added previously
-//  * @property {cc.ActionManager}     actionManager       - The CCActionManager object that is used by all actions.
-//  * @property {cc.GLProgram}         shaderProgram       - The shader program currently used for this node
-//  * @property {Number}               glServerState       - The state of OpenGL server side
-//  * @property {cc.Scheduler}         scheduler           - cc.Scheduler used to schedule all "updates" and timers
+}
+
+//  *
+//  * @property {String}       string          - Content string of label
+//  * @property {cc.TextAlignment} textAlign   - Horizontal Alignment of label: cc.TextAlignment.LEFT|cc.TextAlignment.CENTER|cc.TextAlignment.RIGHT
+//  * @property {cc.VerticalTextAlignment} verticalAlign - Vertical Alignment of label: cc.VerticalTextAlignment.TOP|cc.VerticalTextAlignment.CENTER|cc.VerticalTextAlignment.BOTTOM
+//  * @property {Number}       fontSize        - Font size of label
+//  * @property {String}       fontName        - Font name of label
+//  * @property {String}       font            - The label font with a style string: e.g. "18px Verdana"
+//  * @property {Number}       boundingWidth   - Width of the bounding box of label, the real content width is limited by boundingWidth
+//  * @property {Number}       boundingHeight  - Height of the bounding box of label, the real content height is limited by boundingHeight
+//  * @property {cc.Color}     fillStyle       - The fill color
+//  * @property {cc.Color}     strokeStyle     - The stroke color
+//  * @property {Number}       lineWidth       - The line width for stroke
+//  * @property {Number}       shadowOffsetX   - The x axis offset of shadow
+//  * @property {Number}       shadowOffsetY   - The y axis offset of shadow
+//  * @property {Number}       shadowOpacity   - The opacity of shadow
+//  * @property {Number}       shadowBlur      - The blur size of shadow

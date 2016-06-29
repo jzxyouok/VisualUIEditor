@@ -563,6 +563,9 @@
         }
         this.addNodeControl(sourceNode);
         this.updateForgeCanvas();
+
+        let select_items = this.getSelectItems();
+        Editor.Ipc.sendToAll("ui:select_items_change", {select_items : select_items});
     },
 
     messages: {

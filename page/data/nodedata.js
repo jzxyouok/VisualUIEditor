@@ -209,9 +209,12 @@ NodeData.prototype = {
             return [ new WidgetData(this._node) ];
         } else if(this._node._className == "Sprite") {
             return [ new SpriteData(this._node), new WidgetData(this._node) ];
+        } else if(this._node._className == "LabelTTF") {
+            return [ new LabelData(this._node), new WidgetData(this._node) ];
         } else {
             return [ new WidgetData(this._node) ];
         }
+        
         return [];
     },
 
@@ -302,6 +305,10 @@ NodeData.prototype = {
             if(parent && parent.width) {
                 this._node.x = parent.width - value;
                 this._node.right = value;
+            }
+        } else if(this._node._className == "LabelTTF") {
+            if(path == "string") {
+                this._node.string = value;
             }
         } else {
             return;
@@ -397,6 +404,27 @@ WidgetData.prototype = {
             }
         }
     },
+}
+
+
+LabelData.prototype = {
+    __editor__ : {
+        "inspector": "cc.Label",
+    },
+    __displayName__: "Label",
+    __type__: "cc.Label",
+
+    get string() {
+        return {
+            path: "string",
+            type: "text",
+            name: "String",
+            attrs: {
+            },
+            value: this._node.string,
+        };
+    },
+
 }
         // <editor-prop title="Position" prop="{{target.position}}"></editor-prop>
         // <editor-prop title="Rotation" prop="{{target.rotation}}"></editor-prop>

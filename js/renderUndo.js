@@ -22,7 +22,8 @@ class Command {
       if(!node) {
         return false;
       }
-      node[this.info.prop] = this.info.oldValue;
+      NodePropChange(node, this.info.prop, this.info.oldValue);
+      
       return true;
     }
     Editor.warn('Please implement undo function in your command'); 
@@ -33,7 +34,7 @@ class Command {
         if(!node) {
           return false;
         }
-        node[this.info.prop] = this.info.newValue;
+        NodePropChange(node, this.info.prop, this.info.newValue);
         return true;
       }
     Editor.warn('Please implement redo function in your command'); 

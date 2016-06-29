@@ -389,13 +389,15 @@
 
         if(curInfo.left != preInfo.left) {
             let oldValue = child.x;
-            child.setPositionX(child.getPositionX() + (curInfo.left - preInfo.left) / ratio);
+            let step = (curInfo.left - preInfo.left) / ratio;
+            FixNodeHor(child, step);
             undo.add(newPropCommandChange(runScene, child.uuid, 'x', oldValue, child.x));
         }   
 
         if(curInfo.top != preInfo.top) {
             let oldValue = child.y;
-            child.setPositionY(child.getPositionY() - (curInfo.top - preInfo.top) / ratio);
+            let step = - (curInfo.top - preInfo.top) / ratio;
+            FixNodeVer(child, step);
             undo.add(newPropCommandChange(runScene, child.uuid, 'y', oldValue, child.y));
         }
 

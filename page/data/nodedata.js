@@ -15,6 +15,38 @@ function WidgetData(node) {
     this._node = node;
 }
 
+function FixNodeHor(node, step) {
+    node.x += step;
+    if(node.left) {
+        node.left += step; 
+    }
+    if(node.right) {
+        node.right -= step;
+    } 
+}
+
+function FixNodeVer(node, step) {
+    node.y += step;
+    if(node.top) {
+        node.top -= step; 
+    }
+    if(node.bottom) {
+        node.right += step;
+    }
+}
+
+function NodePropChange(node, prop, newValue) {
+    if(prop == "x") {
+        let step = newValue - node[prop];
+        FixNodeHor(node, step);
+    } else if(prop == "y") {
+        let step = newValue - node[prop];
+        FixNodeVer(node, step);
+    } else {
+        node[prop] = newValue;
+    }
+}
+
 NodeData.prototype = {
     get uuid() {
         return this._node.uuid;
@@ -172,8 +204,12 @@ NodeData.prototype = {
     setAttrib(path, value) {
         if(path == "position.x") {
             this._node.x = value;
+            this._node.left = null;
+            this._node.right = null;
         } else if(path == "position.y") {
             this._node.y = value;
+            this._node.top = null;
+            this._node.bottom = null;
         } else if(path == "rotation") {
             this._node.rotation = value;
         } else if(path == "scale.x") {
@@ -230,18 +266,22 @@ NodeData.prototype = {
             }
         }
          else if(path == "relativePosition.top") {
+            value = parseFloat(value);
             let parent = this._node.getParent();
             if(parent && parent.height) {
                 this._node.y = parent.height - value;
                 this._node.top = value;
             }
         } else if(path == "relativePosition.bottom") {
+            value = parseFloat(value);
             this._node.y = value;
             this._node.bottom = value;
         } else if(path == "relativePosition.left") {
+            value = parseFloat(value);
             this._node.x = value;
             this._node.left = value;
         } else if(path == "relativePosition.right") {
+            value = parseFloat(value);
             let parent = this._node.getParent();
             if(parent && parent.width) {
                 this._node.x = parent.width - value;

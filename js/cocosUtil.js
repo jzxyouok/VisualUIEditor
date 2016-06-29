@@ -40,6 +40,46 @@ function cocosExportNodeData(node) {
         data["color"] = [node.color.r, node.color.g, node.color.b, node.color.a];
     }
 
+    if(node.scaleX != 1.0) {
+        data["scaleX"] = node.scaleX;
+    }
+
+    if(node.scaleY != 1.0) {
+        data["scaleY"] = node.scaleY;
+    }
+
+    if(node.rotation != 0) {
+        data["rotation"] = node.rotation;
+    }
+
+    if(node.opacity != 255) {
+        data["opacity"] = node.opacity;
+    }
+
+    if(node.anchorX != 0.5) {
+        data["anchorX"] = node.anchorX; 
+    }
+
+    if(node.anchorY != 0.5) {
+        data["anchorY"] = node.anchorY; 
+    }
+
+    //Label prop
+    if(node._className == "LabelTTF") {
+        data["string"] = node.string;
+        if(node.textAlign != cc.TextAlignment.LEFT) {
+            data["textAlign"] = node.textAlign;
+        }
+        if(node.verticalAlign != cc.VerticalTextAlignment.TOP) {
+            data["verticalAlign"] = node.verticalAlign;
+        }
+        data["fontSize"] = node.fontSize;
+        if(node.fontName.length > 0) {
+            data["fontName"] = node.fontName;
+        }
+    }
+    
+
     let childrenData = [];
     let children = node.getChildren();
     for(var i = 0; i < children.length; i++) {
@@ -56,4 +96,58 @@ function cocosExportNodeData(node) {
 function saveSceneToFile(filename, scene) {
     let data = cocosExportNodeData(scene);
     fs.writeFileSync(filename, JSON.stringify(data, null, 4));
+}
+
+function cocosGenNodeByData(data, parent) {
+    let node = null;
+    if(data.type == "Scene") {
+        node = new _ccsg.Scene();
+    } else if(data.type == "Sprite") {
+        node = new _ccsg.Sprite("res/grid.png");
+    } else if(data.type == "LabelTTF") {
+        node = new cc.LabelTTF("11111");
+    } else {
+        node = new _ccsg.Node();
+    }
+
+    node.uuid = gen_uuid();
+
+    data.width && (node.width = parseFloat(data.width));
+    data.height && (node.height = parseFloat(data.height));
+    data.x && (node.x = parseFloat(data.x));
+    data.y && (node.y = parseFloat(data.y));
+
+    data.anchorX && (node.anchorX = parseFloat(data.anchorX));
+    data.anchorY && (node.anchorY = parseFloat(data.anchorY));
+
+    data.scaleX && (node.scaleX = parseFloat(data.scaleX));
+    data.scaleY && (node.scaleY = parseFloat(data.scaleY));
+
+    data.opacity && (node.opacity = parseFloat(data.opacity));
+    data.rotation && (node.rotation = parseFloat(data.rotation));
+
+    if(data.type == "LabelTTF") {
+        data.string && (node.string = data.string);
+        data.textAlign && (node.textAlign = data.textAlign);
+        data.textAlign && (node.textAlign = data.textAlign);
+        data.verticalAlign && (node.verticalAlign = data.verticalAlign);
+        data.fontSize && (node.fontSize = data.fontSize);
+        data.fontName && (node.fontName = data.fontName);
+    }
+
+    data.children = data.children || [];
+    for(var i = 0; i < data.children.length; i++) {
+        let child = cocosGenNodeByData(data.children[i], node);
+        if(node) {
+            node.addChild(child);
+        }
+    } 
+
+    return node;
+}
+
+function loadSceneFromFile(filename) {
+    let content = fs.readFileSync(filename);
+    let data = JSON.parse(content || "");
+    return cocosGenNodeByData(data, null);
 }

@@ -235,7 +235,7 @@
           _item.style.removeProperty('background');
       }
 
-      item.name = entry.uiname;
+      item.name = entry._className || "Node";
       item._uuid = entry.uuid;
       return item;
     },

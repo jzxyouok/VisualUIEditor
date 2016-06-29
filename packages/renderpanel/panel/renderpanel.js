@@ -288,9 +288,18 @@
            } else if(event.keyCode == Editor.KeyCode('s') && event.ctrlKey) {
                saveSceneToFile("E:/test.ui", this.$.scene.getRunScene());
            } else if(event.keyCode == Editor.KeyCode('n') && event.ctrlKey) {
-               saveSceneToFile("E:/test.ui", this.$.scene.getRunScene());
+               let scene = loadSceneFromFile("E:/test.ui");
+               scene && (scene._className == "Scene") && this.sceneChange(scene);
            }
        }.bind(this);
+    },
+
+    sceneChange: function(newScene) {
+        this.$.scene.getFabricCanvas().clear();
+        this.$.scene.runScene = newScene;
+        window.runScene = newScene;
+        cc.director.runScene(newScene);
+        Editor.Ipc.sendToAll('ui:scene_change', {});
     },
 
     undoScene: function() {

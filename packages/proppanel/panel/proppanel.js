@@ -161,6 +161,9 @@
       'ui:select_items_change' (event, message) {
         Editor.log("ui:select_items_change");
         let node = cocosGetItemByUUID(this._scene, message.select_items[0]);
+        if(node == null) {
+            node = this._scene;
+        }
         this._opnode = new NodeData(node);
         this.$.node.target = this._opnode;
         // this.$.node.target = new NodeData(node);

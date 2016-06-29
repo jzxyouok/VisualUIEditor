@@ -158,9 +158,13 @@
 
     clear () {
       let thisDOM = Polymer.dom(this);
-      while (thisDOM.firstChild) {
+      let children = thisDOM.children;
+      for(var i = 0; i < children.length; i++) {
         thisDOM.removeChild(thisDOM.firstChild);
       }
+      // while (thisDOM.firstChild) {
+      //   thisDOM.removeChild(thisDOM.firstChild);
+      // }
       this._id2el = {};
     },
 

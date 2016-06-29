@@ -194,9 +194,11 @@ NodeData.prototype = {
     get __comps__() {
 
         if(this._node._className == "Node") {
-            return [];
+            return [ new WidgetData(this._node) ];
         } else if(this._node._className == "Sprite") {
             return [ new SpriteData(this._node), new WidgetData(this._node) ];
+        } else {
+            return [ new WidgetData(this._node) ];
         }
         return [];
     },
@@ -235,7 +237,7 @@ NodeData.prototype = {
         } else if(path == "size.isWidthPer") {
             this._node.isWidthPer = !this._node.isWidthPer;
         } else if(path == "size.isHeightPer") {
-            this._node.isWidthPer = !this._node.isWidthPer;
+            this._node.isHeightPer = !this._node.isHeightPer;
         } else if(path == "size.widthPer") {
             let parent = this._node.getParent();
             if(parent && parent.width) {
@@ -353,6 +355,11 @@ WidgetData.prototype = {
             },
             value: this._node.isRelativePos || false,
         };
+    },
+
+
+    get folded() {
+        return true;
     },
 
     get relativePosition() {

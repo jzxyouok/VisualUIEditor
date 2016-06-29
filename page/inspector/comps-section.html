@@ -2,7 +2,7 @@
 <dom-module id="inspector-comps-section">
     <template>
         <template is="dom-repeat" items="{{target.__comps__}}">
-            <inspector-comp-section target="{{item}}"></inspector-comp-section>
+            <inspector-comp-section target="{{item}}" folded="{{item.folded}}"></inspector-comp-section>
         </template>
     </template>
     <script>

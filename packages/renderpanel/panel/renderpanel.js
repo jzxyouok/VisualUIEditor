@@ -285,6 +285,10 @@
                this.undoScene();
            } else if(event.keyCode == Editor.KeyCode('y') && event.ctrlKey) {
                this.redoScene();
+           } else if(event.keyCode == Editor.KeyCode('s') && event.ctrlKey) {
+               saveSceneToFile("E:/test.ui", this.$.scene.getRunScene());
+           } else if(event.keyCode == Editor.KeyCode('n') && event.ctrlKey) {
+               saveSceneToFile("E:/test.ui", this.$.scene.getRunScene());
            }
        }.bind(this);
     },

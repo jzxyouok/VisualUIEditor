@@ -143,6 +143,18 @@ NodeData.prototype = {
         }
     },
 
+    get tag() {
+        return {
+            path: "tag",
+            type: "string",
+            name: "Tag",
+            attrs: {
+                min: 0,
+                max: 360,
+            },
+            value: this._node._name,
+        }
+    },
 
     get opacity() {
         return {
@@ -204,7 +216,9 @@ NodeData.prototype = {
     },
 
     setAttrib(path, value) {
-        if(path == "position.x") {
+        if(path == "tag") {
+            this._node._name = value;
+        } else if(path == "position.x") {
             this._node.x = value;
             this._node.left = null;
             this._node.right = null;
@@ -359,7 +373,7 @@ WidgetData.prototype = {
 
 
     get folded() {
-        return true;
+        return !(this._node.left || this._node.top || this._node.right || this._node.bottom);
     },
 
     get relativePosition() {

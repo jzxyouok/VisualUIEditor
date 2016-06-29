@@ -77,6 +77,8 @@ Editor.polymerElement({
                 element_name = "editor-select";
             } else if(this.type == "check") {
                 element_name = "editor-checkbox";
+            } else if(this.type == "string") {
+                element_name = "editor-input";
             }
             let child = t.firstChild;
             if(!t.firstChild || t.firstChild.localName != element_name) {

@@ -14,9 +14,9 @@
     },
 
     show_items: [
-        {icon:"res/grid.png", name:"Sprite"},
-        {icon:"res/grid.png", name:"LabelTTF"},
-        {icon:"res/grid.png", name:"Sprite"},
+        {icon:"res/control/Sprite.png", name:"Sprite"},
+        {icon:"res/control/Label.png", name:"LabelTTF"},
+        {icon:"res/control/Scale9.png", name:"Scale9"},
     ],
 
     _getItems: function() {

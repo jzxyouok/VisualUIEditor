@@ -1004,6 +1004,16 @@ cc.Scale9Sprite = _ccsg.Node.extend({
         this._quadsDirty = true;
     },
 
+    _setWidth: function(width){
+        _ccsg.Node.prototype._setWidth.call(this, width);
+        this._quadsDirty = true;
+    },
+
+    _setHeight: function(height){
+        _ccsg.Node.prototype._setHeight.call(this, height);
+        this._quadsDirty = true;
+    },
+
     //
     enableTrimmedContentSize: function (isTrimmed) {
         if (this._isTrimmedContentSize !== isTrimmed) {
@@ -1268,6 +1278,16 @@ cc.defineGetterSetter(_p, "insetRight", _p.getInsetRight, _p.setInsetRight);
 /** @expose */
 _p.insetBottom;
 cc.defineGetterSetter(_p, "insetBottom", _p.getInsetBottom, _p.setInsetBottom);
+
+Object.defineProperty(_p, 'width', {
+    get: _ccsg.Node.prototype._getWidth,
+    set: _p._setWidth
+});
+
+Object.defineProperty(_p, 'height', {
+    get: _ccsg.Node.prototype._getHeight,
+    set: _p._setHeight
+});
 
 _p = null;
 

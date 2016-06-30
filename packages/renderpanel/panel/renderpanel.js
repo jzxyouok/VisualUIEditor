@@ -481,6 +481,10 @@
         } else if(data == "LabelTTF") {
             node = new cc.LabelTTF("VisualUI", "Arial", 20);
             runScene.addChild(node);
+        } else if(data == "Scale9") {
+            node = new cc.Scale9Sprite("res/default/Scale9.png");
+            node.setRenderingType(cc.Scale9Sprite.RenderingType.SLICED);
+            runScene.addChild(node);
         }
 
         if (node) {

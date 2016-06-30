@@ -488,6 +488,12 @@
         } else if(data == "Input") {
             node = new _ccsg.EditBox(cc.size(100, 20), new cc.Scale9Sprite("res/default/shurukuang.png"));
             runScene.addChild(node);
+        } else if(data == "Slider") {
+            node = new cc.ControlSlider("res/default/Slider_Back.png", "res/default/Slider_Bar.png", "res/default/SliderNode_Normal.png");
+            runScene.addChild(node);
+        } else if(data == "Button") {
+            node = new cc.ControlButton(new cc.LabelTTF("VisualUI", "Arial", 24), new cc.Scale9Sprite("res/default/Button_Disable.png"));
+            runScene.addChild(node);
         }
 
         if (node) {

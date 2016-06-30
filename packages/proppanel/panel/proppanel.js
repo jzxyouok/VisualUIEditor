@@ -40,7 +40,6 @@
                 return;
             }
             this._opnode.setAttrib(path, value);
-            Editor.log("end-editing!!!!!!!!!!!!!!!");
         });
         // var sprite = document.createElement('cc-sprite-inspector');
         // let subNode = this.$.node.$.addCompBtn;
@@ -159,7 +158,6 @@
           }
       },
       'ui:select_items_change' (event, message) {
-        Editor.log("ui:select_items_change");
         let node = cocosGetItemByUUID(this._scene, message.select_items[0]);
         if(node == null) {
             node = this._scene;

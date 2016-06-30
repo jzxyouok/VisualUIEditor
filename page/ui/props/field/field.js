@@ -83,21 +83,24 @@ Editor.polymerElement({
                 element_name = "editor-textarea";
             }
             let child = t.firstChild;
+            let isRecreate = false;
             if(!t.firstChild || t.firstChild.localName != element_name) {
                 child = document.createElement(element_name);
+                isRecreate = true;
             }
             t.firstChild && t.removeChild(t.firstChild);    
             child.value = this.value;
             child.attrs = this.attrs;
-            child.path = this.path;        
-            if(this.type == "select") {
-                let selects = this.attrs.selects || {};
-                for(var k in selects) {
-                    child.add(k, selects[k]);
+            child.path = this.path;
+            if(isRecreate) {
+                if(this.type == "select") {
+                    let selects = this.attrs.selects || {};
+                    for(var k in selects) {
+                        child.add(k, selects[k]);
+                    }
+                    child.text = selects[this.value];
                 }
-                child.text = selects[this.value];
             }
-
             t.appendChild(child);
 
         }

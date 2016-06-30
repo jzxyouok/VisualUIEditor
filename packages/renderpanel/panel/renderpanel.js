@@ -328,7 +328,6 @@
             canvas.clear();
         }
 
-        Editor.log("mouseupTouchnull");
         this.preSelectorRect({selector: {
             ex : e.offsetX,
             ey : e.offsetY,
@@ -338,7 +337,6 @@
     },
 
     preSelectorRect: function(object) {
-        Editor.log("preSelectorRect");
         let rect = object.selector;
         let left = Math.min(rect.ex, rect.ex + rect.left);
         let top = Math.min(rect.ey, rect.ey + rect.top);

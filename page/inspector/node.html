@@ -5,7 +5,7 @@
   <link rel="import" type="css" href="common.css">
   <template>
     <inspector-node-header target="{{target}}"></inspector-node-header>
-    <div class="props flex-1 layout vertical">
+    <div class="props flex-1 layout">
       <inspector-node-section target="{{target}}">
         <editor-prop title="Tag" prop="{{target.tag}}"></editor-prop>
         <editor-prop title="Position" prop="{{target.position}}"></editor-prop>
@@ -16,16 +16,6 @@
         <editor-prop title="Color" prop="{{target.color}}"></editor-prop>
         <editor-prop title="Opacity" prop="{{target.opacity}}"></editor-prop>
         <editor-prop title="Skew" prop="{{target.skew}}"></editor-prop>
-         <!--<editor-custom-prop name="group" title="[[_T('INSPECTOR.node.group')]]">
-          <div class="layout horizontal">
-            <editor-select class="flex-3 group-list" text="{{target.group.value}}" value="{{target.group.value}}">
-              <template is="dom-repeat" items="{{groupList}}">
-                <editor-option value="{{item}}">{{item}}</editor-option>
-              </template>
-            </editor-select>
-            <editor-button on-click="_openGroupSettings">[[_T('COMPONENT.sprite.edit_button')]]</editor-button>
-          </div>
-        </editor-custom-prop>-->
       </inspector-node-section>
       <inspector-comps-section target="{{target}}"></inspector-comps-section>
       <div class="add-comp-btn layout horizontal center-center">

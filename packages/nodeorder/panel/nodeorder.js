@@ -122,7 +122,6 @@
         this.tryChangeItemPosition(item, ev.currentTarget);
     },
     clickItem: function(e) {
-        Editor.log("mouseUp!!!!!!!!!!!!!!!!!!!");
         if(!e.ctrlKey) {
             this.clearSelectInfo();
         }
@@ -242,12 +241,10 @@
 
     messages: {
       'ui:scene_change' ( event, message ) {
-        Editor.log("ui:scene_change");
         this._scene = window.runScene;
         this.build();
       },
       'ui:select_items_change' (event, message) {
-        Editor.log("ui:select_items_change");
         this.selectItemsByData(message.select_items);
       },
       'ui:scene_item_add'(event, message) {

@@ -17,6 +17,7 @@
         {icon:"res/control/Sprite.png", name:"Sprite"},
         {icon:"res/control/Label.png", name:"LabelTTF"},
         {icon:"res/control/Scale9.png", name:"Scale9"},
+        {icon:"res/control/Input.png", name:"Input"},
     ],
 
     _getItems: function() {

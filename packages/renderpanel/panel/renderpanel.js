@@ -485,6 +485,9 @@
             node = new cc.Scale9Sprite("res/default/Scale9.png");
             node.setRenderingType(cc.Scale9Sprite.RenderingType.SLICED);
             runScene.addChild(node);
+        } else if(data == "Input") {
+            node = new _ccsg.EditBox(cc.size(100, 20), new cc.Scale9Sprite("res/default/shurukuang.png"));
+            runScene.addChild(node);
         }
 
         if (node) {

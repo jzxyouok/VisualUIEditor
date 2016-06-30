@@ -309,6 +309,30 @@ NodeData.prototype = {
         } else if(this._node._className == "LabelTTF") {
             if(path == "string") {
                 this._node.string = value;
+            } else if(path == "textAlign") {
+                this._node.textAlign = parseFloat(value);
+            } else if(path == "verticalAlign") {
+                this._node.verticalAlign = parseFloat(value);
+            } else if(path == "fontSize") {
+                this._node.fontSize = value;
+            } else if(path == "font") {
+                this._node.font = font;
+            } else if(path == "fillStyle") {
+                this._node.fillStyle = new cc.Color(value.r, value.g, value.b, value.a);
+            } else if(path == "strokeStyle") {
+                this._node.strokeStyle = new cc.Color(value.r, value.g, value.b, value.a);
+            } else if(path == "lineWidth") {
+                this._node.lineWidth = value;
+            } else if(path == "shadowOffsetX") {
+                this._node.shadowOffsetX = value;
+            } else if(path == "shadowOffsetY") {
+                this._node.shadowOffsetY = value;
+            } else if(path == "shadowOpacity") {
+                this._node.shadowOpacity = value;
+            } else if(path == "shadowBlur") {
+                this._node.shadowBlur = value;
+            } else {
+                return;
             }
         } else {
             return;
@@ -429,7 +453,7 @@ LabelData.prototype = {
         return {
             path: "textAlign",
             type: "select",
-            name: "HorizontalAlign",
+            name: "HorAlign",
             attrs: {
                 selects: {
                     0: "LEFT",
@@ -439,23 +463,108 @@ LabelData.prototype = {
             },
             value: this._node.textAlign,
         };
-    }
+    },
 
+    get verticalAlign() {
+        return {
+            path: "verticalAlign",
+            type: "select",
+            name: "VerAlign",
+            attrs: {
+                selects: {
+                    0: "TOP",
+                    1: "CENTER",
+                    2: "BOTTOM",
+                }
+            },
+            value: this._node.verticalAlign,
+        };
+    },
+
+    get fillStyle() {
+        return {
+            path: "fillStyle",
+            type: "color",
+            name: "FillStyle",
+            attrs: {
+            },
+            value: {
+                r: this._node.fillStyle.r,
+                g: this._node.fillStyle.g,
+                b: this._node.fillStyle.b,
+                a: this._node.fillStyle.a
+            }
+        };
+    },
+
+    get strokeStyle() {
+        return {
+            path: "strokeStyle",
+            type: "color",
+            name: "StrokeStyle",
+            attrs: {
+            },
+            value: {
+                r: this._node.strokeStyle.r,
+                g: this._node.strokeStyle.g,
+                b: this._node.strokeStyle.b,
+                a: this._node.strokeStyle.a
+            }
+        };
+    },
+
+    get lineWidth() {
+        return {
+            path: "lineWidth",
+            type: "number",
+            name: "LineWidth",
+            attrs: {
+            },
+            value: this._node.lineWidth,
+        };
+    },
+
+    get shadowOffsetX() {
+        return {
+            path: "shadowOffsetX",
+            type: "number",
+            name: "ShadowOffsetX",
+            attrs: {
+            },
+            value: this._node.shadowOffsetX,
+        };
+    },
+
+    get shadowOffsetY() {
+        return {
+            path: "shadowOffsetY",
+            type: "number",
+            name: "shadowOffsetY",
+            attrs: {
+            },
+            value: this._node.shadowOffsetY,
+        };
+    },
+
+    get shadowOpacity() {
+        return {
+            path: "shadowOpacity",
+            type: "number",
+            name: "shadowOpacity",
+            attrs: {
+            },
+            value: this._node.shadowOpacity,
+        };
+    },
+
+    get shadowBlur() {
+        return {
+            path: "shadowBlur",
+            type: "number",
+            name: "shadowBlur",
+            attrs: {
+            },
+            value: this._node.shadowBlur,
+        };
+    },
 }
-
-//  *
-//  * @property {String}       string          - Content string of label
-//  * @property {cc.TextAlignment} textAlign   - Horizontal Alignment of label: cc.TextAlignment.LEFT|cc.TextAlignment.CENTER|cc.TextAlignment.RIGHT
-//  * @property {cc.VerticalTextAlignment} verticalAlign - Vertical Alignment of label: cc.VerticalTextAlignment.TOP|cc.VerticalTextAlignment.CENTER|cc.VerticalTextAlignment.BOTTOM
-//  * @property {Number}       fontSize        - Font size of label
-//  * @property {String}       fontName        - Font name of label
-//  * @property {String}       font            - The label font with a style string: e.g. "18px Verdana"
-//  * @property {Number}       boundingWidth   - Width of the bounding box of label, the real content width is limited by boundingWidth
-//  * @property {Number}       boundingHeight  - Height of the bounding box of label, the real content height is limited by boundingHeight
-//  * @property {cc.Color}     fillStyle       - The fill color
-//  * @property {cc.Color}     strokeStyle     - The stroke color
-//  * @property {Number}       lineWidth       - The line width for stroke
-//  * @property {Number}       shadowOffsetX   - The x axis offset of shadow
-//  * @property {Number}       shadowOffsetY   - The y axis offset of shadow
-//  * @property {Number}       shadowOpacity   - The opacity of shadow
-//  * @property {Number}       shadowBlur      - The blur size of shadow

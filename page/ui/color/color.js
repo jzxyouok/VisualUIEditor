@@ -52,14 +52,20 @@
             }.bind(this))
         },
         _openColorPicker: function() {
-            Editor.UI._DomUtils.addHitGhost("cursor", "998", function() {
+            Editor.UI._DomUtils.addHitGhost("cursor", 998, function() {
                 this._closeColorPicker()
-            }.bind(this)), this._colorPicker = document.createElement("color-picker"), this._colorPicker.noAlpha = this.noAlpha, this._colorPicker.setColor({
+            }.bind(this));
+            this._colorPicker = document.createElement("color-picker");
+            this._colorPicker.noAlpha = this.noAlpha;
+            this._colorPicker.setColor({
                 r: 0 | this.value.r,
                 g: 0 | this.value.g,
                 b: 0 | this.value.b,
                 a: 0 | this.value.a
-            }), this._colorPicker.addEventListener("value-changed", function(o) {
+            });
+            this._colorPicker.addEventListener("value-changed-manual", function(o) {
+                o.preventDefault();
+                o.stopPropagation();
                 var t, e = o.target.value;
                 t = this.value instanceof cc.Color ? new cc.Color({
                     r: e.r,
@@ -71,14 +77,23 @@
                     g: e.g,
                     b: e.b,
                     a: e.a
-                }, this.set("value", t)
-            }.bind(this)), Polymer.dom(this).appendChild(this._colorPicker), this._updateColorPicker()
+                };
+                this.set("value", t);
+            }.bind(this));
+            Polymer.dom(this).appendChild(this._colorPicker);
+            this._updateColorPicker();
         },
         _closeColorPicker: function() {
             var o = this;
-            this._colorPicker && (Polymer.dom(this).removeChild(this._colorPicker), this._colorPicker = null), Editor.UI._DomUtils.removeHitGhost(), this.focus(), this.async(function() {
-                o.fire("end-editing")
-            }, 1)
+            if(this._colorPicker) {
+                Polymer.dom(this).removeChild(this._colorPicker);
+                this._colorPicker = null;
+                Editor.UI._DomUtils.removeHitGhost();
+                this.focus();
+                this.async(function() {
+                    o.fire("end-editing");
+                }, 1);
+            }
         },
         _onFocusIn: function(o) {
             this._setFocused(!0)

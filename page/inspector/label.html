@@ -10,16 +10,14 @@
         <editor-prop prop="{{target.horizontalAlign}}"></editor-prop>
         <editor-prop prop="{{target.verticalAlign}}"></editor-prop>
         <editor-prop prop="{{target.fontSize}}"></editor-prop>
-        <div hidden="[[!_isBMFont(target._bmFontOriginalSize.value)]]">
-            <editor-prop prop="{{target._bmFontOriginalSize}}"></editor-prop>
-        </div>
-        <editor-prop prop="{{target.lineHeight}}"></editor-prop>
-        <editor-prop prop="{{target.overflow}}"></editor-prop>
-        <div hidden="[[_hiddenWrapText(target.overflow.value)]]">
-            <editor-prop prop="{{target.enableWrapText}}"></editor-prop>
-        </div>
         <editor-prop prop="{{target.font}}"></editor-prop>
-        <editor-prop prop="{{target.useSystemFont}}"></editor-prop>
+        <editor-prop prop="{{target.fillStyle}}"></editor-prop>
+        <editor-prop prop="{{target.strokeStyle}}"></editor-prop>
+        <editor-prop prop="{{target.lineWidth}}"></editor-prop>
+        <editor-prop prop="{{target.shadowOffsetX}}"></editor-prop>
+        <editor-prop prop="{{target.shadowOffsetY}}"></editor-prop>
+        <editor-prop prop="{{target.shadowOpacity}}"></editor-prop>
+        <editor-prop prop="{{target.shadowBlur}}"></editor-prop>
     </template>
     <script>
         'use strict';

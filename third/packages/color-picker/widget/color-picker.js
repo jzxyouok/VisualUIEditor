@@ -265,6 +265,10 @@
 
         _onValueColorChanged () {
             this.set('css', this.rgb2str(this.value.r, this.value.g, this.value.b));
+            let o = this;
+            this.async(function() {
+                o.fire("value-changed-manual");
+            }, 1);
         },
 
         _onCssInputChanged: function (event) {

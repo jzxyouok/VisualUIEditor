@@ -76,7 +76,9 @@ Editor.polymerElement({
     }, {
       bubbles: false
     });
-
+    if(!this._inited) {
+      return;
+    }
     this.async(() => {
       this.fire('end-editing');
     },1);

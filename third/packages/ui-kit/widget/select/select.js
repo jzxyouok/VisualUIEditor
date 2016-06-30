@@ -36,8 +36,13 @@ Editor.polymerElement({
     },
   },
 
+  created () {
+    this._inited = false;
+  },
+
   ready () {
     this._initFocusable(this);
+    this._inited = true;
   },
 
   add ( value, text ) {
@@ -108,6 +113,11 @@ Editor.polymerElement({
       }
     } else {
       this.text = '';
+    }
+    if(this._inited) {
+      this.async(() => {
+        this.fire('end-editing', {});
+      },1);
     }
   },
 

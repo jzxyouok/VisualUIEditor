@@ -319,8 +319,8 @@ NodeData.prototype = {
                 this._node.verticalAlign = parseFloat(value);
             } else if(path == "fontSize") {
                 this._node.fontSize = value;
-            } else if(path == "font") {
-                this._node.font = font;
+            } else if(path == "fontName") {
+                this._node.fontName = fontName;
             } else if(path == "fillStyle") {
                 this._node.fillStyle = new cc.Color(value.r, value.g, value.b, value.a);
             } else if(path == "strokeStyle") {
@@ -487,6 +487,28 @@ LabelData.prototype = {
             attrs: {
             },
             value: this._node.string,
+        };
+    },
+
+    get fontName() {
+        return {
+            path: "fontName",
+            type: "string",
+            name: "fontName",
+            attrs: {
+            },
+            value: this._node.fontName,
+        };
+    },
+
+    get fontSize() {
+        return {
+            path: "fontSize",
+            type: "number",
+            name: "fontSize",
+            attrs: {
+            },
+            value: this._node.fontSize,
         };
     },
 

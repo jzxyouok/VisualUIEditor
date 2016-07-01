@@ -77,6 +77,28 @@ function cocosExportNodeData(node) {
         if(node.fontName.length > 0) {
             data["fontName"] = node.fontName;
         }
+
+        if(!node.fillStyle.equals(cc.Color.WHITE)) {
+            data["fillStyle"] = [node.fillStyle.r, node.fillStyle.g, node.fillStyle.b, node.fillStyle.a];
+        }
+        if(!node.strokeStyle.equals(cc.Color.WHITE)) {
+            data["strokeStyle"] = [node.strokeStyle.r, node.strokeStyle.g, node.strokeStyle.b, node.strokeStyle.a];
+        }
+        if(node.lineWidth > 0) {
+            data["lineWidth"] = node.lineWidth;
+        }
+        if(node.shadowOffsetX > 0) {
+            data["shadowOffsetX"] = node.shadowOffsetX;
+        }
+        if(node.shadowOffsetY > 0) {
+            data["shadowOffsetY"] = node.shadowOffsetY;
+        }
+        if(node.shadowOpacity > 0) {
+            data["shadowOpacity"] = node.shadowOpacity;
+        }
+        if(node.shadowBlur > 0) {
+            data["shadowBlur"] = node.shadowBlur;
+        }
     }
     
 

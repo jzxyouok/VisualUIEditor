@@ -260,7 +260,7 @@
 
     ready: function () {
 
-
+        this._openPath = null;
         this.$.zoomSlider.addEventListener('change', (event => {
             event.stopPropagation();
             this._zoomScaleChange(event.detail.value);
@@ -285,8 +285,8 @@
                this.undoScene();
            } else if(event.keyCode == Editor.KeyCode('y') && event.ctrlKey) {
                this.redoScene();
-           } else if(event.keyCode == Editor.KeyCode('s') && event.ctrlKey) {
-               saveSceneToFile("E:/test.ui", this.$.scene.getRunScene());
+           } else if(event.keyCode == Editor.KeyCode('s') && event.ctrlKey && this._openPath) {
+               saveSceneToFile(this._openPath, this.$.scene.getRunScene());
            } else if(event.keyCode == Editor.KeyCode('n') && event.ctrlKey) {
                let scene = loadSceneFromFile("E:/test.ui");
                scene && (scene._className == "Scene") && this.sceneChange(scene);
@@ -625,6 +625,7 @@
                let scene = loadSceneFromFile(path);
                
                if(scene && (scene._className == "Scene")) {
+                   this._openPath = path;
                    window.localStorage["last_open_ui"] = path;
                    this.sceneChange(scene);
                }

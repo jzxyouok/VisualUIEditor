@@ -15,6 +15,10 @@ function WidgetData(node) {
     this._node = node;
 }
 
+function SliderData(node) {
+    this._node = node;
+}
+
 function FixNodeHor(node, step) {
     node.x += step;
     if(node.left) {
@@ -204,18 +208,18 @@ NodeData.prototype = {
     },
 
     get __comps__() {
-
+        let node = [ new WidgetData(this._node) ];
         if(this._node._className == "Node") {
-            return [ new WidgetData(this._node) ];
         } else if(this._node._className == "Sprite") {
-            return [ new SpriteData(this._node), new WidgetData(this._node) ];
+            node.push(new SpriteData(this._node));
         } else if(this._node._className == "LabelTTF") {
-            return [ new LabelData(this._node), new WidgetData(this._node) ];
+            node.push(new LabelData(this._node));
+        } else if(this._node._className == "Slider") {
+            node.push(new SliderData(this._node));
         } else {
-            return [ new WidgetData(this._node) ];
         }
         
-        return [];
+        return node;
     },
 
     setAttrib(path, value) {
@@ -334,11 +338,41 @@ NodeData.prototype = {
             } else {
                 return;
             }
+        } else if(this._node._className == "Sprite") {
+            if(path == "srcBlendFactor") {
+                this._node.setBlendFunc(parseInt(value), this._node.getBlendFunc().dst);
+            } else if(path == "dstBlendFactor") {
+                this._node.setBlendFunc(this._node.getBlendFunc().src, parseInt(value));
+            }
+        } else if(this._node._className == "Scale9") {
+            if(path == "srcBlendFactor") {
+                this._node.setBlendFunc(parseInt(value), this._node.getBlendFunc().dst);
+            } else if(path == "dstBlendFactor") {
+                this._node.setBlendFunc(this._node.getBlendFunc().src, parseInt(value));
+            }
         } else {
             return;
         }
+
+        
         Editor.Ipc.sendToAll("ui:has_item_change", {});
     },
+}
+
+BlendData = {
+    0     : "ZERO",
+    1     : "ONE",
+    770   : "SRC_ALPHA",
+    776   : "SRC_ALPHA_SATURATE",
+    768   : "SRC_COLOR",
+    772   : "DST_ALPHA",
+    774   : "DST_COLOR",
+    771   : "ONE_MINUS_SRC_ALPHA",
+    769   : "ONE_MINUS_SRC_COLOR",
+    773   : "ONE_MINUS_DST_ALPHA",
+    775   : "ONE_MINUS_DST_COLOR",
+    32770 : "ONE_MINUS_CONSTANT_ALPHA",
+    32772 : "ONE_MINUS_CONSTANT_ALPHA",
 }
 
 SpriteData.prototype = {
@@ -349,22 +383,29 @@ SpriteData.prototype = {
 
     __type__: "cc.Sprite",
 
-    get type() {
+    get srcBlendFactor() {
+        let factor = this._node.getBlendFunc().src;
         return {
-            path: "type",
+            path: "srcBlendFactor",
             type: "select",
-            name: "Type",
+            name: "SrcBlendFactor",
             attrs: {
-                min: 0,
-                max: 360,
-                selects: {
-                    0: "SIMPLE",
-                    1: "SLICED",
-                    2: "TILED",
-                    3: "FILLED"
-                }
+                selects: BlendData,
             },
-            value: this._type,
+            value: this._node.getBlendFunc().src,
+        };
+    },
+
+    get dstBlendFactor() {
+        let factor = this._node.getBlendFunc().dst;
+        return {
+            path: "dstBlendFactor",
+            type: "select",
+            name: "DstBlendFactor",
+            attrs: {
+                selects: BlendData,
+            },
+            value: this._node.getBlendFunc().dst,
         };
     },
 
@@ -568,3 +609,26 @@ LabelData.prototype = {
         };
     },
 }
+
+// SliderData.prototype = {
+//     __editor__ : {
+//         "inspector1": "cc.Label",
+//     },
+//     __displayName__: "Slider",
+//     __type__: "cc.Slider",
+
+//     __props__: {
+//         "totalLength",
+//     },
+
+//     get totalLength() {
+//         return {
+//             path: "totalLength",
+//             type: "number",
+//             name: "TotalLength",
+//             attrs: {
+//             },
+//             value: this._node.totalLength,
+//         };
+//     },
+// }

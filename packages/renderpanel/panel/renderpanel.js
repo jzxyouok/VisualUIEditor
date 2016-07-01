@@ -292,6 +292,18 @@
                scene && (scene._className == "Scene") && this.sceneChange(scene);
            }
        }.bind(this);
+
+       setTimeout(() => {
+            if(window.localStorage["projectFolder"]) {
+                let path = window.localStorage["projectFolder"];
+                window["projectFolder"] = path;
+                Editor.Ipc.sendToAll("ui:project_floder_change", {folder: path});
+            }
+
+            if(window.localStorage["last_open_ui"]) {
+                Editor.Ipc.sendToAll("ui:open_file", {path: window.localStorage["last_open_ui"]});
+            }
+       },1000);
     },
 
     sceneChange: function(newScene) {
@@ -611,7 +623,11 @@
             let path = message.path;
             if(endWith(path, ".ui")) {
                let scene = loadSceneFromFile(path);
-               scene && (scene._className == "Scene") && this.sceneChange(scene);
+               
+               if(scene && (scene._className == "Scene")) {
+                   window.localStorage["last_open_ui"] = path;
+                   this.sceneChange(scene);
+               }
             }
         },
 

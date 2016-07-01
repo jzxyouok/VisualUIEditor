@@ -118,6 +118,8 @@
             //     Editor.Ipc.sendToAll('ui:scene_change', {});
             // }, this);
         }.bind(this));
+
+
     },
 
     attached: function() {

@@ -81,6 +81,8 @@ Editor.polymerElement({
                 element_name = "editor-input";
             } else if(this.type == "text") {
                 element_name = "editor-textarea";
+            } else if(this.type == "slider") {
+                element_name = "editor-slider";
             }
             let child = t.firstChild;
             let isRecreate = false;

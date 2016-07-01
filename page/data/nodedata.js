@@ -610,25 +610,39 @@ LabelData.prototype = {
     },
 }
 
-// SliderData.prototype = {
-//     __editor__ : {
-//         "inspector1": "cc.Label",
-//     },
-//     __displayName__: "Slider",
-//     __type__: "cc.Slider",
+SliderData.prototype = {
+    __editor__ : {
+        "inspector1": "cc.Slider",
+    },
+    __displayName__: "Slider",
+    __type__: "cc.Slider",
 
-//     __props__: {
-//         "totalLength",
-//     },
+    get totalLength() {
+        return {
+            path: "totalLength",
+            type: "number",
+            name: "TotalLength",
+            attrs: {
+            },
+            value: this._node.totalLength,
+        };
+    },
 
-//     get totalLength() {
-//         return {
-//             path: "totalLength",
-//             type: "number",
-//             name: "TotalLength",
-//             attrs: {
-//             },
-//             value: this._node.totalLength,
-//         };
-//     },
-// }
+    get progress() {
+        return {
+            path: "progress",
+            type: "slider",
+            name: "progress",
+            attrs: {
+            },
+            value: this._node.progress,
+        };
+    },
+
+    get __props__() {
+        return [
+            this.totalLength,
+            this.progress,
+        ];
+    }
+}

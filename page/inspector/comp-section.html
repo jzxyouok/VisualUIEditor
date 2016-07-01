@@ -112,6 +112,7 @@
     <div class="content" id="content">
       <template is="dom-if" if="{{!_customDraw(target)}}">
         <template is="dom-repeat" items="{{target.__props__}}">
+          <!--<input type="text" value="{{item}}"></input> -->
           <editor-prop prop="{{item}}"></editor-prop>
         </template>
       </template>
@@ -186,6 +187,10 @@
 
         _rebuild () {
           if ( !this.target || !this.target.__editor__ || !this.target.__editor__.inspector ) {
+            if(this._el) {
+              Polymer.dom(this.$.content).removeChild(this._el);
+              this._el = null;
+            }
             return;
           }
 

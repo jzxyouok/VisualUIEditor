@@ -22,16 +22,7 @@
       this._dragprop = [];
       this._curOpMode = "center";
 
-      var files = geFileList("F:/test_floder", function(file) {
-          if(file.length > 0 && file.charAt(0) == '.') {
-              return true;
-          }
-          if(file.indexOf("bower_components") == 0 || file.indexOf("node_modules") == 0 || file.indexOf(".") == 0) {
-              return true;
-          }
-          return false;
-      });
-      this.build(files);
+
 
     },
 
@@ -144,8 +135,23 @@
       return item;
     },
 
+    _onOpenFloder () {
+        ChangeProjectFolder();
+    },
+
     messages: {
-      
+      'ui:project_floder_change'(event, message) {
+        var files = geFileList(message.folder, function(file) {
+            if(file.length > 0 && file.charAt(0) == '.') {
+                return true;
+            }
+            if(file.indexOf("bower_components") == 0 || file.indexOf("node_modules") == 0 || file.indexOf(".") == 0) {
+                return true;
+            }
+            return false;
+        });
+        this.build(files);
+      },
     },
 
   });

@@ -1,7 +1,5 @@
 'use strict';
 
-// <script src="./js/jquery.js" onload="window.$ = window.jQuery = module.exports;"></script>
-
 // const Editor = require('editor-framework');
 const Editor = require('./editor-framework/index');
 const Path = require('fire-path');
@@ -27,7 +25,7 @@ Editor.App.extend({
   run () {
     // create main window
     let mainWin = new Editor.Window('main', {
-      title: 'Editor Framework11111111111',
+      title: 'VisualUIEditor',
       width: 900,
       height: 700,
       minWidth: 900,

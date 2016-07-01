@@ -639,10 +639,28 @@ SliderData.prototype = {
         };
     },
 
+
+    get mode() {
+        return {
+            path: "mode",
+            type: "select",
+            name: "mode",
+            attrs: {
+                selects: {
+                    0: "HORIZONTAL",
+                    1: "VERTICAL",
+                    2: "FILLED",
+                }
+            },
+            value: this._node.mode || 0,
+        };
+    },
+
     get __props__() {
         return [
             this.totalLength,
             this.progress,
+            this.mode,
         ];
     }
 }

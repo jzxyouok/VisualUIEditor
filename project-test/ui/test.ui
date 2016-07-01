@@ -1,0 +1,92 @@
+{
+    "width": "800",
+    "height": "400",
+    "x": 0,
+    "y": 0,
+    "type": "Scene",
+    "children": [
+        {
+            "width": "128",
+            "height": "128",
+            "x": 400,
+            "y": 200,
+            "type": "Sprite"
+        },
+        {
+            "width": "229",
+            "height": "45",
+            "x": 400,
+            "y": 200,
+            "type": "LabelTTF",
+            "scaleX": 2,
+            "scaleY": 2,
+            "rotation": 45,
+            "string": "Hello World0",
+            "fontSize": 40,
+            "fontName": "Arial"
+        },
+        {
+            "width": "0",
+            "height": "0",
+            "x": 200,
+            "y": 100,
+            "scaleX": 0.5,
+            "scaleY": 0.5,
+            "anchorX": 0,
+            "anchorY": 0,
+            "children": [
+                {
+                    "width": "229",
+                    "height": "45",
+                    "x": 50,
+                    "y": 50,
+                    "type": "LabelTTF",
+                    "scaleX": 2,
+                    "scaleY": 2,
+                    "rotation": 45,
+                    "string": "Hello World1",
+                    "fontSize": 40,
+                    "fontName": "Arial"
+                },
+                {
+                    "width": "229",
+                    "height": "45",
+                    "x": 10,
+                    "y": 10,
+                    "type": "LabelTTF",
+                    "scaleX": 0.5,
+                    "scaleY": 0.5,
+                    "rotation": 45,
+                    "string": "Hello World2",
+                    "fontSize": 40,
+                    "fontName": "Arial"
+                }
+            ]
+        },
+        {
+            "width": "137",
+            "height": "52",
+            "x": 637,
+            "y": 156,
+            "type": "ControlButton",
+            "children": [
+                {
+                    "width": "137",
+                    "height": "52",
+                    "x": 68.5,
+                    "y": 26
+                },
+                {
+                    "width": "89",
+                    "height": "28",
+                    "x": 68.5,
+                    "y": 26,
+                    "type": "LabelTTF",
+                    "string": "VisualUI",
+                    "fontSize": 24,
+                    "fontName": "Arial"
+                }
+            ]
+        }
+    ]
+}

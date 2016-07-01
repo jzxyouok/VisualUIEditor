@@ -117,7 +117,7 @@ function getFileName(path) {
  *
  */
  
-function geFileList(path, filter)
+function getFileList(path, filter)
 {
     var filesList = [];
     var childList = [];
@@ -194,4 +194,45 @@ cocosGetItemByUUID = function(node, uuid) {
         return null;
     }
     return recursiveGetChild(node, uuid);
+}
+
+/**
+ *判断str1字符串是否以str2为结束
+ *@param str1 原字符串
+ *@param str2 子串
+ *@author pansen
+ *@return 是-true,否-false
+ */
+function endWith(str1, str2) {
+    if (str1 == null || str2 == null) {
+        return false;
+    }
+    if (str1.length < str2.length) {
+        return false;
+    } else if (str1 == str2) {
+        return true;
+    } else if (str1.substring(str1.length - str2.length) == str2) {
+        return true;
+    }
+    return false;
+}
+/**
+ *判断str1字符串是否以str2为开头
+ *@param str1 原字符串
+ *@param str2 子串
+ *@author pansen
+ *@return 是-true,否-false
+ */
+function startWith(str1, str2) {
+    if (str1 == null || str2 == null) {
+        return false;
+    }
+    if (str1.length < str2.length) {
+        return false;
+    } else if (str1 == str2) {
+        return true;
+    } else if (str1.substr(0, str2.length) == str2) {
+        return true;
+    }
+    return false;
 }

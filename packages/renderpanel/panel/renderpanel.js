@@ -346,6 +346,9 @@
         rect = {left:left, top:top, width: width, height: height};
 
         let runScene = this.$.scene.getRunScene();
+        if(!runScene) {
+            return;
+        }
         let children = runScene.getChildren();
 
         let canvas = this.$.scene.getFabricCanvas();
@@ -451,10 +454,17 @@
         ev.preventDefault();
         ev.stopPropagation();
         
-        ev.dataTransfer.effectAllowed = "all";
-        ev.dataTransfer.dropEffect = "all"; // drop it like it's hot
     },
     dragOver: function(ev) {
+        
+        let runScene = this.$.scene.getRunScene();
+        if(!runScene) {
+            return;
+        }
+        var data = ev.dataTransfer.getData("controlType");
+        if(!data) {
+            return;
+        }
         ev.dataTransfer.effectAllowed = "all";
         ev.dataTransfer.dropEffect = "all"; // drop it like it's hot
         ev.preventDefault();
@@ -596,7 +606,14 @@
         },
         "ui:has_item_change"(event, message) {
             this.updateForgeCanvas();
-        }
+        },
+        "ui:open_file"(event, message) {
+            let path = message.path;
+            if(endWith(path, ".ui")) {
+               let scene = loadSceneFromFile(path);
+               scene && (scene._className == "Scene") && this.sceneChange(scene);
+            }
+        },
 
     },
 

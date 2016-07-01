@@ -120,7 +120,44 @@
         } else {
             this.$.tree.setItemParent(sourceItem, parentItem);
         }
-    },  
+    },
+    dblclickItem: function(e) {
+        Editor.log("dblclick");
+        this.clearSelectInfo();
+        if(e.currentTarget.doselect) {
+            e.currentTarget.doselect(e);
+        }
+        if(e.currentTarget.isDirectory && e.currentTarget.foldable) {
+            e.currentTarget.folded = !e.currentTarget.folded;
+        }
+        if(!e.currentTarget.isDirectory) {
+            Editor.Ipc.sendToAll("ui:open_file", {path: e.currentTarget.path});
+        }
+        e.stopPropagation();
+        e.preventDefault();
+    },
+    clickItem: function(e) {
+        if(!e.ctrlKey) {
+            this.clearSelectInfo();
+        }
+        if(e.currentTarget.doselect) {
+            e.currentTarget.doselect(e);
+        }
+        e.stopPropagation();
+        e.preventDefault();
+    },
+    clearSelectInfo: function() {
+        function recursiveClearSelect(item) {
+            if(item.dounselect) {
+                item.dounselect();
+            }
+            let children = Polymer.dom(item).children;
+            for ( let i = 0; i < children.length; ++i ) {
+                recursiveClearSelect(children[i]);
+            }
+        }
+        recursiveClearSelect(this.$.tree);
+    },
     newEntry: function (entry) {
       var item = document.createElement('td-tree-item');
       item.draggable = true;
@@ -130,8 +167,28 @@
       item['ondragover'] = this.dragOver.bind(this);
       item['ondragleave'] = this.dragLeave.bind(this);
       item['ondrop'] = this.dragDrop.bind(this);
+
+      item['onclick'] = this.clickItem.bind(this);
+      item['ondblclick'] = this.dblclickItem.bind(this);
+      let _item = item;
+      item['doselect'] = (e) => {
+          if(_item._isSlected) {
+              return;
+          }
+          _item.style.background = 'blue';
+          _item._isSlected = true;
+        //   if(e)
+        //     Editor.Ipc.sendToAll("ui:select_item", {uuid : _item._uuid, ctrlKey : e.ctrlKey});
+      };
+
+      item['dounselect'] = () => {
+          _item._isSlected = false;
+          _item.style.removeProperty('background');
+      }
+
       item.name = entry.name;
       item.path = entry.path;
+      item.isDirectory = entry.isDirectory;
       return item;
     },
 
@@ -141,7 +198,7 @@
 
     messages: {
       'ui:project_floder_change'(event, message) {
-        var files = geFileList(message.folder, function(file) {
+        var files = getFileList(message.folder, function(file) {
             if(file.length > 0 && file.charAt(0) == '.') {
                 return true;
             }

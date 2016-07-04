@@ -250,6 +250,9 @@
       'ui:scene_item_add'(event, message) {
         Editor.log("ui:scene_item_add");
         this.sceneItemAdd(message.uuid);
+      },
+      'ui:scene_items_change'(event, message) {
+        this.build();
       }
     },
 

@@ -290,7 +290,21 @@
            } else if(event.keyCode == Editor.KeyCode('n') && event.ctrlKey) {
                let scene = loadSceneFromFile("E:/test.ui");
                scene && (scene._className == "Scene") && this.sceneChange(scene);
+           } else if(event.keyCode == Editor.KeyCode('delete')) {
+               let runScene = this.$.scene.getRunScene();
+               let select_items = this.getSelectItems();
+               //TODO undo
+               for(var i = 0; i < select_items.length; i++) {
+                   let node = cocosGetItemByUUID(runScene, select_items[i]);
+                   if(node.getParent()) {
+                       node.removeFromParent();
+                   }
+               }
+               this.$.scene.getFabricCanvas().clear();
+               Editor.Ipc.sendToAll("ui:scene_items_change", {});
            }
+
+           
        }.bind(this);
 
        setTimeout(() => {

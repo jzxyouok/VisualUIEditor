@@ -1,5 +1,12 @@
 var fs = require('fs');
 
+function isBaseType(node) {
+    let name = node._className;
+    if(name == "Label" || name == "Slider" || name == "Sprite" || name == "Scale9" || name == "Input" || name == "Button") {
+        return true;
+    }
+    return false;
+}
 
 function cocosExportNodeData(node) {
     let data = {};
@@ -134,15 +141,19 @@ function cocosExportNodeData(node) {
             // this.placeHolderFontName,
             // this.placeHolderFontSize,
             // this.placeHolderFontColor,
-    let childrenData = [];
-    let children = node.getChildren();
-    for(var i = 0; i < children.length; i++) {
-        childrenData.push(cocosExportNodeData(children[i]));
-    }
+            
+    if(!isBaseType(node)) {
+        let childrenData = [];
+        let children = node.getChildren();
+        for(var i = 0; i < children.length; i++) {
+            childrenData.push(cocosExportNodeData(children[i]));
+        }
 
-    if(childrenData.length > 0) {
-        data["children"] = childrenData;
+        if(childrenData.length > 0) {
+            data["children"] = childrenData;
+        }
     }
+    
 
     return data;
 }

@@ -99,9 +99,41 @@ function cocosExportNodeData(node) {
         if(node.shadowBlur > 0) {
             data["shadowBlur"] = node.shadowBlur;
         }
+    } else if(node._className == "Sprite") {
+
+    } else if(node._className == "Scale9") {
+
+    } else if(node._className == "Input") {
+        (node.string.length > 0) && (data["string"] = node.string);
+        // (node.fontName.length > 0) && (data["fontName"] = node.fontName);
+        // (node.fontSize > 0) && (data["fontSize"] = node.fontSize);
+        // (!node.fontColor.equals(cc.Color.BLACK)) && (data["fontColor"] = [node.fontColor.r, node.fontColor.g, node.fontColor.b, node.fontColor.a]);
+        (node.inputFlag != _ccsg.EditBox.InputFlag.SENSITIVE) && (data["inputFlag"] = node.inputFlag);
+        (node.inputMode != _ccsg.EditBox.InputMode.ANY) && (data["inputMode"] = node.inputMode);
+        (node.returnType != _ccsg.EditBox.KeyboardReturnType.DEFAULT) && (data["returnType"] = node.returnType);
+        (node.maxLength != 50) && (data["maxLength"] = node.maxLength);
+        // (node.placeHolder.length > 0) && (data["placeHolder"] = node.placeHolder);
+        // (node.placeHolderFontName.length > 0) && (data["placeHolderFontName"] = node.placeHolderFontName);
+        // (node.placeholderFontSize > 0) && (data["placeholderFontSize"] = node.placeholderFontSize);
+        // (!node.placeholderFontColor.equals(cc.Color.GRAY)) && (data["placeholderFontColor"] = [node.placeholderFontColor.r, node.placeholderFontColor.g, node.placeholderFontColor.b, node.placeholderFontColor.a]);
+    } else if(node._className == "Slider") {
+        
+    } else if(node._className == "Button") {
+        
     }
     
-
+            // this.string,
+            // this.fontName,
+            // this.fontSize,
+            // this.fontColor,
+            // this.inputFlag,
+            // this.inputMode,
+            // this.returnType,
+            // this.maxLength,
+            // this.placeHolderString,
+            // this.placeHolderFontName,
+            // this.placeHolderFontSize,
+            // this.placeHolderFontColor,
     let childrenData = [];
     let children = node.getChildren();
     for(var i = 0; i < children.length; i++) {

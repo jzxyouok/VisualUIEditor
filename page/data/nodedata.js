@@ -364,10 +364,17 @@ NodeData.prototype = {
             } else if(path == "mode") {
                 this._node.mode = parseInt(value);
             }
+        } else if(this._node._className == "Input") {
+            if(path == "fontColor") {
+                this._node.fontColor = new cc.Color(value.r, value.g, value.b, value.a);
+            } else if(path == "placeHolderFontColor") {
+                this._node.placeHolderFontColor = new cc.Color(value.r, value.g, value.b, value.a);
+            } else {
+                this._node[path] = value;
+            }
         } else {
             return;
         }
-
         
         Editor.Ipc.sendToAll("ui:has_item_change", {});
     },
@@ -711,7 +718,7 @@ InputData.prototype = {
     get string() {
         return {
             path: "string",
-            type: "string",
+            type: "text",
             name: "string",
             attrs: {
             },

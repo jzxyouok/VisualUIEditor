@@ -367,8 +367,8 @@ NodeData.prototype = {
         } else if(this._node._className == "Input") {
             if(path == "fontColor") {
                 this._node.fontColor = new cc.Color(value.r, value.g, value.b, value.a);
-            } else if(path == "placeHolderFontColor") {
-                this._node.placeHolderFontColor = new cc.Color(value.r, value.g, value.b, value.a);
+            } else if(path == "placeholderFontColor") {
+                this._node.placeholderFontColor = new cc.Color(value.r, value.g, value.b, value.a);
             } else {
                 this._node[path] = value;
             }
@@ -750,8 +750,8 @@ InputData.prototype = {
 
     get fontColor() {
         let color = cc.Color.BLACK;
-        if(this._node._textLabel) {
-            color = this._node._textLabel.color;
+        if(this._node._nativeControl._textLabel) {
+            color = this._node._nativeControl._textLabel.color;
         }
         return {
             path: "fontColor",
@@ -787,7 +787,7 @@ InputData.prototype = {
 
     get placeHolderFontName() {
         return {
-            path: "placeHolderFontName",
+            path: "placeholderFontName",
             type: "string",
             name: "placeHolderFontName",
             attrs: {
@@ -798,7 +798,7 @@ InputData.prototype = {
 
     get placeHolderFontSize() {       
         return {
-            path: "placeHolderFontSize",
+            path: "placeholderFontSize",
             type: "number",
             name: "placeHolderFontSize",
             attrs: {
@@ -809,9 +809,9 @@ InputData.prototype = {
 
     get placeHolderFontColor() {
         return {
-            path: "placeHolderFontColor",
+            path: "placeholderFontColor",
             type: "color",
-            name: "placeHolderFontColor",
+            name: "placeholderFontColor",
             attrs: {
             },
             value: this._node._placeholderColor || cc.Color.BLACK,

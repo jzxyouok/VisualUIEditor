@@ -112,17 +112,24 @@ function cocosExportNodeData(node) {
 
     } else if(node._className == "Input") {
         (node.string.length > 0) && (data["string"] = node.string);
-        // (node.fontName.length > 0) && (data["fontName"] = node.fontName);
-        // (node.fontSize > 0) && (data["fontSize"] = node.fontSize);
-        // (!node.fontColor.equals(cc.Color.BLACK)) && (data["fontColor"] = [node.fontColor.r, node.fontColor.g, node.fontColor.b, node.fontColor.a]);
+        let value = null;
+        value = node._nativeControl._edFontName;
+        (value.length > 0) && (data["fontName"] = value);
+        value = node._nativeControl._edFontSize;
+        (value != 14) && (data["fontSize"] = value);
+        value = node._nativeControl._textLabel ? node._nativeControl._textLabel.color : cc.Color.BLACK;
+        (!value.equals(cc.Color.BLACK)) && (data["fontColor"] = [value.r, value.g, value.b, value.a]);
         (node.inputFlag != _ccsg.EditBox.InputFlag.SENSITIVE) && (data["inputFlag"] = node.inputFlag);
         (node.inputMode != _ccsg.EditBox.InputMode.ANY) && (data["inputMode"] = node.inputMode);
         (node.returnType != _ccsg.EditBox.KeyboardReturnType.DEFAULT) && (data["returnType"] = node.returnType);
         (node.maxLength != 50) && (data["maxLength"] = node.maxLength);
-        // (node.placeHolder.length > 0) && (data["placeHolder"] = node.placeHolder);
-        // (node.placeHolderFontName.length > 0) && (data["placeHolderFontName"] = node.placeHolderFontName);
-        // (node.placeholderFontSize > 0) && (data["placeholderFontSize"] = node.placeholderFontSize);
-        // (!node.placeholderFontColor.equals(cc.Color.GRAY)) && (data["placeholderFontColor"] = [node.placeholderFontColor.r, node.placeholderFontColor.g, node.placeholderFontColor.b, node.placeholderFontColor.a]);
+        (node.placeHolder.length > 0) && (data["placeHolder"] = node.placeHolder);
+        value = node._placeholderFontName;
+        (value.length > 0) && (data["placeHolderFontName"] = value);
+        value = node._placeholderFontSize;
+        (value != 14) && (data["placeholderFontSize"] = value);
+        value = node._placeholderColor || cc.Color.GRAY;
+        (!value.equals(cc.Color.GRAY)) && (data["placeholderFontColor"] = [value.r, value.g, value.b, value.a]);
     } else if(node._className == "Slider") {
         
     } else if(node._className == "Button") {
@@ -141,7 +148,7 @@ function cocosExportNodeData(node) {
             // this.placeHolderFontName,
             // this.placeHolderFontSize,
             // this.placeHolderFontColor,
-            
+
     if(!isBaseType(node)) {
         let childrenData = [];
         let children = node.getChildren();
@@ -163,6 +170,13 @@ function saveSceneToFile(filename, scene) {
     fs.writeFileSync(filename, JSON.stringify(data, null, 4));
 }
 
+function covertToColor(value) {
+    if(!value || !value[0] || !value[3]) {
+        return null;
+    }
+    return new cc.Color(value[0], value[1], value[2], value[3]);
+}
+
 function cocosGenNodeByData(data, parent) {
     let node = null;
     if(data.type == "Scene") {
@@ -171,6 +185,9 @@ function cocosGenNodeByData(data, parent) {
         node = new _ccsg.Sprite("res/grid.png");
     } else if(data.type == "LabelTTF") {
         node = new cc.LabelTTF("11111");
+    } else if(data.type == "Input") {
+        node = new _ccsg.EditBox(cc.size(100, 20), null);
+        node._className = data.type;
     } else {
         node = new _ccsg.Node();
     }
@@ -198,6 +215,20 @@ function cocosGenNodeByData(data, parent) {
         data.verticalAlign && (node.verticalAlign = data.verticalAlign);
         data.fontSize && (node.fontSize = data.fontSize);
         data.fontName && (node.fontName = data.fontName);
+        (covertToColor(data.fontColor)) && (node.fontColor = covertToColor(data.fontColor));
+    } else if(data.type == "Input") {
+        data.string && (node.string = data.string);
+        data.fontSize && (node.fontSize = data.fontSize);
+        data.fontName && (node.fontName = data.fontName);
+        (covertToColor(data.fontColor)) && (node.fontColor = covertToColor(data.fontColor));
+        data.maxLength && (node.maxLength = data.maxLength);
+        data.placeholder && (node.string = data.placeholder);
+        data.placeholderFontName && (node.placeholderFontName = data.placeholderFontName);
+        data.placeholderFontSize && (node.placeholderFontSize = data.placeholderFontSize);
+        (covertToColor(data.placeholderFontColor)) && (node.placeholderFontColor = covertToColor(data.placeholderFontColor));
+        data.inputFlag && (node.inputFlag = data.inputFlag);
+        data.inputMode && (node.inputMode = data.inputMode);
+        data.returnType && (node.returnType = data.returnType);
     }
 
     data.children = data.children || [];

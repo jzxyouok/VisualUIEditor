@@ -19,6 +19,10 @@ function SliderData(node) {
     this._node = node;
 }
 
+function InputData(node) {
+    this._node = node;
+}
+
 function FixNodeHor(node, step) {
     node.x += step;
     if(node.left) {
@@ -216,6 +220,8 @@ NodeData.prototype = {
             node.push(new LabelData(this._node));
         } else if(this._node._className == "Slider") {
             node.push(new SliderData(this._node));
+        } else if(this._node._className == "Input") {
+            node.push(new InputData(this._node));
         } else {
         }
         
@@ -349,6 +355,14 @@ NodeData.prototype = {
                 this._node.setBlendFunc(parseInt(value), this._node.getBlendFunc().dst);
             } else if(path == "dstBlendFactor") {
                 this._node.setBlendFunc(this._node.getBlendFunc().src, parseInt(value));
+            }
+        } else if(this._node._className == "Slider") {
+            if(path == "totalLength") {
+                this._node.totalLength = parseFloat(value);
+            } else if(path == "progress") {
+                this._node.progress = parseFloat(value);
+            } else if(path == "mode") {
+                this._node.mode = parseInt(value);
             }
         } else {
             return;
@@ -685,4 +699,222 @@ SliderData.prototype = {
             this.mode,
         ];
     }
+}
+
+InputData.prototype = {
+    __editor__ : {
+        "inspector1": "cc.Input",
+    },
+    __displayName__: "Input",
+    __type__: "cc.Input",
+
+    get string() {
+        return {
+            path: "string",
+            type: "string",
+            name: "string",
+            attrs: {
+            },
+            value: this._node.string,
+        };
+    },
+
+    get fontName() {
+        return {
+            path: "fontName",
+            type: "string",
+            name: "fontName",
+            attrs: {
+            },
+            value: this._node._nativeControl._edFontName,
+        };
+    },
+
+    get fontSize() {
+        return {
+            path: "fontSize",
+            type: "number",
+            name: "fontSize",
+            attrs: {
+            },
+            value: this._node._nativeControl._edFontSize,
+        };
+    },
+
+    get fontColor() {
+        let color = cc.Color.BLACK;
+        if(this._node._textLabel) {
+            color = this._node._textLabel.color;
+        }
+        return {
+            path: "fontColor",
+            type: "color",
+            name: "fontColor",
+            attrs: {
+            },
+            value: color,
+        };
+    },
+
+    get maxLength() {
+        return {
+            path: "maxLength",
+            type: "number",
+            name: "maxLength",
+            attrs: {
+            },
+            value: this._node.maxLength,
+        };
+    },
+
+    get placeHolderString() {
+        return {
+            path: "placeHolder",
+            type: "string",
+            name: "placeHolder",
+            attrs: {
+            },
+            value: this._node.placeHolder,
+        };
+    },
+
+    get placeHolderFontName() {
+        return {
+            path: "placeHolderFontName",
+            type: "string",
+            name: "placeHolderFontName",
+            attrs: {
+            },
+            value: this._node._placeholderFontName,
+        };
+    },
+
+    get placeHolderFontSize() {       
+        return {
+            path: "placeHolderFontSize",
+            type: "number",
+            name: "placeHolderFontSize",
+            attrs: {
+            },
+            value: this._node._placeholderFontSize,
+        };
+    },
+
+    get placeHolderFontColor() {
+        return {
+            path: "placeHolderFontColor",
+            type: "color",
+            name: "placeHolderFontColor",
+            attrs: {
+            },
+            value: this._node._placeholderColor || cc.Color.BLACK,
+        };
+    },
+
+    get maxLength() {
+        return {
+            path: "maxLength",
+            type: "number",
+            name: "maxLength",
+            attrs: {
+            },
+            value: this._node.maxLength,
+        };
+    },
+
+    get inputFlag() {
+        return {
+            path: "inputFlag",
+            type: "select",
+            name: "inputFlag",
+            attrs: {
+                selects: {
+                    0: "PASSWORD",
+                    1: "SENSITIVE",
+                    2: "INITIAL_CAPS_WORD",
+                    3: "INITIAL_CAPS_SENTENCE",
+                    4: "INITIAL_CAPS_ALL_CHARACTERS",
+                }
+            },
+            value: this._node._editBoxInputFlag,
+        };
+    },
+
+    get inputMode() {
+        return {
+            path: "inputMode",
+            type: "select",
+            name: "inputMode",
+            attrs: {
+                selects: {
+                    0: "ANY",
+                    1: "EMAIL_ADDR",
+                    2: "NUMERIC",
+                    3: "PHONE_NUMBER",
+                    4: "URL",
+                    5: "DECIMAL",
+                    6: "SINGLE_LINE",
+                }
+            },
+            value: this._node._editBoxInputMode,
+        };
+    },
+
+    get returnType() {
+        return {
+            path: "returnType",
+            type: "select",
+            name: "returnType",
+            attrs: {
+                selects: {
+                    0: "DEFAULT",
+                    1: "DONE",
+                    2: "SEND",
+                    3: "SEARCH",
+                    4: "GO",
+                }
+            },
+            value: this._node._keyboardReturnType,
+        };
+    },
+
+
+    get __props__() {
+        return [
+            this.string,
+            this.fontName,
+            this.fontSize,
+            this.fontColor,
+            this.inputFlag,
+            this.inputMode,
+            this.returnType,
+            this.maxLength,
+            this.placeHolderString,
+            this.placeHolderFontName,
+            this.placeHolderFontSize,
+            this.placeHolderFontColor,
+        ];
+    }
+    
+/**
+ * 
+ * 
+ * 
+ * <p>cc.EditBox is a brief Class for edit box.<br/>
+ * You can use this widget to gather small amounts of text from the user.</p>
+ *
+ * @class
+ * @extends cc.Node
+ *
+ * @property {String}   placeHolder             - Place holder of edit box
+ * @property {String}   placeHolderFont         - <@writeonly> Config font of place holder
+ * @property {String}   placeHolderFontName     - <@writeonly> Config font name of place holder
+ * @property {Number}   placeHolderFontSize     - <@writeonly> Config font size of place holder
+ * @property {cc.Color} placeHolderFontColor    - <@writeonly> Config font color of place holder
+ * @property {cc.EditBox.InputFlag} inputFlag   - <@writeonly> Input flag of edit box, one of the cc.EditBox.InputFlag constants. e.g.cc.EditBox.InputFlag..PASSWORD
+ * @property {Object}   delegate                - <@writeonly> Delegate of edit box
+ * @property {cc.EditBox.InputMode} inputMode   - <@writeonly> Input mode of the edit box. Value should be one of the cc.EditBox.InputMode constants.
+ * @property {Number}   returnType              - <@writeonly> Return type of edit box, value should be one of the KeyboardReturnType constants.
+ *
+ */
 }

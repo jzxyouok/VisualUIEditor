@@ -510,6 +510,10 @@
             runScene.addChild(node);
         } else if(data == "Input") {
             node = new _ccsg.EditBox(cc.size(100, 20), new cc.Scale9Sprite("res/default/shurukuang.png"));
+            node.placeHolder = "VisualUI";
+            node.placeholderFontName = "Arial";
+            node.placeholderFontColor = cc.Color.WHITE;
+            node._className = "Input";
             runScene.addChild(node);
         } else if(data == "Slider") {
             node = new cc.ControlSlider("res/default/Slider_Back.png", "res/default/Slider_Bar.png", "res/default/SliderNode_Normal.png");

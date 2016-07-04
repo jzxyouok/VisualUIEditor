@@ -8,13 +8,13 @@ Editor.App.extend({
   init ( opts, cb ) {
     let settingsPath = Path.join(Editor.App.path, '.settings');
     
-    Electron.app.on('activate', () => {
-      if(window.localStorage["projectFolder"]) {
-        let path = window.localStorage["projectFolder"];
-        window["projectFolder"] = path;
-        Editor.Ipc.sendToAll("ui:project_floder_change", {folder: path});
-      }
-    });
+    // Electron.app.on('activate', () => {
+    //   if(window.localStorage["projectFolder"]) {
+    //     let path = window.localStorage["projectFolder"];
+    //     window["projectFolder"] = path;
+    //     Editor.Ipc.sendToAll("ui:project_floder_change", {folder: path});
+    //   }
+    // });
 
     Editor.init({
       'package-search-path': [

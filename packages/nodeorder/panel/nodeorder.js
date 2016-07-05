@@ -41,6 +41,9 @@
 
     newEntryRecursively: function ( entry ) {
         var el = this.newEntry(entry);
+        if(isBaseTypeByName(el.name)) {
+            return el;
+        }
         let children = entry.getChildren();
         if ( children ) {
             children.forEach( function ( childEntry ) {
@@ -88,10 +91,14 @@
         ev.dataTransfer.dropEffect = "all"; // drop it like it's hot
 
         var rect = ev.currentTarget.getBoundingClientRect();
-        if (ev.clientY - rect.top < rect.height / 4) {
+        let ratio = 4;
+        if(isBaseTypeByName(ev.currentTarget.name)) {
+            ratio = 2;
+        }
+        if (ev.clientY - rect.top <= rect.height / ratio) {
             ev.target.style.background = "red";
             this._curOpMode = "top";
-        } else if(rect.bottom - ev.clientY < rect.height / 4) {
+        } else if(rect.bottom - ev.clientY <= rect.height / ratio) {
             ev.target.style.background = "yellow";
             this._curOpMode = "bottom";
         } else {

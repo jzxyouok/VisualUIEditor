@@ -1,11 +1,15 @@
 var fs = require('fs');
 
-function isBaseType(node) {
-    let name = node._className;
+function isBaseTypeByName(name) {
     if(name == "Label" || name == "Slider" || name == "Sprite" || name == "Scale9" || name == "Input" || name == "Button") {
         return true;
     }
     return false;
+}
+
+function isBaseType(node) {
+    let name = node._className;
+    return isBaseTypeByName(name);
 }
 
 function cocosExportNodeData(node) {
@@ -123,7 +127,7 @@ function cocosExportNodeData(node) {
         (node.inputMode != _ccsg.EditBox.InputMode.ANY) && (data["inputMode"] = node.inputMode);
         (node.returnType != _ccsg.EditBox.KeyboardReturnType.DEFAULT) && (data["returnType"] = node.returnType);
         (node.maxLength != 50) && (data["maxLength"] = node.maxLength);
-        (node.placeHolder.length > 0) && (data["placeHolder"] = node.placeHolder);
+        (node.placeHolder && node.placeHolder.length > 0) && (data["placeHolder"] = node.placeHolder);
         value = node._placeholderFontName;
         (value.length > 0) && (data["placeHolderFontName"] = value);
         value = node._placeholderFontSize;
@@ -135,19 +139,6 @@ function cocosExportNodeData(node) {
     } else if(node._className == "Button") {
         
     }
-    
-            // this.string,
-            // this.fontName,
-            // this.fontSize,
-            // this.fontColor,
-            // this.inputFlag,
-            // this.inputMode,
-            // this.returnType,
-            // this.maxLength,
-            // this.placeHolderString,
-            // this.placeHolderFontName,
-            // this.placeHolderFontSize,
-            // this.placeHolderFontColor,
 
     if(!isBaseType(node)) {
         let childrenData = [];
@@ -208,6 +199,8 @@ function cocosGenNodeByData(data, parent) {
     data.opacity && (node.opacity = parseFloat(data.opacity));
     data.rotation && (node.rotation = parseFloat(data.rotation));
 
+    (covertToColor(data.color)) && (node.color = covertToColor(data.color));
+
     if(data.type == "LabelTTF") {
         data.string && (node.string = data.string);
         data.textAlign && (node.textAlign = data.textAlign);
@@ -215,7 +208,8 @@ function cocosGenNodeByData(data, parent) {
         data.verticalAlign && (node.verticalAlign = data.verticalAlign);
         data.fontSize && (node.fontSize = data.fontSize);
         data.fontName && (node.fontName = data.fontName);
-        (covertToColor(data.fontColor)) && (node.fontColor = covertToColor(data.fontColor));
+        (covertToColor(data.fillStyle)) && (node.fillStyle = covertToColor(data.fillStyle));
+        (covertToColor(data.strokeStyle)) && (node.strokeStyle = covertToColor(data.strokeStyle));
     } else if(data.type == "Input") {
         data.string && (node.string = data.string);
         data.fontSize && (node.fontSize = data.fontSize);

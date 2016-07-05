@@ -534,7 +534,9 @@
             node._className = "Slider";
             runScene.addChild(node);
         } else if(data == "Button") {
-            node = new cc.ControlButton(new cc.LabelTTF("VisualUI", "Arial", 24), new cc.Scale9Sprite("res/default/Button_Disable.png"));
+            // node = new cc.ControlButton(new cc.LabelTTF("VisualUI", "Arial", 24), new cc.Scale9Sprite("res/default/Button_Disable.png"));
+            // runScene.addChild(node);
+            node = new ccui.Button("res/default/Button_Disable.png", "res/default/Button_Disable.png", "res/default/Button_Disable.png");
             runScene.addChild(node);
         }
 

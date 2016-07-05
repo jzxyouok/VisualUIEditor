@@ -3,7 +3,7 @@
 
   var Fs = require('fire-fs');
 
-  var dragIdName = "NodeMoveUUID";
+  var dragIdName = "ResMoveUUID";
   
   Editor.polymerPanel('resorder', {
     properties: {
@@ -66,20 +66,28 @@
         ev.stopPropagation();
         
         ev.target.style.background = 'blue';
-        ev.dataTransfer.effectAllowed = "all";
-        ev.dataTransfer.dropEffect = "all"; // drop it like it's hot
     },
     dragOver: function(ev) {
+        var data = ev.dataTransfer.getData(dragIdName);
+        if(!data) {
+            ev.dataTransfer.effectAllowed = "none";
+            ev.dataTransfer.dropEffect = "none"; // drop it like it's hot
+            return;
+        }
         ev.dataTransfer.effectAllowed = "all";
         ev.dataTransfer.dropEffect = "all"; // drop it like it's hot
         ev.preventDefault();
         ev.stopPropagation();
 
         var rect = ev.currentTarget.getBoundingClientRect();
-        if (ev.clientY - rect.top < rect.height / 4) {
+        let ratio = 4;
+        if(!ev.currentTarget.isDirectory) {
+            ratio = 2;
+        }
+        if (ev.clientY - rect.top < rect.height / ratio) {
             ev.target.style.background = "red";
             this._curOpMode = "top";
-        } else if(rect.bottom - ev.clientY < rect.height / 4) {
+        } else if(rect.bottom - ev.clientY < rect.height / ratio) {
             ev.target.style.background = "yellow";
             this._curOpMode = "bottom";
         } else {
@@ -113,13 +121,40 @@
         if (Editor.UI.PolymerUtils.isSelfOrAncient(parentItem, sourceItem)) {
             return;
         }
-        if (this._curOpMode == "top") {
-            this.$.tree.setItemBefore(sourceItem, parentItem);
-        } else if(this._curOpMode == "bottom") {
-            this.$.tree.setItemAfter(sourceItem, parentItem);
-        } else {
-            this.$.tree.setItemParent(sourceItem, parentItem);
+        let dest = parentItem.path;
+        if(this._curOpMode == "top" || this._curOpMode == "bottom") {
+            let parentNode = Polymer.dom(parentItem).parentNode;
+            if(!parentNode || !parentNode.path) {
+                return;
+            }
+            dest = parentNode.path;
         }
+        dest = dest + "/" + sourceItem.name;
+
+        fs.rename(sourceItem.path, dest, (function (err) {
+            if(err) {
+                console.error(err);
+                return;
+            }
+            
+            sourceItem.path = dest;
+            if (this._curOpMode == "top") {
+                this.$.tree.setItemBefore(sourceItem, parentItem);
+            } else if(this._curOpMode == "bottom") {
+                this.$.tree.setItemAfter(sourceItem, parentItem);
+            } else {
+                this.$.tree.setItemParent(sourceItem, parentItem);
+            }
+            console.log('重命名成功')
+        }).bind(this));
+
+        // if (this._curOpMode == "top") {
+        //     this.$.tree.setItemBefore(sourceItem, parentItem);
+        // } else if(this._curOpMode == "bottom") {
+        //     this.$.tree.setItemAfter(sourceItem, parentItem);
+        // } else {
+        //     this.$.tree.setItemParent(sourceItem, parentItem);
+        // }
     },
     dblclickItem: function(e) {
         Editor.log("dblclick");

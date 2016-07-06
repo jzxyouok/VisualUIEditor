@@ -5,7 +5,7 @@
   "author": "Firebox Technology",
   "main": "main.js",
   "main-menu": {
-    "i18n:MAIN_MENU.panel.title/i18n:MAIN_MENU.panel.console": {
+    "显示/i18n:MAIN_MENU.panel.console": {
       "icon": "panel/icon.png",
       "accelerator": "CmdOrCtrl+0",
       "message": "console:open"

@@ -145,16 +145,7 @@
             } else {
                 this.$.tree.setItemParent(sourceItem, parentItem);
             }
-            console.log('重命名成功')
         }).bind(this));
-
-        // if (this._curOpMode == "top") {
-        //     this.$.tree.setItemBefore(sourceItem, parentItem);
-        // } else if(this._curOpMode == "bottom") {
-        //     this.$.tree.setItemAfter(sourceItem, parentItem);
-        // } else {
-        //     this.$.tree.setItemParent(sourceItem, parentItem);
-        // }
     },
     dblclickItem: function(e) {
         Editor.log("dblclick");

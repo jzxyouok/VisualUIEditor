@@ -91,7 +91,7 @@ MainMenu.remove = function ( path ) {
  * @method _resetToBuiltin
  */
 MainMenu._resetToBuiltin = function () {
-  Menu.register('main-menu', _builtinMainMenu, true);
+  Menu.register('main-menu', _builtinMainMenu, false);
   MainMenu.init();
 };
 

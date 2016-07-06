@@ -6,14 +6,14 @@ MenuUtil.createFileMenu = function() {
         {
             label: Editor.T('创建文件夹'),
             click () {
-                Editor.log("create folder");
+                Editor.Ipc.sendToAll('ui:create_folder');
             }
         },
         { type: 'separator' },
         {
             label: Editor.T('创建Scene'),
             click () {
-                Editor.log("create scene");
+                Editor.Ipc.sendToAll('ui:create_scene');
             }
         },
     ]

@@ -21,13 +21,20 @@
       Editor.UI.DockUtils.root.draggable = false;
       this._dragprop = [];
       this._curOpMode = "center";
+      this._curSelectItem = null;
 
+      this.addEventListener("mousedown", function(e) {
+          if(e.button=='2') {
+              Editor.Ipc.sendToPackage('resorder', 'popup-open-file-menu', e.clientX, e.clientY);
+          }
+      });
 
 
     },
 
     build: function ( data ) {
         console.time('tree');
+        this.$.tree.clear();
 
         data.forEach( function ( entry ) {
             var newEL = this.newEntryRecursively(entry);
@@ -153,9 +160,6 @@
         if(e.currentTarget.doselect) {
             e.currentTarget.doselect(e);
         }
-        if(e.currentTarget.isDirectory && e.currentTarget.foldable) {
-            e.currentTarget.folded = !e.currentTarget.folded;
-        }
         if(!e.currentTarget.isDirectory) {
             Editor.Ipc.sendToAll("ui:open_file", {path: e.currentTarget.path});
         }
@@ -165,6 +169,9 @@
     clickItem: function(e) {
         if(!e.ctrlKey) {
             this.clearSelectInfo();
+            if(e.currentTarget.isDirectory && e.currentTarget.foldable) {
+                e.currentTarget.folded = !e.currentTarget.folded;
+            }
         }
         if(e.currentTarget.doselect) {
             e.currentTarget.doselect(e);
@@ -196,21 +203,37 @@
 
       item['onclick'] = this.clickItem.bind(this);
       item['ondblclick'] = this.dblclickItem.bind(this);
+
+      item.addEventListener("end-editing", function(e) {
+          item.$.input.hidden = true;
+          item.$.name.hidden = false;
+          if(e.detail.cancel) {
+              return;
+          }
+          item.value = e.target.value;
+      });
+        
       let _item = item;
-      item['doselect'] = (e) => {
+      item['doselect'] = ((e) => {
           if(_item._isSlected) {
               return;
+          }
+          if(this._curSelectItem == null) {
+              this._curSelectItem = _item;
           }
           _item.style.background = 'blue';
           _item._isSlected = true;
         //   if(e)
         //     Editor.Ipc.sendToAll("ui:select_item", {uuid : _item._uuid, ctrlKey : e.ctrlKey});
-      };
+      }).bind(this);
 
-      item['dounselect'] = () => {
+      item['dounselect'] = (() => {
+          if(this._curSelectItem == _item) {
+              this._curSelectItem = null;
+          }
           _item._isSlected = false;
           _item.style.removeProperty('background');
-      }
+      }).bind(this);
 
       item.name = entry.name;
       item.path = entry.path;
@@ -234,6 +257,27 @@
             return false;
         });
         this.build(files);
+      },
+      'ui:create_folder'(event, message) {
+
+                Editor.log("create folder");
+      },
+      'ui:create_scene'(event, message) {
+
+                Editor.log("create scene");
+      },
+      'ui:rename-file-or-folder'(event, message) {
+           if(this._curSelectItem == null) {
+               return;
+           }
+           this._curSelectItem.$.name.hidden = true;
+           this._curSelectItem.$.input.hidden = false;
+           this._curSelectItem.$.input.focus();
+                Editor.log("rename scene");
+      },
+      'ui:delete-file-or-folder'(event, message) {
+          
+                Editor.log("delete scene");
       },
     },
 

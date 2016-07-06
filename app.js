@@ -4,20 +4,11 @@
 const Editor = require('./editor-framework/index');
 const Path = require('fire-path');
 
-const MenuUtil = require('./js/MenuUtil.js');
+global.MenuUtil = require('./js/MenuUtil.js');
 
 Editor.App.extend({
   init ( opts, cb ) {
     let settingsPath = Path.join(Editor.App.path, '.settings');
-    
-
-    // Electron.app.on('activate', () => {
-    //   if(window.localStorage["projectFolder"]) {
-    //     let path = window.localStorage["projectFolder"];
-    //     window["projectFolder"] = path;
-    //     Editor.Ipc.sendToAll("ui:project_floder_change", {folder: path});
-    //   }
-    // });
 
     Editor.init({
       'package-search-path': [
@@ -32,6 +23,7 @@ Editor.App.extend({
             label: Editor.T('打开项目'),
             click () {
               Editor.log("about!!!!!!!!!!!!!");
+              Editor.Ipc.sendToAll('ui:open-project-folder');
             }
           },
         ];
@@ -60,7 +52,7 @@ Editor.App.extend({
                 label: Editor.T('Quit'),
                 accelerator: 'CmdOrCtrl+Q',
                 click () {
-                  Window.main.close();
+                  Editor.Window.main.close();
                 }
               },
             ]
@@ -191,7 +183,5 @@ Editor.App.extend({
       });
     }
     mainWin.focus();
-
-InitUIEditorMenu();
   },
 });

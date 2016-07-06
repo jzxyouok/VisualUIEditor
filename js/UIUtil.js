@@ -1,3 +1,4 @@
+const ipcRenderer = Electron.ipcRenderer;
 
 function ChangeProjectFolder() {
     let newFolder = Electron.remote.dialog.showOpenDialog({properties: ['openFile', 'openDirectory']});
@@ -7,3 +8,7 @@ function ChangeProjectFolder() {
         Editor.Ipc.sendToAll("ui:project_floder_change", {folder: newFolder[0]});
     }
 }
+
+ipcRenderer.on('ui:open-project-folder', (event, message, ...args) => {
+    ChangeProjectFolder();
+});

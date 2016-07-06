@@ -4,21 +4,26 @@ const Electron = require('electron');
 
 module.exports = {
   load () {
-    Editor.Menu.register( 'open-log-file', () => {
+    Editor.Menu.register( 'open-file-operate', () => {
       return [
         {
-          label: Editor.T('CONSOLE.editor_log'),
+          label: Editor.T('新建'),
+          params: [],
+          submenu: MenuUtil.createFileMenu(),
+        },
+        { type: 'separator' },
+        {
+          label: Editor.T('重命名'),
           params: [],
           click () {
-            console.info("xxxxxxxxxxxxxxxxxxxx");
-            Editor.Ipc.sendToMain('console:open-log-file');
+            Editor.Ipc.sendToAll('ui:rename-file-or-folder');
           }
         },
         {
-          label: Editor.T('CONSOLE.cocos_console_log'),
+          label: Editor.T('删除'),
           params: [],
           click () {
-            Editor.Ipc.sendToMain('app:open-cocos-console-log');
+            Editor.Ipc.sendToAll('ui:delete-file-or-folder');
           }
         },
       ];
@@ -27,7 +32,7 @@ module.exports = {
   },
 
   unload () {
-    Editor.Menu.unregister( 'open-log-file' );
+    Editor.Menu.unregister( 'open-file-operate' );
   },
 
   messages: {
@@ -42,8 +47,8 @@ module.exports = {
     'console:clear' () {
       Editor.clearLog();
     },
-    'popup-open-log-menu': function (event, x, y) {
-      let menuTmpl = Editor.Menu.getMenu('open-log-file');
+    'popup-open-file-menu': function (event, x, y) {
+      let menuTmpl = Editor.Menu.getMenu('open-file-operate');
 
       let editorMenu = new Editor.Menu(menuTmpl, event.sender);
       x = Math.floor(x);

@@ -5,7 +5,7 @@
   "author": "Firebox Technology",
   "main": "main.js",
   "main-menu": {
-    "显示/i18n:MAIN_MENU.panel.console": {
+    "显示/控制台": {
       "icon": "panel/icon.png",
       "accelerator": "CmdOrCtrl+0",
       "message": "console:open"
@@ -16,7 +16,7 @@
     "ui": "polymer",
     "popable": false,
     "type": "dockable",
-    "title": "i18n:MAIN_MENU.panel.console",
+    "title": "显示/控制台",
     "icon": "panel/icon.png",
     "height": 300,
     "shortcuts": {

@@ -4,175 +4,7 @@
 const Editor = require('./editor-framework/index');
 const Path = require('fire-path');
 
-
-const {Menu, MenuItem} = require('electron');
-
-function InitUIEditorMenu() {
-    const template = [
-  {
-    label: 'Edit',
-    submenu: [
-      {
-        role: 'undo'
-      },
-      {
-        role: 'redo'
-      },
-      {
-        type: 'separator'
-      },
-      {
-        role: 'cut'
-      },
-      {
-        role: 'copy'
-      },
-      {
-        role: 'paste'
-      },
-      {
-        role: 'pasteandmatchstyle'
-      },
-      {
-        role: 'delete'
-      },
-      {
-        role: 'selectall'
-      },
-    ]
-  },
-  {
-    label: 'View',
-    submenu: [
-      {
-        label: 'Reload',
-        accelerator: 'CmdOrCtrl+R',
-        click(item, focusedWindow) {
-          if (focusedWindow) focusedWindow.reload();
-        }
-      },
-      {
-        role: 'togglefullscreen'
-      },
-      {
-        label: 'Toggle Developer Tools',
-        accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
-        click(item, focusedWindow) {
-          if (focusedWindow)
-            focusedWindow.webContents.toggleDevTools();
-        }
-      },
-    ]
-  },
-  {
-    role: 'window',
-    submenu: [
-      {
-        role: 'minimize'
-      },
-      {
-        role: 'close'
-      },
-    ]
-  },
-  {
-    role: 'help',
-    submenu: [
-      {
-        label: 'Learn More',
-        click() { require('electron').shell.openExternal('http://electron.atom.io'); }
-      },
-    ]
-  },
-];
-
-if (process.platform === 'darwin') {
-  const name = require('electron').remote.app.getName();
-  template.unshift({
-    label: name,
-    submenu: [
-      {
-        role: 'about'
-      },
-      {
-        type: 'separator'
-      },
-      {
-        role: 'services',
-        submenu: []
-      },
-      {
-        type: 'separator'
-      },
-      {
-        role: 'hide'
-      },
-      {
-        role: 'hideothers'
-      },
-      {
-        role: 'unhide'
-      },
-      {
-        type: 'separator'
-      },
-      {
-        role: 'quit'
-      },
-    ]
-  });
-  // Window menu.
-  template[3].submenu = [
-    {
-      label: 'Close',
-      accelerator: 'CmdOrCtrl+W',
-      role: 'close'
-    },
-    {
-      label: 'Minimize',
-      accelerator: 'CmdOrCtrl+M',
-      role: 'minimize'
-    },
-    {
-      label: 'Zoom',
-      role: 'zoom'
-    },
-    {
-      type: 'separator'
-    },
-    {
-      label: 'Bring All to Front',
-      role: 'front'
-    }
-  ];
-}
-
-// Editor.MainMenu.clear();
-      // let menuTmpl = Editor.Menu.getMenu('main-menu');
-      // menuTmpl.clear();
-// const menu = Menu.buildFromTemplate(template);
-// Menu.setApplicationMenu(menu);
-}
-
-    // Editor.Menu.register( 'main-menu', () => {
-    //   return [
-    //     {
-    //       label: Editor.T('CONSOLE.editor_log'),
-    //       params: [],
-    //       click () {
-    //         console.info("xxxxxxxxxxxxxxxxxxxx");
-    //         Editor.Ipc.sendToMain('console:open-log-file');
-    //       }
-    //     },
-    //     {
-    //       label: Editor.T('CONSOLE.cocos_console_log'),
-    //       params: [],
-    //       click () {
-    //         Editor.Ipc.sendToMain('app:open-cocos-console-log');
-    //       }
-    //     },
-    //   ];
-    // }, true );
+const MenuUtil = require('./js/MenuUtil.js');
 
 Editor.App.extend({
   init ( opts, cb ) {
@@ -195,6 +27,21 @@ Editor.App.extend({
       'panel-window': 'app://window.html',
       'layout': Editor.url('app://layout.json'),
       'main-menu': () => {
+        let fileSubMenu = [
+          {
+            label: Editor.T('打开项目'),
+            click () {
+              Editor.log("about!!!!!!!!!!!!!");
+            }
+          },
+        ];
+
+        let otherFileMenu = MenuUtil.createFileMenu();
+        otherFileMenu.forEach(function(v) {
+          fileSubMenu.push(v)
+        });   
+
+        // createFileMenu
         return [
           {
             label: Editor.T('VisualUIEditor'),
@@ -214,6 +61,36 @@ Editor.App.extend({
                 accelerator: 'CmdOrCtrl+Q',
                 click () {
                   Window.main.close();
+                }
+              },
+            ]
+          },
+          //File
+          {
+            label: Editor.T('文件'),
+            role: 'file',
+            id: 'file',
+            params: [],
+            submenu: fileSubMenu,
+          },
+                
+          // Layout
+          {
+            label: Editor.T('MAIN_MENU.layout.title'),
+            id: 'layout',
+            submenu: [
+              {
+                label: Editor.T('MAIN_MENU.layout.default'),
+                click () {
+                  let layoutInfo = require(Editor.Window.defaultLayout);
+                  Editor.Ipc.sendToMainWin( 'editor:reset-layout', layoutInfo);
+                }
+              },
+              {
+                label: Editor.T('MAIN_MENU.layout.empty'),
+                dev: true,
+                click () {
+                  Editor.Ipc.sendToMainWin( 'editor:reset-layout', null);
                 }
               },
             ]

@@ -4,6 +4,13 @@
   "description": "A simple console editor",
   "author": "Firebox Technology",
   "main": "main.js",
+  "main-menu": {
+    "显示/属性管理器": {
+      "icon": "panel/icon.png",
+      "accelerator": "CmdOrCtrl+3",
+      "message": "proppanel:open"
+    }
+  },
   "panel": {
     "main": "panel/proppanel.html",
     "ui": "polymer",

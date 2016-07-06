@@ -3,7 +3,14 @@
   "version": "0.1.4",
   "description": "A simple console editor",
   "author": "Firebox Technology",
-  "main": "main.js",
+  "main": "main.js",  
+  "main-menu": {
+    "显示/控件库": {
+      "icon": "panel/icon.png",
+      "accelerator": "CmdOrCtrl+1",
+      "message": "controlpanel:open"
+    }
+  },
   "panel": {
     "main": "panel/controlpanel.html",
     "ui": "polymer",

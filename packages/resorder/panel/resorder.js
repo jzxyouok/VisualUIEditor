@@ -22,6 +22,7 @@
       this._dragprop = [];
       this._curOpMode = "center";
       this._curSelectItem = null;
+      this._curMouseOverItem = null;
 
       this.addEventListener("mousedown", function(e) {
           if(e.button=='2') {
@@ -207,6 +208,26 @@
       item['onclick'] = this.clickItem.bind(this);
       item['ondblclick'] = this.dblclickItem.bind(this);
 
+      item["onmouseover"] = (function(e) {
+          this._curMouseOverItem = item;
+          if(!item._isSlected) {
+            _item.style.background = 'LightSkyBlue';
+          }
+          e.preventDefault();
+          e.stopPropagation();
+      }).bind(this);
+
+      item["onmouseout"] = (function(e) {
+          if(this._curMouseOverItem == item) {
+              this._curMouseOverItem = null;
+              if(!item._isSlected) {
+                  item.style.removeProperty('background');
+              }
+              e.preventDefault();
+              e.stopPropagation();
+          }
+      }).bind(this);
+
       item.addEventListener("end-editing", function(e) {
           item.$.input.hidden = true;
           item.$.name.hidden = false;
@@ -221,8 +242,9 @@
                 console.error(err);
                 return;
             }
+            item.name = item.value;
+            item.path = dest;
           }).bind(this));
-          item.name = item.value;
 
           e.preventDefault();
           e.stopPropagation();
@@ -282,16 +304,16 @@
                 Editor.log("create scene");
       },
       'ui:rename-file-or-folder'(event, message) {
-           if(this._curSelectItem == null) {
+          let operateItem = this._curMouseOverItem || this._curSelectItem;
+           if(operateItem == null) {
                return;
            }
-           this._curSelectItem.$.name.hidden = true;
-           this._curSelectItem.$.input.hidden = false;
-           let input = this._curSelectItem.$.input;
+           operateItem.$.name.hidden = true;
+           operateItem.$.input.hidden = false;
+           let input = operateItem.$.input;
             setTimeout(() => {
                 input.$.input.focus();
             },1);
-        //    this._curSelectItem.$.input.focus();
                 Editor.log("rename scene");
       },
       'ui:delete-file-or-folder'(event, message) {

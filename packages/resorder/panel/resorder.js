@@ -157,25 +157,28 @@
     dblclickItem: function(e) {
         Editor.log("dblclick");
         this.clearSelectInfo();
-        if(e.currentTarget.doselect) {
-            e.currentTarget.doselect(e);
-        }
+
         if(!e.currentTarget.isDirectory) {
+            if(e.currentTarget.doselect) {
+                e.currentTarget.doselect(e);
+            }
             Editor.Ipc.sendToAll("ui:open_file", {path: e.currentTarget.path});
         }
         e.stopPropagation();
         e.preventDefault();
     },
     clickItem: function(e) {
-        if(!e.ctrlKey) {
-            this.clearSelectInfo();
-            if(e.currentTarget.isDirectory && e.currentTarget.foldable) {
-                e.currentTarget.folded = !e.currentTarget.folded;
+        if(e.currentTarget.isDirectory && e.currentTarget.foldable) {
+            e.currentTarget.folded = !e.currentTarget.folded;
+        } else {
+            if(!e.ctrlKey) {
+                this.clearSelectInfo();
+            }
+            if(e.currentTarget.doselect) {
+                e.currentTarget.doselect(e);
             }
         }
-        if(e.currentTarget.doselect) {
-            e.currentTarget.doselect(e);
-        }
+
         e.stopPropagation();
         e.preventDefault();
     },
@@ -210,7 +213,19 @@
           if(e.detail.cancel) {
               return;
           }
+          let dir = getParentDir(item.path);
           item.value = e.target.value;
+          let dest = dir + "/" + item.value;
+          fs.rename(item.path, dest, (function (err) {
+            if(err) {
+                console.error(err);
+                return;
+            }
+          }).bind(this));
+          item.name = item.value;
+
+          e.preventDefault();
+          e.stopPropagation();
       });
         
       let _item = item;
@@ -272,7 +287,11 @@
            }
            this._curSelectItem.$.name.hidden = true;
            this._curSelectItem.$.input.hidden = false;
-           this._curSelectItem.$.input.focus();
+           let input = this._curSelectItem.$.input;
+            setTimeout(() => {
+                input.$.input.focus();
+            },1);
+        //    this._curSelectItem.$.input.focus();
                 Editor.log("rename scene");
       },
       'ui:delete-file-or-folder'(event, message) {

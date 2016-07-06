@@ -1,4 +1,5 @@
 var fs = require('fs')
+var Path = require('path');
 
 function gen_uuid() {
     var s = [];
@@ -235,4 +236,9 @@ function startWith(str1, str2) {
         return true;
     }
     return false;
+}
+
+function getParentDir(path) {
+    let ret = Path.parse(path);
+    return ret.dir;
 }

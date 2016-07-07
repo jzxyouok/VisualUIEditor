@@ -225,12 +225,33 @@
       item['ondragleave'] = this.dragLeave.bind(this);
       item['ondrop'] = this.dragDrop.bind(this);
       item['onclick'] = this.clickItem.bind(this);
+
+      item["onmouseover"] = (function(e) {
+          this._curMouseOverItem = item;
+          if(!item._isSlected) {
+            item.$.header.style.background = 'LightSkyBlue';
+          }
+          e.preventDefault();
+          e.stopPropagation();
+      }).bind(this);
+
+      item["onmouseout"] = (function(e) {
+          if(this._curMouseOverItem == item) {
+              this._curMouseOverItem = null;
+              if(!item._isSlected) {
+                  item.$.header.style.removeProperty('background');
+              }
+              e.preventDefault();
+              e.stopPropagation();
+          }
+      }).bind(this);
+
       let _item = item;
       item['doselect'] = (e) => {
           if(_item._isSlected) {
               return;
           }
-          _item.style.background = 'blue';
+          _item.$.header.style.background = 'blue';
           _item._isSlected = true;
           if(e)
             Editor.Ipc.sendToAll("ui:select_item", {uuid : _item._uuid, ctrlKey : e.ctrlKey});
@@ -238,7 +259,7 @@
 
       item['dounselect'] = () => {
           _item._isSlected = false;
-          _item.style.removeProperty('background');
+          _item.$.header.style.removeProperty('background');
       }
 
       item.name = entry._className || "Node";

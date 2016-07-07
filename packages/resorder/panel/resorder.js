@@ -279,8 +279,6 @@
           }
           _item.$.header.style.background = 'blue';
           _item._isSlected = true;
-        //   if(e)
-        //     Editor.Ipc.sendToAll("ui:select_item", {uuid : _item._uuid, ctrlKey : e.ctrlKey});
       }).bind(this);
 
       item['dounselect'] = (() => {

@@ -29,6 +29,16 @@
     _mouseDown : function(ev) {
     },
 
+
+    _resizeGameCanvasCenter: function() {
+        let gameCanvas = this.$.scene.$.gameCanvas;
+        let rect = gameCanvas.getBoundingClientRect();
+        let curRect = this.getBoundingClientRect();
+        let zoom = this.calcGameCanvasZoom();
+        gameCanvas.style.left = (curRect.width - rect.width * zoom) / 2 + "px";
+        gameCanvas.style.top = (curRect.height - rect.height * zoom) / 2 + "px"; 
+    },
+
     _zoomScaleChange: function(newValue, location) {
         let gameCanvas = this.$.scene.$.gameCanvas;
         let isNeedFix = false;
@@ -635,6 +645,10 @@
             let runScene = this.$.scene.getRunScene();
             if(!runScene._undo)
                 runScene._undo =  new UndoObj();
+            this.$.scene.$.gameCanvas.width = runScene.width;
+            this.$.scene.$.gameCanvas.height = runScene.height;
+
+            this._resizeGameCanvasCenter();
         },
         "ui:has_item_change"(event, message) {
             this.updateForgeCanvas();

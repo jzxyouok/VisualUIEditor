@@ -171,20 +171,21 @@ function covertToColor(value) {
 function cocosGenNodeByData(data, parent) {
     let node = null;
     if(data.type == "Scene" || !parent) {
-        node = new _ccsg.Scene();
+        node = new cc.Scene();
         if(!parent) {
             node.width = 800;
             node.height = 400;
         }
     } else if(data.type == "Sprite") {
-        node = new _ccsg.Sprite("res/grid.png");
+        node = new cc.Sprite("res/grid.png");
     } else if(data.type == "LabelTTF") {
         node = new cc.LabelTTF("11111");
     } else if(data.type == "Input") {
-        node = new _ccsg.EditBox(cc.size(100, 20), null);
-        node._className = data.type;
+        // node = new cc.EditBox(cc.size(100, 20), null);
+        // node._className = data.type;
+        node = new cc.Node();
     } else {
-        node = new _ccsg.Node();
+        node = new cc.Node();
     }
 
     node.uuid = gen_uuid();

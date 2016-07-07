@@ -51,10 +51,8 @@
             "debugMode"     : 1,
             "showFPS"       : false,
             "frameRate"     : 20,
-            "id"            : "gameCanvas",
+            "id"            : this.$.gameCanvas,
             "renderMode"    : 0,
-            "element"       : this.$.gameCanvas,
-            
         }, function() {
             // //load resources
             // cc.LoaderScene.preload(["res/grid.png"], function () {
@@ -119,7 +117,7 @@
             // }, this);
         }.bind(this));
 
-
+        cc._gameDiv.style.position = 'absolute';
     },
 
     attached: function() {

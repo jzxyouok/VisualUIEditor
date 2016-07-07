@@ -17,7 +17,8 @@
                        on-dblclick="_onDblClick"
                        >
                     </i>
-                    <i id="icon" class$="{{_foldIconClass(folded)}}" hidden></i>
+                    <i id="icon" hidden></i>
+                    <span style="width:5px;"></span>
                     <span id="name" class$="{{_nameClass(name)}}">{{_nameText(name)}}</span>
                     <editor-input id="input"  placeholder="filter"  value="{{name}}" hidden
                       cancelable  unnavigable

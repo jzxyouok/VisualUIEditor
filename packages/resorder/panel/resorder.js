@@ -10,11 +10,24 @@
       filterText: {
         type: String,
         value: '',
+        observer: '_filterTextChanged'
       },
     },
 
     addFunc: function(data) {
 
+    },
+
+    _filterTextChanged: function() {
+        applyFilterByTree(this.$.tree, this.filterText);
+    },
+
+    _foldedAll: function() {
+        treeFoldedAll(this.$.tree);
+    },
+    
+    _expandAll: function() {
+        treeExpandAll(this.$.tree);
     },
 
     ready: function () {
@@ -197,6 +210,12 @@
     },
     newEntry: function (entry) {
       var item = document.createElement('td-tree-item');
+      let file = "fa fa-file";
+      if(entry.isDirectory) {
+          file = "fa fa-folder"
+      }
+      item.$.icon.className = file;
+      item.$.icon.hidden = false;
       item.draggable = true;
       item['ondragstart'] = this.dragStart.bind(this);
       item['ondragend'] = this.dragEnd.bind(this);

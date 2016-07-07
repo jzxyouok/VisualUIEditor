@@ -282,6 +282,13 @@
         ChangeProjectFolder();
     },
 
+    _addFileOrFolder() {
+        
+      let rect = this.$.addBtn.getBoundingClientRect();
+      Editor.Ipc.sendToPackage('resorder', 'popup-open-file-menu', rect.left, rect.bottom + 5);
+
+    },
+
     createFolderOrFile(operateItem, isFile) {
         let operatePath = operateItem.path;
         let operateNode = operateItem;
@@ -391,6 +398,13 @@
            this._curSelectItem = null;
                 Editor.log("delete scene");
       },
+      'ui:show-in-explorer'(event, message) {
+           let operateItem = this._curMouseOverItem || this._curSelectItem;
+           if(operateItem == null) {
+               return;
+           }
+           Electron.shell.showItemInFolder(operateItem.path);
+      }
     },
 
   });

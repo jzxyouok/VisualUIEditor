@@ -26,6 +26,13 @@ module.exports = {
             Editor.Ipc.sendToAll('ui:delete-file-or-folder');
           }
         },
+        {
+          label: Editor.T('在资源浏览器中显示'),
+          params: [],
+          click () {
+            Editor.Ipc.sendToAll('ui:show-in-explorer');
+          }
+        },
       ];
     }, true );
     

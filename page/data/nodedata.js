@@ -372,6 +372,8 @@ NodeData.prototype = {
             } else {
                 this._node[path] = value;
             }
+        } else if(this._node._className == "Scene") {
+            Editor.Ipc.sendToAll("ui:scene_prop_change", {});
         } else {
             return;
         }

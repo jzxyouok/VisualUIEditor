@@ -166,7 +166,8 @@
         this.$.node.target = this._opnode;
         // this.$.node.target = new NodeData(node);
         // this.selectItemsByData(message.select_items);
-      }
+      },
+      
     },
 
   });

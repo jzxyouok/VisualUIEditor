@@ -181,6 +181,9 @@ isSelfOrAncient = function ( node, parentNode) {
 
 
 cocosGetItemByUUID = function(node, uuid) {
+    if(!uuid) {
+        return null;
+    }
     function recursiveGetChild(node, uuid) {
         if (node.uuid == uuid) {
             return node;

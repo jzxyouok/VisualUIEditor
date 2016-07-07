@@ -57,7 +57,7 @@
         let stepX = nowLocation.x - preLocation.x, stepY = nowLocation.y - preLocation.y;
         
         gameCanvas.style.left = parseFloat(gameCanvas.style.left)  + stepX + "px";
-        gameCanvas.style.top = parseFloat(gameCanvas.style.top) + stepY + "px";
+        gameCanvas.style.top = parseFloat(gameCanvas.style.top) - stepY + "px";
 
         let afterFix = this.calcSceneLocation(location.x, location.y);
     },
@@ -664,6 +664,11 @@
                    this.sceneChange(scene);
                }
             }
+        },
+        'ui:scene_prop_change'(event, message) {
+            let runScene = this.$.scene.getRunScene();
+            this.$.scene.$.gameCanvas.width = runScene.width;
+            this.$.scene.$.gameCanvas.height = runScene.height;
         },
 
     },

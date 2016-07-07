@@ -211,7 +211,7 @@
       item["onmouseover"] = (function(e) {
           this._curMouseOverItem = item;
           if(!item._isSlected) {
-            _item.style.background = 'LightSkyBlue';
+            item.$.header.style.background = 'LightSkyBlue';
           }
           e.preventDefault();
           e.stopPropagation();
@@ -221,7 +221,7 @@
           if(this._curMouseOverItem == item) {
               this._curMouseOverItem = null;
               if(!item._isSlected) {
-                  item.style.removeProperty('background');
+                  item.$.header.style.removeProperty('background');
               }
               e.preventDefault();
               e.stopPropagation();
@@ -258,7 +258,7 @@
           if(this._curSelectItem == null) {
               this._curSelectItem = _item;
           }
-          _item.style.background = 'blue';
+          _item.$.header.style.background = 'blue';
           _item._isSlected = true;
         //   if(e)
         //     Editor.Ipc.sendToAll("ui:select_item", {uuid : _item._uuid, ctrlKey : e.ctrlKey});
@@ -269,7 +269,7 @@
               this._curSelectItem = null;
           }
           _item._isSlected = false;
-          _item.style.removeProperty('background');
+          _item.$.header.style.removeProperty('background');
       }).bind(this);
 
       item.name = entry.name;
@@ -280,6 +280,39 @@
 
     _onOpenFloder () {
         ChangeProjectFolder();
+    },
+
+    createFolderOrFile(operateItem, isFile) {
+        let operatePath = operateItem.path;
+        let operateNode = operateItem;
+
+        if(!fs.statSync(operateItem.path).isDirectory()) {
+            operatePath = getParentDir(operateItem.path);
+            operateNode = Polymer.dom(operateItem).parentNode;
+        }
+        if(!operatePath || !operateNode) {
+            return;
+        }
+
+        operateNode.folded = false;
+        let entry = null;
+        if(isFile) {
+            entry = getCanUseFile(operatePath);
+            fs.writeFileSync(entry.path, '{}');
+        } else {
+            entry = getCanUseFolder(operatePath);
+            fs.mkdirSync(entry.path); 
+        }
+        
+        let el = this.newEntry(entry);
+        this.$.tree.addItem( operateNode, el);
+
+        el.$.name.hidden = true;
+        el.$.input.hidden = false;
+        let input = el.$.input;
+        setTimeout(() => {
+            input.$.input.focus();
+        },1);
     },
 
     messages: {
@@ -296,15 +329,46 @@
         this.build(files);
       },
       'ui:create_folder'(event, message) {
+          
+           let operateItem = this._curMouseOverItem || this._curSelectItem;
+           if(operateItem == null) {
+               return;
+           }
+           this.createFolderOrFile(operateItem, false);
+        //     let operatePath = operateItem.path;
+        //     let operateNode = operateItem;
 
-                Editor.log("create folder");
+        //     if(!fs.statSync(operateItem.path).isDirectory()) {
+        //         operatePath = getParentDir(operateItem.path);
+        //         operateNode = Polymer.dom(operateItem).parentNode;
+        //     }
+        //     if(!operatePath || !operateNode) {
+        //         return;
+        //     }
+
+        //     let entry = getCanUseFolder(operatePath);
+        //     fs.mkdirSync(entry.path); 
+        //     let el = this.newEntry(entry);
+        //     this.$.tree.addItem( operateNode, el);
+
+        //    el.$.name.hidden = true;
+        //    el.$.input.hidden = false;
+        //    let input = el.$.input;
+        //     setTimeout(() => {
+        //         input.$.input.focus();
+        //     },1);
+        //         Editor.log("create folder");
       },
       'ui:create_scene'(event, message) {
-
+            let operateItem = this._curMouseOverItem || this._curSelectItem;
+           if(operateItem == null) {
+               return;
+           }
+           this.createFolderOrFile(operateItem, true);
                 Editor.log("create scene");
       },
       'ui:rename-file-or-folder'(event, message) {
-          let operateItem = this._curMouseOverItem || this._curSelectItem;
+           let operateItem = this._curMouseOverItem || this._curSelectItem;
            if(operateItem == null) {
                return;
            }
@@ -317,7 +381,14 @@
                 Editor.log("rename scene");
       },
       'ui:delete-file-or-folder'(event, message) {
-          
+          let operateItem = this._curMouseOverItem || this._curSelectItem;
+           if(operateItem == null) {
+               return;
+           }
+           deleteFolderRecursive(operateItem.path);
+           this.$.tree.removeItem(operateItem);
+           this._curMouseOverItem = null;
+           this._curSelectItem = null;
                 Editor.log("delete scene");
       },
     },

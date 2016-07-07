@@ -242,3 +242,66 @@ function getParentDir(path) {
     let ret = Path.parse(path);
     return ret.dir;
 }
+
+function deleteFolderRecursive(path) {
+    
+    if( !fs.existsSync(path) ) {
+        return;
+    }
+
+    if(!fs.statSync(path).isDirectory()) {
+        return fs.unlinkSync(path);
+    }
+
+    var files = [];
+    files = fs.readdirSync(path);
+    files.forEach(function(file, index){
+
+        var curPath = path + "/" + file;
+        if(fs.statSync(curPath).isDirectory()) { // recurse
+            deleteFolderRecursive(curPath);
+        } else { // delete file
+            fs.unlinkSync(curPath);
+        }
+    });
+
+    fs.rmdirSync(path);
+
+};
+
+function getCanUseFolder(path) {
+    let prefix = "UIFolder";
+    let name = '';
+    for(var i = 0; i < 100000; i++) {
+        name = prefix + " " + i;
+        if(!fs.existsSync(path + "/" + name)) {
+            break;
+        }
+    }
+
+    return {
+        name: name,
+        isDirectory: true,
+        children: [],
+        path: path + "/" + name,
+    };
+}
+
+function getCanUseFile(path) {
+    let prefix = "UIFile";
+    let suffix = ".ui";
+    let name = '';
+    for(var i = 0; i < 100000; i++) {
+        name = prefix + " " + i + suffix;
+        if(!fs.existsSync(path + "/" + name)) {
+            break;
+        }
+    }
+
+    return {
+        name: name,
+        isDirectory: false,
+        children: [],
+        path: path + "/" + name,
+    };
+}

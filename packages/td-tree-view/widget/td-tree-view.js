@@ -48,7 +48,7 @@
       if ( parentItem !== this ) {
         parentItem.foldable = _checkFoldable(parentItem);
       }
-      delete self._id2el[childItem._uuid];
+      delete this._id2el[childItem._uuid];
     },
 
     removeItemById (id) {

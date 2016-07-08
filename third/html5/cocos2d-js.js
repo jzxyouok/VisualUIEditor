@@ -1407,7 +1407,7 @@ cc.game = {
         localCanvas.setAttribute("width", width || 480);
         localCanvas.setAttribute("height", height || 320);
         localCanvas.setAttribute("tabindex", 99);
-        localCanvas.style.outline = "none";
+        // localCanvas.style.outline = "none";
         // localConStyle = localContainer.style;
         // localConStyle.width = (width || 480) + "px";
         // localConStyle.height = (height || 320) + "px";
@@ -3728,6 +3728,15 @@ cc.EGLView._getInstance = function () {
     }
     return this._instance;
 };
+
+cc.EGLView._resetInstance = function() {
+    this._instance = null;
+    cc.view = cc.EGLView._getInstance();
+    cc.director = cc.Director._getInstance();
+    if (cc.director.setOpenGLView)
+        cc.director.setOpenGLView(cc.view);
+    cc.winSize = cc.director.getWinSize();
+}
 cc.ContainerStrategy = cc.Class.extend({
     preApply: function (view) {
     },

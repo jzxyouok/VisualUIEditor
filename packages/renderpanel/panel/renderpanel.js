@@ -540,7 +540,7 @@
             node._className = "Input";
             runScene.addChild(node);
         } else if(data == "Slider") {
-            node = new cc.ControlSlider("res/default/Slider_Back.png", "res/default/Slider_Bar.png", "res/default/SliderNode_Normal.png");
+            node = new ccui.Slider("res/default/Slider_Back.png", "res/default/Slider_Bar.png");
             node._className = "Slider";
             runScene.addChild(node);
         } else if(data == "Button") {
@@ -648,6 +648,9 @@
             this.$.scene.$.gameCanvas.width = runScene.width;
             this.$.scene.$.gameCanvas.height = runScene.height;
 
+            let canvas = cc._canvas;
+            let view = cc.view;
+            cc.view = cc.EGLView._resetInstance();
             this._resizeGameCanvasCenter();
         },
         "ui:has_item_change"(event, message) {

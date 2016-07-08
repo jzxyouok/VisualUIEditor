@@ -232,7 +232,16 @@ function cocosGenNodeByData(data, parent) {
         data.inputMode && (node.inputMode = data.inputMode);
         data.returnType && (node.returnType = data.returnType);
     } else if(data.type == "Sprite") {
-        data.spriteFrame && (node.initWithFile(data.spriteFrame), node._spriteFrame = data.spriteFrame);
+        if(data.spriteFrame && getFullPathForName(data.spriteFrame)) {
+            let fullpath = getFullPathForName(data.spriteFrame);
+            cc.loader.load(fullpath, function(err, content) {
+                if(err) {
+                    return;
+                }
+                node.initWithFile(fullpath);
+                node._spriteFrame = data.spriteFrame;
+            });
+        }
     }
 
     data.children = data.children || [];

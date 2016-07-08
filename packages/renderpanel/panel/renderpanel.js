@@ -522,7 +522,10 @@
         let uuid = gen_uuid();
         var node = null;
         if(data == "Sprite") {
-            node = new _ccsg.Sprite("res/default/Sprite.png");
+            let value = "res/default/Sprite.png";
+            node = new cc.Sprite(getFullPathForName(value) );
+            node._spriteFrame = value
+            node._className = "Sprite";
             runScene.addChild(node, 0);
         } else if(data == "LabelTTF") {
             node = new cc.LabelTTF("VisualUI", "Arial", 20);
@@ -533,7 +536,7 @@
             node._className = "Scale9";
             runScene.addChild(node);
         } else if(data == "Input") {
-            node = new _ccsg.EditBox(cc.size(100, 20), new cc.Scale9Sprite("res/default/shurukuang.png"));
+            node = new cc.EditBox(cc.size(100, 20), new cc.Scale9Sprite("res/default/shurukuang.png"));
             node.placeHolder = "VisualUI";
             node.placeholderFontName = "Arial";
             node.placeholderFontColor = cc.Color.WHITE;
@@ -648,9 +651,7 @@
             this.$.scene.$.gameCanvas.width = runScene.width;
             this.$.scene.$.gameCanvas.height = runScene.height;
 
-            let canvas = cc._canvas;
-            let view = cc.view;
-            cc.view = cc.EGLView._resetInstance();
+            cc.EGLView._resetInstance();
             this._resizeGameCanvasCenter();
         },
         "ui:has_item_change"(event, message) {
@@ -672,6 +673,8 @@
             let runScene = this.$.scene.getRunScene();
             this.$.scene.$.gameCanvas.width = runScene.width;
             this.$.scene.$.gameCanvas.height = runScene.height;
+
+            cc.EGLView._resetInstance();
         },
 
     },

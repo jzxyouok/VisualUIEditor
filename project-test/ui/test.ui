@@ -10,6 +10,7 @@
             "height": "52",
             "x": 273.5,
             "y": 266,
+            "type": "Node",
             "anchorX": 0,
             "anchorY": 0,
             "children": [
@@ -18,6 +19,7 @@
                     "height": "52",
                     "x": 68.5,
                     "y": 26,
+                    "type": "Node",
                     "anchorX": 0,
                     "anchorY": 0
                 },
@@ -38,6 +40,7 @@
             "height": "0",
             "x": 692.5,
             "y": 169,
+            "type": "Node",
             "anchorX": 0,
             "anchorY": 0
         },
@@ -68,23 +71,25 @@
             "height": "20",
             "x": 562.5,
             "y": 152,
-            "type": "Input",
+            "type": "Node",
             "anchorX": 0,
-            "anchorY": 0,
-            "string": "12121",
-            "fontName": "Arial",
-            "fontColor": [
-                172,
-                109,
-                109,
-                255
-            ],
-            "placeholderFontColor": [
-                255,
-                255,
-                255,
-                255
-            ]
+            "anchorY": 0
+        },
+        {
+            "width": "46",
+            "height": "46",
+            "x": 871.8,
+            "y": 322.2,
+            "type": "Sprite",
+            "spriteFrame": "res/default/Sprite.png"
+        },
+        {
+            "width": "212",
+            "height": "216",
+            "x": 923.5,
+            "y": 455.5,
+            "type": "Sprite",
+            "spriteFrame": "res/1.png"
         }
     ]
 }

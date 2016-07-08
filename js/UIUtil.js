@@ -64,3 +64,25 @@ function treeFoldedAll(tree) {
     	recursiveFolded(children[i]);
     }
 }
+
+function calcRelativePath(parentPath, subPath) {
+    parentPath = parentPath.replace(/\\/g, '/');
+    subPath = subPath.replace(/\\/g, '/');
+    let index = subPath.indexOf(parentPath);
+    if(index < 0) {
+        return subPath;
+    }
+    return subPath.substr(index + parentPath.length);
+}
+
+function checkTextureExist(url) {
+    var tex = cc.textureCache.getTextureForKey(url);
+    if (!tex) {
+        tex = cc.textureCache.addImage(url);
+        if(!tex) {
+            return false;
+        }
+    }
+    return true;
+}
+

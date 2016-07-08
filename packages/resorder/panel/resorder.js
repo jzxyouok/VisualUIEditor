@@ -4,6 +4,7 @@
   var Fs = require('fire-fs');
 
   var dragIdName = "ResMoveUUID";
+  var dragIdAsset = "asset";
   
   Editor.polymerPanel('resorder', {
     properties: {
@@ -76,6 +77,7 @@
         ev.stopPropagation();
         ev.dataTransfer.dropEffect = 'move';
         ev.dataTransfer.setData(dragIdName,ev.target._uuid);
+        ev.dataTransfer.setData(dragIdAsset,ev.target.path);
         ev.target.style.opacity = "0.4";
     },
     dragEnd: function(ev) {
@@ -85,7 +87,6 @@
     dragEnter: function(ev) {
         ev.preventDefault();
         ev.stopPropagation();
-        
         ev.target.style.background = 'blue';
     },
     dragOver: function(ev) {
@@ -359,29 +360,6 @@
                return;
            }
            this.createFolderOrFile(operateItem, false);
-        //     let operatePath = operateItem.path;
-        //     let operateNode = operateItem;
-
-        //     if(!fs.statSync(operateItem.path).isDirectory()) {
-        //         operatePath = getParentDir(operateItem.path);
-        //         operateNode = Polymer.dom(operateItem).parentNode;
-        //     }
-        //     if(!operatePath || !operateNode) {
-        //         return;
-        //     }
-
-        //     let entry = getCanUseFolder(operatePath);
-        //     fs.mkdirSync(entry.path); 
-        //     let el = this.newEntry(entry);
-        //     this.$.tree.addItem( operateNode, el);
-
-        //    el.$.name.hidden = true;
-        //    el.$.input.hidden = false;
-        //    let input = el.$.input;
-        //     setTimeout(() => {
-        //         input.$.input.focus();
-        //     },1);
-        //         Editor.log("create folder");
       },
       'ui:create_scene'(event, message) {
             let operateItem = this._curMouseOverItem || this._curSelectItem;

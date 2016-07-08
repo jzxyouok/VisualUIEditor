@@ -47,7 +47,7 @@ function cocosExportNodeData(node) {
         data["id"] = node._name;
     }
     data["type"] = node._className;
-    if(!node.color.equals(cc.Color.WHITE)) {
+    if(!cc.colorEqual(node.color, cc.color.WHITE)) {
         data["color"] = [node.color.r, node.color.g, node.color.b, node.color.a];
     }
 
@@ -78,10 +78,10 @@ function cocosExportNodeData(node) {
     //Label prop
     if(node._className == "LabelTTF") {
         data["string"] = node.string;
-        if(node.textAlign != cc.TextAlignment.LEFT) {
+        if(node.textAlign != cc.TEXT_ALIGNMENT_LEFT) {
             data["textAlign"] = node.textAlign;
         }
-        if(node.verticalAlign != cc.VerticalTextAlignment.TOP) {
+        if(node.verticalAlign != cc.VERTICAL_TEXT_ALIGNMENT_TOP) {
             data["verticalAlign"] = node.verticalAlign;
         }
         data["fontSize"] = node.fontSize;
@@ -89,10 +89,10 @@ function cocosExportNodeData(node) {
             data["fontName"] = node.fontName;
         }
 
-        if(!node.fillStyle.equals(cc.Color.WHITE)) {
+        if(!cc.colorEqual(node.fillStyle, cc.color.WHITE)) {
             data["fillStyle"] = [node.fillStyle.r, node.fillStyle.g, node.fillStyle.b, node.fillStyle.a];
         }
-        if(!node.strokeStyle.equals(cc.Color.WHITE)) {
+        if(!cc.colorEqual(node.strokeStyle, cc.color.WHITE)) {
             data["strokeStyle"] = [node.strokeStyle.r, node.strokeStyle.g, node.strokeStyle.b, node.strokeStyle.a];
         }
         if(node.lineWidth > 0) {
@@ -111,6 +111,8 @@ function cocosExportNodeData(node) {
             data["shadowBlur"] = node.shadowBlur;
         }
     } else if(node._className == "Sprite") {
+        if(node._spriteFrame)
+            data["spriteFrame"] = node._spriteFrame;
 
     } else if(node._className == "Scale9") {
 
@@ -121,19 +123,19 @@ function cocosExportNodeData(node) {
         (value.length > 0) && (data["fontName"] = value);
         value = node._nativeControl._edFontSize;
         (value != 14) && (data["fontSize"] = value);
-        value = node._nativeControl._textLabel ? node._nativeControl._textLabel.color : cc.Color.BLACK;
-        (!value.equals(cc.Color.BLACK)) && (data["fontColor"] = [value.r, value.g, value.b, value.a]);
-        (node.inputFlag != _ccsg.EditBox.InputFlag.SENSITIVE) && (data["inputFlag"] = node.inputFlag);
-        (node.inputMode != _ccsg.EditBox.InputMode.ANY) && (data["inputMode"] = node.inputMode);
-        (node.returnType != _ccsg.EditBox.KeyboardReturnType.DEFAULT) && (data["returnType"] = node.returnType);
+        value = node._nativeControl._textLabel ? node._nativeControl._textLabel.color : cc.color.BLACK;
+        (!cc.colorEqual(value, cc.color.BLACK)) && (data["fontColor"] = [value.r, value.g, value.b, value.a]);
+        (node.inputFlag != cc.EditBox.InputFlag.SENSITIVE) && (data["inputFlag"] = node.inputFlag);
+        (node.inputMode != cc.EditBox.InputMode.ANY) && (data["inputMode"] = node.inputMode);
+        (node.returnType != cc.EditBox.KeyboardReturnType.DEFAULT) && (data["returnType"] = node.returnType);
         (node.maxLength != 50) && (data["maxLength"] = node.maxLength);
         (node.placeHolder && node.placeHolder.length > 0) && (data["placeHolder"] = node.placeHolder);
         value = node._placeholderFontName;
         (value.length > 0) && (data["placeHolderFontName"] = value);
         value = node._placeholderFontSize;
         (value != 14) && (data["placeholderFontSize"] = value);
-        value = node._placeholderColor || cc.Color.GRAY;
-        (!value.equals(cc.Color.GRAY)) && (data["placeholderFontColor"] = [value.r, value.g, value.b, value.a]);
+        value = node._placeholderColor || cc.color.GRAY;
+        (!cc.colorEqual(value, cc.color.GRAY)) && (data["placeholderFontColor"] = [value.r, value.g, value.b, value.a]);
     } else if(node._className == "Slider") {
         
     } else if(node._className == "Button") {
@@ -165,7 +167,7 @@ function covertToColor(value) {
     if(!value || !value[0] || !value[3]) {
         return null;
     }
-    return new cc.Color(value[0], value[1], value[2], value[3]);
+    return new cc.color(value[0], value[1], value[2], value[3]);
 }
 
 function cocosGenNodeByData(data, parent) {
@@ -177,7 +179,8 @@ function cocosGenNodeByData(data, parent) {
             node.height = 400;
         }
     } else if(data.type == "Sprite") {
-        node = new cc.Sprite("res/grid.png");
+        node = new cc.Sprite();
+        node._className = "Sprite";
     } else if(data.type == "LabelTTF") {
         node = new cc.LabelTTF("11111");
     } else if(data.type == "Input") {
@@ -228,6 +231,8 @@ function cocosGenNodeByData(data, parent) {
         data.inputFlag && (node.inputFlag = data.inputFlag);
         data.inputMode && (node.inputMode = data.inputMode);
         data.returnType && (node.returnType = data.returnType);
+    } else if(data.type == "Sprite") {
+        data.spriteFrame && (node.initWithFile(data.spriteFrame), node._spriteFrame = data.spriteFrame);
     }
 
     data.children = data.children || [];
@@ -245,4 +250,16 @@ function loadSceneFromFile(filename) {
     let content = fs.readFileSync(filename);
     let data = JSON.parse(content || "");
     return cocosGenNodeByData(data, null);
+}
+
+function getFullPathForName(name) {
+    let url = window.projectFolder + "/" + name;
+    if( fs.existsSync(url) ) {
+        return url;
+    }
+    url = __dirname + "/" + name;
+    if( fs.existsSync(url) ) {
+        return url;
+    }
+    return null;
 }

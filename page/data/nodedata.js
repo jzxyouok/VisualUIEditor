@@ -345,10 +345,17 @@ NodeData.prototype = {
                 return;
             }
         } else if(this._node._className == "Sprite") {
+            let value1 = value;
             if(path == "srcBlendFactor") {
                 this._node.setBlendFunc(parseInt(value), this._node.getBlendFunc().dst);
             } else if(path == "dstBlendFactor") {
                 this._node.setBlendFunc(this._node.getBlendFunc().src, parseInt(value));
+            } else if(path == "spriteFrame") {
+                let url = window.projectFolder + "/" + value;
+                let exist = checkTextureExist(url);
+                value = exist ? value : "res/default/Sprite.png";
+                this._node._spriteFrame = value;
+                this._node.initWithFile(getFullPathForName(value));
             }
         } else if(this._node._className == "Scale9") {
             if(path == "srcBlendFactor") {
@@ -434,18 +441,13 @@ SpriteData.prototype = {
         };
     },
 
-    get trim() {
-        return {
-            path: "trim",
-            type: "check",
-            name: "Trim",
-            attrs: {
-                min: 0,
-                max: 360,
-            },
-            value: this._node.trim,
-        };
-    }
+    get spriteFrame() {
+        return this._node._spriteFrame;
+    },
+
+    set spriteFrame(value) {
+
+    },
 
 }
 

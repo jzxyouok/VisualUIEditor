@@ -103,7 +103,7 @@ function print_r(o, depth) {
 function getFileName(path) {
     var result = path;
     var index = 0;
-    for(var i = path.length - 1; i >= 0; i--) {
+    for(var i = path.length - 2; i >= 0; i--) {
         if(path.charAt(i) == '\\' || path.charAt(i) == '/') {
             index = Math.min(i + 1, path.length - 1);
             break;

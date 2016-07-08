@@ -3730,8 +3730,8 @@ cc.EGLView._getInstance = function () {
 };
 
 cc.EGLView._resetInstance = function() {
-    this._instance = null;
-    cc.view = cc.EGLView._getInstance();
+    // this._instance = null;
+    // cc.view = cc.EGLView._getInstance();
     cc.director = cc.Director._getInstance();
     if (cc.director.setOpenGLView)
         cc.director.setOpenGLView(cc.view);

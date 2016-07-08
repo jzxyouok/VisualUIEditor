@@ -49,10 +49,10 @@
         this.runScene = null;
         cc.game.run({
             "debugMode"     : 1,
-            "showFPS"       : false,
+            "showFPS"       : true,
             "frameRate"     : 20,
             "id"            : this.$.gameCanvas,
-            "renderMode"    : 0,
+            "renderMode"    : 1,
         }, function() {
             // //load resources
             // cc.LoaderScene.preload(["res/grid.png"], function () {

@@ -234,13 +234,16 @@ function cocosGenNodeByData(data, parent) {
     } else if(data.type == "Sprite") {
         if(data.spriteFrame && getFullPathForName(data.spriteFrame)) {
             let fullpath = getFullPathForName(data.spriteFrame);
-            cc.loader.load(fullpath, function(err, content) {
-                if(err) {
-                    return;
-                }
-                node.initWithFile(fullpath);
-                node._spriteFrame = data.spriteFrame;
-            });
+        
+            node.init(fullpath);
+            node._spriteFrame = data.spriteFrame;
+            // cc.loader.load(fullpath, function(err, content) {
+            //     if(err) {
+            //         return;
+            //     }
+            //     node.init(fullpath);
+            //     node._spriteFrame = data.spriteFrame;
+            // });
         }
     }
 

@@ -27,6 +27,10 @@ function Scale9Data(node) {
     this._node = node;
 }
 
+function ButtonData(node) {
+    this._node = node;
+}
+
 function FixNodeHor(node, step) {
     node.x += step;
     if(node.left) {
@@ -228,10 +232,21 @@ NodeData.prototype = {
             node.push(new InputData(this._node));
         } else if(this._node._className == "Scale9") {
             node.push(new Scale9Data(this._node));
+        } else if(this._node._className == "Button") {
+            node.push(new ButtonData(this._node));
         } else {
         }
         
         return node;
+    },
+
+    setSpriteFrame(path, value, defRes, fn) {
+        let url = getFullPathForName(value);
+        let exist = checkTextureExist(url);
+        value = exist ? value : defRes;
+        let newPath = "_" + path;
+        this._node[newPath] = value;
+        fn.call(this._node, getFullPathForName(value));
     },
 
     setAttrib(path, value) {
@@ -359,43 +374,60 @@ NodeData.prototype = {
             } else if(path == "dstBlendFactor") {
                 this._node.setBlendFunc(this._node.getBlendFunc().src, parseInt(value));
             } else if(path == "spriteFrame") {
-                let url = getFullPathForName(value);
-                let exist = checkTextureExist(url);
-                value = exist ? value : "res/default/Sprite.png";
-                this._node._spriteFrame = value;
-                this._node.initWithFile(getFullPathForName(value));
+                this.setSpriteFrame(path, value, "res/default/Sprite.png", this._node.initWithFile);
             }
         } else if(this._node._className == "Scale9") {
             if(path == "spriteFrame") {
-                let url = getFullPathForName(value);
-                let exist = checkTextureExist(url);
-                let capInset = this._node.capInsets;
-                value = exist ? value : "res/default/Scale9.png";
-                this._node._spriteFrame = value;
                 this._node._scale9Image = null;
-                this._node.initWithFile(getFullPathForName(value));
+                this.setSpriteFrame(path, value, "res/default/Scale9.png", this._node.initWithFile);
             } else {
                 this._node[path] = value;
             }
         } else if(this._node._className == "Slider") {
             if(path == "totalLength") {
                 this._node.totalLength = parseFloat(value);
-            } else if(path == "progress") {
-                this._node.progress = parseFloat(value);
+            } else if(path == "percent") {
+                this._node.percent = parseFloat(value);
             } else if(path == "mode") {
                 this._node.mode = parseInt(value);
-            }
+            } else if(path == "barBg") {
+                this.setSpriteFrame(path, value, "res/default/SliderBack.png", this._node.loadBarTexture);
+            } else if(path == "barProgress") {
+                this.setSpriteFrame(path, value, "res/default/SliderBar.png", this._node.loadProgressBarTexture);
+            } else if(path == "barNormalBall") {
+                this.setSpriteFrame(path, value, "res/default/SliderNodeNormal.png", this._node.loadSlidBallTextureNormal);
+            } else if(path == "barSelectBall") {
+                this.setSpriteFrame(path, value, "res/default/SliderNodeSelect.png", this._node.loadSlidBallTexturePressed);
+            } else if(path == "barDisableBall") {
+                this.setSpriteFrame(path, value, "res/default/SliderNodeDisable.png", this._node.loadSlidBallTextureDisabled);
+            } 
         } else if(this._node._className == "Input") {
             if(path == "fontColor") {
                 this._node.fontColor = new cc.Color(value.r, value.g, value.b, value.a);
             } else if(path == "placeholderFontColor") {
                 this._node.placeholderFontColor = new cc.Color(value.r, value.g, value.b, value.a);
             } else if(path == "spriteBg") {
-                let url = getFullPathForName(value);
-                let exist = checkTextureExist(url);
-                value = exist ? value : "res/default/shurukuang.png";
-                this._node._spriteBg = value;
-                this._node.initWithBackgroundSprite(new cc.Scale9Sprite(getFullPathForName(value)));
+                this.setSpriteFrame(path, value, "res/default/shurukuang.png", (value) => {
+                    this._node.initWithBackgroundSprite(new cc.Scale9Sprite(value));
+                });
+            } else {
+                this._node[path] = value;
+            }
+        } else if(this._node._className == "Button") {
+            if(path == "bgNormal") {
+                this.setSpriteFrame(path, value, "res/default/ButtonNormal.png", this._node.loadTextureNormal);
+            } else if(path == "bgSelect") {
+                this.setSpriteFrame(path, value, "res/default/ButtonSelect.png", this._node.loadTexturePressed);
+            } else if(path == "bgDisable") {
+                this.setSpriteFrame(path, value, "res/default/ButtonDisable.png", this._node.loadTextureDisabled);
+            } else if(path == "titleText") {
+                this._node.setTitleText(value);
+            } else if(path == "fontName") {
+                this._node.setTitleFontName(value);
+            } else if(path == "fontSize") {
+                this._node.setTitleFontSize(value);
+            } else if(path == "fontColor") {
+                this._node.setTitleColor(new cc.Color(value.r, value.g, value.b, value.a));
             } else {
                 this._node[path] = value;
             }
@@ -697,14 +729,14 @@ SliderData.prototype = {
         };
     },
 
-    get progress() {
+    get percent() {
         return {
-            path: "progress",
+            path: "percent",
             type: "slider",
-            name: "progress",
+            name: "percent",
             attrs: {
             },
-            value: this._node.progress,
+            value: this._node.percent,
         };
     },
 
@@ -782,9 +814,9 @@ SliderData.prototype = {
 
     get __props__() {
         return [
-            this.totalLength,
-            this.progress,
-            this.mode,
+            // this.totalLength,
+            this.percent,
+            // this.mode,
             this.barBg,
             this.barProgress,
             this.barNormalBall,
@@ -1052,4 +1084,103 @@ Scale9Data.prototype = {
             value: this._node.insetBottom,
         };
     },
+};
+
+
+ButtonData.prototype = {
+    __editor__ : {
+        "inspector1": "cc.Button",
+    },
+    __displayName__: "Button",
+    __type__: "cc.Button",
+
+    get bgNormal() {
+        return {
+            path: "bgNormal",
+            type: "fire-asset",
+            name: "bgNormal",
+            attrs: {
+            },
+            value: this._node._bgNormal,
+        };
+    },
+
+    get bgSelect() {
+        return {
+            path: "bgSelect",
+            type: "fire-asset",
+            name: "bgSelect",
+            attrs: {
+            },
+            value: this._node._bgSelect,
+        };
+    },
+
+    get bgDisable() {
+        return {
+            path: "bgDisable",
+            type: "fire-asset",
+            name: "bgDisable",
+            attrs: {
+            },
+            value: this._node._bgDisable,
+        };
+    },
+
+    get titleText() {
+        return {
+            path: "titleText",
+            type: "string",
+            name: "titleText",
+            attrs: {
+            },
+            value: this._node.getTitleText(),
+        };
+    },
+
+    get fontName() {
+        return {
+            path: "fontName",
+            type: "string",
+            name: "fontName",
+            attrs: {
+            },
+            value: this._node.getTitleFontName(),
+        };
+    },
+
+    get fontSize() {
+        return {
+            path: "fontSize",
+            type: "number",
+            name: "fontSize",
+            attrs: {
+            },
+            value: this._node.getTitleFontSize(),
+        };
+    },
+
+    get fontColor() {
+        return {
+            path: "fontColor",
+            type: "color",
+            name: "fontColor",
+            attrs: {
+            },
+            value: this._node.getTitleColor(),
+        };
+    },
+
+    get __props__() {
+        return [
+            this.bgNormal,
+            this.bgSelect,
+            this.bgDisable,
+            this.titleText,
+            this.fontName,
+            this.fontSize,
+            this.fontColor,
+        ];
+    }
+    
 };

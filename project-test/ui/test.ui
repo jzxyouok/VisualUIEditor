@@ -75,12 +75,12 @@
             "spriteFrame": "res/default/Sprite.png"
         },
         {
-            "width": "212",
-            "height": "216",
+            "width": "40",
+            "height": "40",
             "x": 231.6904761904766,
             "y": 336.0238095238094,
             "type": "Sprite",
-            "spriteFrame": "res/1.png"
+            "spriteFrame": "res/default/CheckBoxNodeNormal.png"
         },
         {
             "width": "212",
@@ -152,6 +152,18 @@
             "type": "Node",
             "anchorX": 0,
             "anchorY": 0
+        },
+        {
+            "width": "200",
+            "height": "14",
+            "x": 299.5,
+            "y": 207.5,
+            "id": "default",
+            "type": "Slider",
+            "percent": 48.26,
+            "barBg": "res/default/SliderBack.png",
+            "barProgress": "res/default/SliderBar.png",
+            "barNormalBall": "res/default/SliderNodeNormal.png"
         }
     ]
 }

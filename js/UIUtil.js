@@ -76,6 +76,9 @@ function calcRelativePath(parentPath, subPath) {
 }
 
 function checkTextureExist(url) {
+    if(!url) {
+        return false;
+    }
     var tex = cc.textureCache.getTextureForKey(url);
     if (!tex) {
         tex = cc.textureCache.addImage(url);

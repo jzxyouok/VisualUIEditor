@@ -12,6 +12,19 @@ function isBaseType(node) {
     return isBaseTypeByName(name);
 }
 
+function setNodeSpriteFrame(path, value, node, fn) {
+    if(!value)
+        return;
+    let url = getFullPathForName(value);
+    let exist = checkTextureExist(url);
+    if(!exist) {
+        return;
+    }
+    let newPath = "_" + path;
+    node[newPath] = value;
+    fn.call(node, url);
+}
+
 function cocosExportNodeData(node) {
     let data = {};
     let parent = node.getParent();
@@ -155,7 +168,12 @@ function cocosExportNodeData(node) {
         value = node._spriteBg;
         (value && value.length > 0) && (data["spriteBg"] = value);
     } else if(node._className == "Slider") {
-        
+        (node.percent) && (data["percent"] = node.percent);
+        (node._barBg) && (data["barBg"] = node._barBg);
+        (node._barProgress) && (data["barProgress"] = node._barProgress);
+        (node._barNormalBall) && (data["barNormalBall"] = node._barNormalBall);
+        (node._barSelectBall) && (data["barSelectBall"] = node._barSelectBall);
+        (node._barDisableBall) && (data["barDisableBall"] = node._barDisableBall);
     } else if(node._className == "Button") {
         
     }
@@ -206,6 +224,9 @@ function cocosGenNodeByData(data, parent) {
         node = new cc.LabelTTF("");
     } else if(data.type == "Input") {
         node = new cc.EditBox(cc.size(100, 20), new cc.Scale9Sprite());
+        node._className = data.type;
+    } else if(data.type == "Slider") {
+        node = new ccui.Slider();
         node._className = data.type;
     } else {
         node = new cc.Node();
@@ -283,6 +304,13 @@ function cocosGenNodeByData(data, parent) {
         data.insetTop && (node.insetTop = data.insetTop);
         data.insetRight && (node.insetRight = data.insetRight);
         data.insetBottom && (node.insetBottom = data.insetBottom);
+    } else if(data.type == "Slider") {
+        (data["percent"]) && (node.percent = data["percent"]);
+        setNodeSpriteFrame("barBg", data["barBg"], node, node.loadBarTexture);
+        setNodeSpriteFrame("barProgress", data["barProgress"], node, node.loadProgressBarTexture);
+        setNodeSpriteFrame("barNormalBall", data["barNormalBall"], node, node.loadSlidBallTextureNormal);
+        setNodeSpriteFrame("barSelectBall", data["barSelectBall"], node, node.loadSlidBallTexturePressed);
+        setNodeSpriteFrame("barDisableBall", data["barDisableBall"], node, node.loadSlidBallTextureDisabled);
     }
 
     data.children = data.children || [];

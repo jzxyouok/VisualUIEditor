@@ -725,11 +725,71 @@ SliderData.prototype = {
         };
     },
 
+    get barBg() {
+        return {
+            path: "barBg",
+            type: "fire-asset",
+            name: "barBg",
+            attrs: {
+            },
+            value: this._node._barBg,
+        };
+    },
+
+    get barProgress() {
+        return {
+            path: "barProgress",
+            type: "fire-asset",
+            name: "barProgress",
+            attrs: {
+            },
+            value: this._node._barProgress,
+        };
+    },
+
+    get barNormalBall() {
+        return {
+            path: "barNormalBall",
+            type: "fire-asset",
+            name: "barNormalBall",
+            attrs: {
+            },
+            value: this._node._barNormalBall,
+        };
+    },
+
+    get barSelectBall() {
+        return {
+            path: "barSelectBall",
+            type: "fire-asset",
+            name: "barSelectBall",
+            attrs: {
+            },
+            value: this._node._barSelectBall,
+        };
+    },
+
+    get barDisableBall() {
+        return {
+            path: "barDisableBall",
+            type: "fire-asset",
+            name: "barDisableBall",
+            attrs: {
+            },
+            value: this._node._barDisableBall,
+        };
+    },
+
     get __props__() {
         return [
             this.totalLength,
             this.progress,
             this.mode,
+            this.barBg,
+            this.barProgress,
+            this.barNormalBall,
+            this.barSelectBall,
+            this.barDisableBall,
         ];
     }
 }

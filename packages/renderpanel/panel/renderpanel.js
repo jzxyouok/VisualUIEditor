@@ -546,7 +546,11 @@
             node._spriteBg = value;
             runScene.addChild(node);
         } else if(data == "Slider") {
-            node = new ccui.Slider("res/default/Slider_Back.png", "res/default/SliderNode_Normal.png");
+            let back = "res/default/SliderBack.png";
+            let normalBall = "res/default/SliderNodeNormal.png";
+            node = new ccui.Slider(back, normalBall);
+            node._barBg = back;
+            node._barNormalBall = normalBall;
             node._className = "Slider";
             runScene.addChild(node);
         } else if(data == "Button") {

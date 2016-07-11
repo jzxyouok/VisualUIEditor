@@ -531,8 +531,9 @@
             node = new cc.LabelTTF("VisualUI", "Arial", 20);
             runScene.addChild(node);
         } else if(data == "Scale9") {
-            node = new cc.Scale9Sprite("res/default/Scale9.png");
-            node.setRenderingType(cc.Scale9Sprite.RenderingType.SLICED);
+            let value = "res/default/Scale9.png";
+            node = new cc.Scale9Sprite(value);
+            node._spriteFrame = value
             node._className = "Scale9";
             runScene.addChild(node);
         } else if(data == "Input") {

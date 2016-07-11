@@ -23,6 +23,10 @@ function InputData(node) {
     this._node = node;
 }
 
+function Scale9Data(node) {
+    this._node = node;
+}
+
 function FixNodeHor(node, step) {
     node.x += step;
     if(node.left) {
@@ -222,6 +226,8 @@ NodeData.prototype = {
             node.push(new SliderData(this._node));
         } else if(this._node._className == "Input") {
             node.push(new InputData(this._node));
+        } else if(this._node._className == "Scale9") {
+            node.push(new Scale9Data(this._node));
         } else {
         }
         
@@ -254,9 +260,11 @@ NodeData.prototype = {
         } else if(path == "skew.y") {
             this._node.skewY = value;
         } else if(path == "size.width") {
-            this._node.width = value;
+            let setFn = this._node.setPreferredSize ? this._node.setPreferredSize : this._node.setContentSize;
+            setFn.call(this._node, cc.size(value, this._node.height));
         } else if(path == "size.height") {
-            this._node.height = value;
+            let setFn = this._node.setPreferredSize ? this._node.setPreferredSize : this._node.setContentSize;
+            setFn.call(this._node, cc.size(this._node.width, value));
         } else if(path == "opacity") {
             this._node.opacity = value;
         } else if(path == "color") {
@@ -358,10 +366,16 @@ NodeData.prototype = {
                 this._node.initWithFile(getFullPathForName(value));
             }
         } else if(this._node._className == "Scale9") {
-            if(path == "srcBlendFactor") {
-                this._node.setBlendFunc(parseInt(value), this._node.getBlendFunc().dst);
-            } else if(path == "dstBlendFactor") {
-                this._node.setBlendFunc(this._node.getBlendFunc().src, parseInt(value));
+            if(path == "spriteFrame") {
+                let url = window.projectFolder + "/" + value;
+                let exist = checkTextureExist(url);
+                let capInset = this._node.capInsets;
+                value = exist ? value : "res/default/Scale9.png";
+                this._node._spriteFrame = value;
+                this._node._scale9Image = null;
+                this._node.initWithFile(getFullPathForName(value));
+            } else {
+                this._node[path] = value;
             }
         } else if(this._node._className == "Slider") {
             if(path == "totalLength") {
@@ -824,17 +838,6 @@ InputData.prototype = {
         };
     },
 
-    get maxLength() {
-        return {
-            path: "maxLength",
-            type: "number",
-            name: "maxLength",
-            attrs: {
-            },
-            value: this._node.maxLength,
-        };
-    },
-
     get inputFlag() {
         return {
             path: "inputFlag",
@@ -909,25 +912,66 @@ InputData.prototype = {
         ];
     }
     
-/**
- * 
- * 
- * 
- * <p>cc.EditBox is a brief Class for edit box.<br/>
- * You can use this widget to gather small amounts of text from the user.</p>
- *
- * @class
- * @extends cc.Node
- *
- * @property {String}   placeHolder             - Place holder of edit box
- * @property {String}   placeHolderFont         - <@writeonly> Config font of place holder
- * @property {String}   placeHolderFontName     - <@writeonly> Config font name of place holder
- * @property {Number}   placeHolderFontSize     - <@writeonly> Config font size of place holder
- * @property {cc.Color} placeHolderFontColor    - <@writeonly> Config font color of place holder
- * @property {cc.EditBox.InputFlag} inputFlag   - <@writeonly> Input flag of edit box, one of the cc.EditBox.InputFlag constants. e.g.cc.EditBox.InputFlag..PASSWORD
- * @property {Object}   delegate                - <@writeonly> Delegate of edit box
- * @property {cc.EditBox.InputMode} inputMode   - <@writeonly> Input mode of the edit box. Value should be one of the cc.EditBox.InputMode constants.
- * @property {Number}   returnType              - <@writeonly> Return type of edit box, value should be one of the KeyboardReturnType constants.
- *
- */
-}
+};
+
+
+Scale9Data.prototype = {
+    __editor__ : {
+        "inspector": "cc.Scale9",
+    },
+    __displayName__: "Scale9",
+
+    __type__: "cc.Scale9",
+
+    get spriteFrame() {
+        return this._node._spriteFrame;
+    },
+
+    set spriteFrame(value) {
+
+    },
+
+    get insetLeft() {
+        return {
+            path: "insetLeft",
+            type: "number",
+            name: "insetLeft",
+            attrs: {
+            },
+            value: this._node.insetLeft,
+        };
+    },
+
+    get insetTop() {
+        return {
+            path: "insetTop",
+            type: "number",
+            name: "insetTop",
+            attrs: {
+            },
+            value: this._node.insetTop,
+        };
+    },
+
+    get insetRight() {
+        return {
+            path: "insetRight",
+            type: "number",
+            name: "insetRight",
+            attrs: {
+            },
+            value: this._node.insetRight,
+        };
+    },
+
+    get insetBottom() {
+        return {
+            path: "insetBottom",
+            type: "number",
+            name: "insetBottom",
+            attrs: {
+            },
+            value: this._node.insetBottom,
+        };
+    },
+};

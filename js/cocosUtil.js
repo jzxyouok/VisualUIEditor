@@ -114,8 +114,24 @@ function cocosExportNodeData(node) {
         if(node._spriteFrame)
             data["spriteFrame"] = node._spriteFrame;
 
-    } else if(node._className == "Scale9") {
+        let blendFunc = node.getBlendFunc();
+        if(blendFunc.src != cc.BLEND_SRC) {
+            data["blendSrc"] = blendFunc.src;
+        }
 
+        if(blendFunc.dst != cc.BLEND_DST) {
+            data["blendDst"] = blendFunc.dst;
+        }
+    } else if(node._className == "Scale9") {
+        if(node._spriteFrame)
+            data["spriteFrame"] = node._spriteFrame;
+
+        node.insetLeft && (data.insetLeft = node.insetLeft);
+        node.insetTop && (data.insetTop = node.insetTop);
+        node.insetRight && (data.insetRight = node.insetRight);
+        node.insetBottom && (data.insetBottom = node.insetBottom);
+
+        
     } else if(node._className == "Input") {
         (node.string.length > 0) && (data["string"] = node.string);
         let value = null;
@@ -181,8 +197,11 @@ function cocosGenNodeByData(data, parent) {
     } else if(data.type == "Sprite") {
         node = new cc.Sprite();
         node._className = "Sprite";
+    } else if(data.type == "Scale9") {
+        node = new cc.Scale9Sprite();
+        node._className = "Scale9";
     } else if(data.type == "LabelTTF") {
-        node = new cc.LabelTTF("11111");
+        node = new cc.LabelTTF("");
     } else if(data.type == "Input") {
         // node = new cc.EditBox(cc.size(100, 20), null);
         // node._className = data.type;
@@ -234,17 +253,28 @@ function cocosGenNodeByData(data, parent) {
     } else if(data.type == "Sprite") {
         if(data.spriteFrame && getFullPathForName(data.spriteFrame)) {
             let fullpath = getFullPathForName(data.spriteFrame);
-        
             node.init(fullpath);
             node._spriteFrame = data.spriteFrame;
-            // cc.loader.load(fullpath, function(err, content) {
-            //     if(err) {
-            //         return;
-            //     }
-            //     node.init(fullpath);
-            //     node._spriteFrame = data.spriteFrame;
-            // });
         }
+        data.blendSrc && (node.setBlendFunc(parseInt(data.blendSrc), node.getBlendFunc().dst));
+        data.blendDst && (node.getBlendFunc().src, node.setBlendFunc(parseInt(data.blendDst)));
+    } else if(data.type == "Scale9") {
+        let size = node.getContentSize();
+
+        if(data.spriteFrame && getFullPathForName(data.spriteFrame)) {
+            let fullpath = getFullPathForName(data.spriteFrame);
+            node.initWithFile(fullpath);
+            node._spriteFrame = data.spriteFrame;
+        }
+
+        if(!cc.sizeEqualToSize(size, cc.size(0, 0))) {
+            node.setPreferredSize(size);
+        }
+
+        data.insetLeft && (node.insetLeft = data.insetLeft);
+        data.insetTop && (node.insetTop = data.insetTop);
+        data.insetRight && (node.insetRight = data.insetRight);
+        data.insetBottom && (node.insetBottom = data.insetBottom);
     }
 
     data.children = data.children || [];

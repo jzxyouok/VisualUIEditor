@@ -1,7 +1,8 @@
 var fs = require('fs');
 
 function isBaseTypeByName(name) {
-    if(name == "Label" || name == "Slider" || name == "Sprite" || name == "Scale9" || name == "Input" || name == "Button") {
+    if(name == "LabelTTF" || name == "Slider" || name == "Sprite"
+       || name == "Scale9" || name == "Input" || name == "Button" || name == "CheckBox") {
         return true;
     }
     return false;

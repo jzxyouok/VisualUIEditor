@@ -1,0 +1,26 @@
+{
+    "width": "800",
+    "height": "400",
+    "x": 0,
+    "y": 0,
+    "type": "Scene",
+    "children": [
+        {
+            "width": "46",
+            "height": "46",
+            "x": 395,
+            "y": 229.5,
+            "type": "Sprite"
+        },
+        {
+            "width": "75",
+            "height": "23",
+            "x": 434,
+            "y": 189.5,
+            "type": "LabelTTF",
+            "string": "VisualUI",
+            "fontSize": 20,
+            "fontName": "Arial"
+        }
+    ]
+}

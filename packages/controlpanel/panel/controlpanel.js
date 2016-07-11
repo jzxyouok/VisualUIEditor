@@ -14,12 +14,14 @@
     },
 
     show_items: [
+        {icon:"res/control/Node.png", name:"Node"},
         {icon:"res/control/Sprite.png", name:"Sprite"},
         {icon:"res/control/Label.png", name:"LabelTTF"},
         {icon:"res/control/Scale9.png", name:"Scale9"},
         {icon:"res/control/Input.png", name:"Input"},
         {icon:"res/control/SliderBar.png", name:"Slider"},
         {icon:"res/control/Button.png", name:"Button"},
+        {icon:"res/control/CheckBox.png", name:"CheckBox"},
     ],
 
     _getItems: function() {

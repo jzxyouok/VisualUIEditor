@@ -526,16 +526,13 @@
             node = new cc.Sprite(getFullPathForName(value) );
             node._spriteFrame = value
             node._className = "Sprite";
-            runScene.addChild(node, 0);
         } else if(data == "LabelTTF") {
             node = new cc.LabelTTF("VisualUI", "Arial", 20);
-            runScene.addChild(node);
         } else if(data == "Scale9") {
             let value = "res/default/Scale9.png";
             node = new cc.Scale9Sprite(value);
             node._spriteFrame = value
             node._className = "Scale9";
-            runScene.addChild(node);
         } else if(data == "Input") {
             let value = "res/default/shurukuang.png";
             node = new cc.EditBox(cc.size(100, 20), new cc.Scale9Sprite(value));
@@ -544,7 +541,6 @@
             node.placeholderFontColor = cc.Color.GRAY;
             node._className = "Input";
             node._spriteBg = value;
-            runScene.addChild(node);
         } else if(data == "Slider") {
             let back = "res/default/SliderBack.png";
             let normalBall = "res/default/SliderNodeNormal.png";
@@ -552,7 +548,6 @@
             node._barBg = back;
             node._barNormalBall = normalBall;
             node._className = "Slider";
-            runScene.addChild(node);
         } else if(data == "Button") {
             let normal = "res/default/ButtonNormal.png";
             let select = "res/default/ButtonSelect.png";
@@ -562,10 +557,20 @@
             node._bgNormal = normal;
             node._bgSelect = select;
             node._bgDisable = disable;
-            runScene.addChild(node);
+        } else if(data == "Node") {
+            node = new cc.Node();
+            node.setContentSize(cc.size(40, 40));
+            node._className = "Node";
+        } else if(data == "CheckBox") {
+            let back = "res/default/CheckBoxNormal.png";
+            let backSelect = "res/default/CheckBoxNodeNormal.png";
+            let disable = "res/default/ButtonDisable.png";
+            node = new ccui.CheckBox(back, backSelect, true);
+            node._className = "CheckBox";
         }
 
         if (node) {
+            runScene.addChild(node, 0);
             node.setPosition(parseFloat(scenePosition.x), parseFloat(scenePosition.y));
             node.uuid = uuid;
             node.uiname = data;

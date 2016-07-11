@@ -8,8 +8,8 @@
         {
             "width": "137",
             "height": "52",
-            "x": 382.8333333333335,
-            "y": 412.6666666666665,
+            "x": 367.8333333333335,
+            "y": 457.6666666666665,
             "type": "Node",
             "anchorX": 0,
             "anchorY": 0,
@@ -45,10 +45,55 @@
             "anchorY": 0
         },
         {
+            "width": "46",
+            "height": "46",
+            "x": 1174.05641025641,
+            "y": 292.174358974359,
+            "type": "Sprite",
+            "spriteFrame": "res/default/Sprite.png"
+        },
+        {
+            "width": "46",
+            "height": "46",
+            "x": 865.525641025641,
+            "y": 389.3205128205129,
+            "type": "Sprite",
+            "spriteFrame": "res/default/Sprite.png"
+        },
+        {
+            "width": "200",
+            "height": "14",
+            "x": 274.3,
+            "y": 539.1,
+            "type": "Node",
+            "anchorX": 0,
+            "anchorY": 0
+        },
+        {
+            "width": "46",
+            "height": "36",
+            "x": 216.77272727272722,
+            "y": 297.2272727272728,
+            "id": "default",
+            "type": "Button",
+            "bgNormal": "res/default/ButtonNormal.png",
+            "bgSelect": "res/default/ButtonSelect.png",
+            "bgDisable": "res/default/ButtonDisable.png",
+            "titleText": "2312321",
+            "fontName": "Arial",
+            "fontSize": 16,
+            "fontColor": [
+                170,
+                113,
+                113,
+                255
+            ]
+        },
+        {
             "width": "72",
             "height": "18",
-            "x": 502.8333333333335,
-            "y": 343.6666666666666,
+            "x": 356.67948717948735,
+            "y": 360.58974358974353,
             "type": "LabelTTF",
             "string": "31231231",
             "fontSize": 16,
@@ -67,22 +112,6 @@
             ]
         },
         {
-            "width": "46",
-            "height": "46",
-            "x": 1174.05641025641,
-            "y": 292.174358974359,
-            "type": "Sprite",
-            "spriteFrame": "res/default/Sprite.png"
-        },
-        {
-            "width": "40",
-            "height": "40",
-            "x": 231.6904761904766,
-            "y": 336.0238095238094,
-            "type": "Sprite",
-            "spriteFrame": "res/default/CheckBoxNodeNormal.png"
-        },
-        {
             "width": "212",
             "height": "216",
             "x": 704.4487179487174,
@@ -93,28 +122,11 @@
             "spriteFrame": "res/1.png"
         },
         {
-            "width": "46",
-            "height": "46",
-            "x": 865.525641025641,
-            "y": 389.3205128205129,
-            "type": "Sprite",
-            "spriteFrame": "res/default/Sprite.png"
-        },
-        {
-            "width": "212",
-            "height": "216",
-            "x": 1054.5,
-            "y": 479.5,
-            "type": "Scale9",
-            "spriteFrame": "res/1.png"
-        },
-        {
-            "width": "49",
-            "height": "58",
-            "x": 1032.5,
-            "y": 307.5,
+            "width": "100",
+            "height": "34",
+            "x": 1017.9,
+            "y": 540.3,
             "type": "Input",
-            "string": "12121",
             "fontName": "Arial",
             "fontColor": [
                 255,
@@ -123,67 +135,7 @@
                 255
             ],
             "placeHolder": "VisualUI",
-            "spriteBg": "res/1.png"
-        },
-        {
-            "width": "49",
-            "height": "58",
-            "x": 1009.5,
-            "y": 161.5,
-            "type": "Input",
-            "scaleX": 1.910436497167916,
-            "scaleY": 0.5878266145132044,
-            "string": "fsfdasfdas",
-            "fontName": "Arial",
-            "fontColor": [
-                255,
-                255,
-                255,
-                255
-            ],
-            "placeHolder": "VisualUI",
-            "spriteBg": "res/1.png"
-        },
-        {
-            "width": "200",
-            "height": "14",
-            "x": 274.3,
-            "y": 539.1,
-            "type": "Node",
-            "anchorX": 0,
-            "anchorY": 0
-        },
-        {
-            "width": "200",
-            "height": "14",
-            "x": 299.5,
-            "y": 207.5,
-            "id": "default",
-            "type": "Slider",
-            "percent": 48.26,
-            "barBg": "res/default/SliderBack.png",
-            "barProgress": "res/default/SliderBar.png",
-            "barNormalBall": "res/default/SliderNodeNormal.png"
-        },
-        {
-            "width": "46",
-            "height": "36",
-            "x": 364.5,
-            "y": 338.5,
-            "id": "default",
-            "type": "Button",
-            "bgNormal": "res/default/ButtonNormal.png",
-            "bgSelect": "res/default/ButtonSelect.png",
-            "bgDisable": "res/default/ButtonDisable.png",
-            "titleText": "2312321",
-            "fontName": "Arial",
-            "fontSize": 16,
-            "fontColor": [
-                170,
-                113,
-                113,
-                255
-            ]
+            "spriteBg": "res/default/shurukuang.png"
         }
     ]
 }

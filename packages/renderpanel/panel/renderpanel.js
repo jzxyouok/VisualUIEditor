@@ -562,10 +562,14 @@
             node.setContentSize(cc.size(40, 40));
             node._className = "Node";
         } else if(data == "CheckBox") {
+
             let back = "res/default/CheckBoxNormal.png";
-            let backSelect = "res/default/CheckBoxNodeNormal.png";
-            let disable = "res/default/ButtonDisable.png";
-            node = new ccui.CheckBox(back, backSelect, true);
+            let backSelect = "res/default/CheckBoxSelect.png";
+            let active = "res/default/CheckBoxNodeNormal.png";
+            let backDisable = "res/default/CheckBoxDisable.png";
+            let activeDisable = "res/default/CheckBoxNodeDisable.png";
+            node = new ccui.CheckBox(back, backSelect, active, backDisable, activeDisable);
+            node.setSelected(true);
             node._className = "CheckBox";
         }
 

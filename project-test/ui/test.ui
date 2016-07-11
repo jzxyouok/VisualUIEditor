@@ -164,6 +164,26 @@
             "barBg": "res/default/SliderBack.png",
             "barProgress": "res/default/SliderBar.png",
             "barNormalBall": "res/default/SliderNodeNormal.png"
+        },
+        {
+            "width": "46",
+            "height": "36",
+            "x": 364.5,
+            "y": 338.5,
+            "id": "default",
+            "type": "Button",
+            "bgNormal": "res/default/ButtonNormal.png",
+            "bgSelect": "res/default/ButtonSelect.png",
+            "bgDisable": "res/default/ButtonDisable.png",
+            "titleText": "2312321",
+            "fontName": "Arial",
+            "fontSize": 16,
+            "fontColor": [
+                170,
+                113,
+                113,
+                255
+            ]
         }
     ]
 }

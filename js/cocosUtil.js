@@ -175,7 +175,16 @@ function cocosExportNodeData(node) {
         (node._barSelectBall) && (data["barSelectBall"] = node._barSelectBall);
         (node._barDisableBall) && (data["barDisableBall"] = node._barDisableBall);
     } else if(node._className == "Button") {
-        
+        (node._bgNormal) && (data["bgNormal"] = node._bgNormal);
+        (node._bgSelect) && (data["bgSelect"] = node._bgSelect);
+        (node._bgDisable) && (data["bgDisable"] = node._bgDisable);
+        (node.getTitleText().length > 0) && (data["titleText"] = node.getTitleText());
+        (node.getTitleFontName().length > 0) && (data["fontName"] = node.getTitleFontName());
+        (node.getTitleFontSize() > 0) && (data["fontSize"] = node.getTitleFontSize());
+        if(!cc.colorEqual(node.getTitleColor(), cc.color.WHITE)) {
+            let color = node.getTitleColor();
+            data["fontColor"] = [color.r, color.g, color.b, color.a];
+        }
     }
 
     if(!isBaseType(node)) {
@@ -228,8 +237,12 @@ function cocosGenNodeByData(data, parent) {
     } else if(data.type == "Slider") {
         node = new ccui.Slider();
         node._className = data.type;
+    } else if(data.type == "Button") {
+        node = new ccui.Button();
+        node._className = data.type;
     } else {
         node = new cc.Node();
+        node._className = "Node";
     }
 
     node.uuid = gen_uuid();
@@ -311,6 +324,16 @@ function cocosGenNodeByData(data, parent) {
         setNodeSpriteFrame("barNormalBall", data["barNormalBall"], node, node.loadSlidBallTextureNormal);
         setNodeSpriteFrame("barSelectBall", data["barSelectBall"], node, node.loadSlidBallTexturePressed);
         setNodeSpriteFrame("barDisableBall", data["barDisableBall"], node, node.loadSlidBallTextureDisabled);
+    } else if(data.type == "Button") {
+        (data["percent"]) && (node.percent = data["percent"]);
+        setNodeSpriteFrame("bgNormal", data["bgNormal"], node, node.loadTextureNormal);
+        setNodeSpriteFrame("bgSelect", data["bgSelect"], node, node.loadTexturePressed);
+        setNodeSpriteFrame("bgDisable", data["bgDisable"], node, node.loadTextureDisabled);
+        
+        (data["titleText"]) && (node.setTitleText(data["titleText"]));
+        (data["fontName"]) && (node.setTitleFontName(data["fontName"]));
+        (data["fontSize"]) && (node.setTitleFontSize(data["fontSize"]));
+        (data["fontColor"]) && (node.setTitleColor(covertToColor(data["fontColor"])));
     }
 
     data.children = data.children || [];

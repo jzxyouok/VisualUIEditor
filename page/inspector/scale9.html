@@ -1,0 +1,72 @@
+<dom-module id="cc-scale-9-inspector">
+  <template>
+    <style>
+	    editor-button {
+        margin-left: 5px;
+      }
+
+      .line {
+        border-bottom: 1px solid #666;
+        margin: 0px 1px 6px 15px;
+      }
+    </style>
+    <editor-custom-prop title="[[_T('COMPONENT.sprite.sprite_frame')]]" name="Sprite Frame">
+      <div class="layout horizontal center">
+        <fire-asset class="flex-1" value="{{target.spriteFrame}}" path="spriteFrame" type="sprite-frame"></fire-asset>
+      </div>
+    </editor-custom-prop>
+    <div class="line"></div>
+    <editor-prop prop="{{target.insetLeft}}"></editor-prop>
+    <editor-prop prop="{{target.insetTop}}"></editor-prop>
+    <editor-prop prop="{{target.insetRight}}"></editor-prop>
+    <editor-prop prop="{{target.insetBottom}}"></editor-prop>
+  </template>
+  <script>
+    'use strict';
+
+    Editor.polymerElement({
+      properties: {
+        target: {
+          type: Object,
+          value: null,
+          notify: true,
+        },
+      },
+
+      _resizeToOriginal: function () {
+        if(!this.target.sprite.value.uuid) {
+          return;
+        }
+        var nodeuuid = this.target.node.uuid;
+        Editor.assetdb.queryMetaInfoByUuid( this.target.sprite.value.uuid, function (err,info) {
+          let meta = JSON.parse(info.json);
+          Editor.Ipc.sendToPanel('scene', 'scene:set-property', {
+            id: nodeuuid,
+            path: 'size',
+            type: 'cc.Size',
+            value: {width: meta.width, height: meta.height},
+            isSubProp: false,
+          });
+        });
+      },
+
+      _selectAtlas: function () {
+        console.log("TO DO Select Atals Panel");
+      },
+
+      _editSprite: function () {
+        Editor.Panel.open('sprite-editor', {
+          uuid: this.target.spriteFrame.value.uuid
+        });
+      },
+
+      _isFilledType: function(type) {
+        return type === cc.Scale9Sprite.RenderingType.FILLED;
+      },
+
+      _isRadialFilled: function(fillType) {
+        return fillType === cc.Scale9Sprite.FillType.RADIAL;
+      },
+    });
+  </script>
+</dom-module>

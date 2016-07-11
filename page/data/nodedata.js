@@ -359,7 +359,7 @@ NodeData.prototype = {
             } else if(path == "dstBlendFactor") {
                 this._node.setBlendFunc(this._node.getBlendFunc().src, parseInt(value));
             } else if(path == "spriteFrame") {
-                let url = window.projectFolder + "/" + value;
+                let url = getFullPathForName(value);
                 let exist = checkTextureExist(url);
                 value = exist ? value : "res/default/Sprite.png";
                 this._node._spriteFrame = value;
@@ -367,7 +367,7 @@ NodeData.prototype = {
             }
         } else if(this._node._className == "Scale9") {
             if(path == "spriteFrame") {
-                let url = window.projectFolder + "/" + value;
+                let url = getFullPathForName(value);
                 let exist = checkTextureExist(url);
                 let capInset = this._node.capInsets;
                 value = exist ? value : "res/default/Scale9.png";
@@ -390,6 +390,12 @@ NodeData.prototype = {
                 this._node.fontColor = new cc.Color(value.r, value.g, value.b, value.a);
             } else if(path == "placeholderFontColor") {
                 this._node.placeholderFontColor = new cc.Color(value.r, value.g, value.b, value.a);
+            } else if(path == "spriteBg") {
+                let url = getFullPathForName(value);
+                let exist = checkTextureExist(url);
+                value = exist ? value : "res/default/shurukuang.png";
+                this._node._spriteBg = value;
+                this._node.initWithBackgroundSprite(new cc.Scale9Sprite(getFullPathForName(value)));
             } else {
                 this._node[path] = value;
             }
@@ -735,6 +741,21 @@ InputData.prototype = {
     __displayName__: "Input",
     __type__: "cc.Input",
 
+    get spriteBg() {
+        return {
+            path: "spriteBg",
+            type: "fire-asset",
+            name: "spriteBg",
+            attrs: {
+            },
+            value: this._node._spriteBg,
+        };
+    },
+
+    set spriteBg(value) {
+
+    },
+
     get string() {
         return {
             path: "string",
@@ -753,7 +774,7 @@ InputData.prototype = {
             name: "fontName",
             attrs: {
             },
-            value: this._node._nativeControl._edFontName,
+            value: this._node._edFontName,
         };
     },
 
@@ -764,22 +785,18 @@ InputData.prototype = {
             name: "fontSize",
             attrs: {
             },
-            value: this._node._nativeControl._edFontSize,
+            value: this._node._edFontSize,
         };
     },
 
     get fontColor() {
-        let color = cc.Color.BLACK;
-        if(this._node._nativeControl._textLabel) {
-            color = this._node._nativeControl._textLabel.color;
-        }
         return {
             path: "fontColor",
             type: "color",
             name: "fontColor",
             attrs: {
             },
-            value: color,
+            value: this._node._textColor,
         };
     },
 
@@ -897,6 +914,7 @@ InputData.prototype = {
 
     get __props__() {
         return [
+            this.spriteBg,
             this.string,
             this.fontName,
             this.fontSize,

@@ -101,12 +101,57 @@
             "spriteFrame": "res/default/Sprite.png"
         },
         {
-            "width": "300",
+            "width": "212",
             "height": "216",
             "x": 1054.5,
             "y": 479.5,
             "type": "Scale9",
             "spriteFrame": "res/1.png"
+        },
+        {
+            "width": "49",
+            "height": "58",
+            "x": 1032.5,
+            "y": 307.5,
+            "type": "Input",
+            "string": "12121",
+            "fontName": "Arial",
+            "fontColor": [
+                255,
+                255,
+                255,
+                255
+            ],
+            "placeHolder": "VisualUI",
+            "spriteBg": "res/1.png"
+        },
+        {
+            "width": "49",
+            "height": "58",
+            "x": 1009.5,
+            "y": 161.5,
+            "type": "Input",
+            "scaleX": 1.910436497167916,
+            "scaleY": 0.5878266145132044,
+            "string": "fsfdasfdas",
+            "fontName": "Arial",
+            "fontColor": [
+                255,
+                255,
+                255,
+                255
+            ],
+            "placeHolder": "VisualUI",
+            "spriteBg": "res/1.png"
+        },
+        {
+            "width": "200",
+            "height": "14",
+            "x": 274.3,
+            "y": 539.1,
+            "type": "Node",
+            "anchorX": 0,
+            "anchorY": 0
         }
     ]
 }

@@ -21,7 +21,7 @@ Editor.polymerElement({
         },
         type: {
             type: String,
-            value: "Unknown"
+            value: "sprite-frame"
         },
         path: {
             type: String,

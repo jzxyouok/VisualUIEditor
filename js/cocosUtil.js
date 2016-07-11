@@ -135,15 +135,15 @@ function cocosExportNodeData(node) {
     } else if(node._className == "Input") {
         (node.string.length > 0) && (data["string"] = node.string);
         let value = null;
-        value = node._nativeControl._edFontName;
+        value = node._edFontName;
         (value.length > 0) && (data["fontName"] = value);
-        value = node._nativeControl._edFontSize;
+        value = node._edFontSize;
         (value != 14) && (data["fontSize"] = value);
-        value = node._nativeControl._textLabel ? node._nativeControl._textLabel.color : cc.color.BLACK;
+        value = node._textColor;
         (!cc.colorEqual(value, cc.color.BLACK)) && (data["fontColor"] = [value.r, value.g, value.b, value.a]);
-        (node.inputFlag != cc.EditBox.InputFlag.SENSITIVE) && (data["inputFlag"] = node.inputFlag);
-        (node.inputMode != cc.EditBox.InputMode.ANY) && (data["inputMode"] = node.inputMode);
-        (node.returnType != cc.EditBox.KeyboardReturnType.DEFAULT) && (data["returnType"] = node.returnType);
+        (node.inputFlag != cc.EDITBOX_INPUT_FLAG_SENSITIVE) && (data["inputFlag"] = node.inputFlag);
+        (node.inputMode != cc.EDITBOX_INPUT_MODE_ANY) && (data["inputMode"] = node.inputMode);
+        (node.returnType != cc.KEYBOARD_RETURNTYPE_DEFAULT) && (data["returnType"] = node.returnType);
         (node.maxLength != 50) && (data["maxLength"] = node.maxLength);
         (node.placeHolder && node.placeHolder.length > 0) && (data["placeHolder"] = node.placeHolder);
         value = node._placeholderFontName;
@@ -152,6 +152,8 @@ function cocosExportNodeData(node) {
         (value != 14) && (data["placeholderFontSize"] = value);
         value = node._placeholderColor || cc.color.GRAY;
         (!cc.colorEqual(value, cc.color.GRAY)) && (data["placeholderFontColor"] = [value.r, value.g, value.b, value.a]);
+        value = node._spriteBg;
+        (value && value.length > 0) && (data["spriteBg"] = value);
     } else if(node._className == "Slider") {
         
     } else if(node._className == "Button") {
@@ -203,9 +205,8 @@ function cocosGenNodeByData(data, parent) {
     } else if(data.type == "LabelTTF") {
         node = new cc.LabelTTF("");
     } else if(data.type == "Input") {
-        // node = new cc.EditBox(cc.size(100, 20), null);
-        // node._className = data.type;
-        node = new cc.Node();
+        node = new cc.EditBox(cc.size(100, 20), new cc.Scale9Sprite());
+        node._className = data.type;
     } else {
         node = new cc.Node();
     }
@@ -243,13 +244,20 @@ function cocosGenNodeByData(data, parent) {
         data.fontName && (node.fontName = data.fontName);
         (covertToColor(data.fontColor)) && (node.fontColor = covertToColor(data.fontColor));
         data.maxLength && (node.maxLength = data.maxLength);
-        data.placeholder && (node.string = data.placeholder);
-        data.placeholderFontName && (node.placeholderFontName = data.placeholderFontName);
-        data.placeholderFontSize && (node.placeholderFontSize = data.placeholderFontSize);
+        data.placeHolder && (node.placeHolder = data.placeHolder);
+        data.placeHolderFontName && (node.placeHolderFontName = data.placeHolderFontName);
+        data.placeHolderFontSize && (node.placeHolderFontSize = data.placeHolderFontSize);
         (covertToColor(data.placeholderFontColor)) && (node.placeholderFontColor = covertToColor(data.placeholderFontColor));
         data.inputFlag && (node.inputFlag = data.inputFlag);
         data.inputMode && (node.inputMode = data.inputMode);
         data.returnType && (node.returnType = data.returnType);
+
+        if(data.spriteBg && getFullPathForName(data.spriteBg)) {
+            let fullpath = getFullPathForName(data.spriteBg);
+            node.initWithBackgroundSprite(new cc.Scale9Sprite(fullpath));
+            node._spriteBg = data.spriteBg;
+        }
+
     } else if(data.type == "Sprite") {
         if(data.spriteFrame && getFullPathForName(data.spriteFrame)) {
             let fullpath = getFullPathForName(data.spriteFrame);

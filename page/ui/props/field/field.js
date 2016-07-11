@@ -83,6 +83,8 @@ Editor.polymerElement({
                 element_name = "editor-textarea";
             } else if(this.type == "slider") {
                 element_name = "editor-slider";
+            } else if(this.type == "fire-asset") {
+                element_name = "fire-asset";
             }
             let child = t.firstChild;
             let isRecreate = false;

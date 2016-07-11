@@ -537,14 +537,16 @@
             node._className = "Scale9";
             runScene.addChild(node);
         } else if(data == "Input") {
-            node = new cc.EditBox(cc.size(100, 20), new cc.Scale9Sprite("res/default/shurukuang.png"));
+            let value = "res/default/shurukuang.png";
+            node = new cc.EditBox(cc.size(100, 20), new cc.Scale9Sprite(value));
             node.placeHolder = "VisualUI";
             node.placeholderFontName = "Arial";
-            node.placeholderFontColor = cc.Color.WHITE;
+            node.placeholderFontColor = cc.Color.GRAY;
             node._className = "Input";
+            node._spriteBg = value;
             runScene.addChild(node);
         } else if(data == "Slider") {
-            node = new ccui.Slider("res/default/Slider_Back.png", "res/default/Slider_Bar.png");
+            node = new ccui.Slider("res/default/Slider_Back.png", "res/default/SliderNode_Normal.png");
             node._className = "Slider";
             runScene.addChild(node);
         } else if(data == "Button") {

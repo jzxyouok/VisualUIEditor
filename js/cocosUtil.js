@@ -89,6 +89,8 @@ function cocosExportNodeData(node) {
         data["anchorY"] = node.anchorY; 
     }
 
+    (!node.isVisible()) && (data["visible"] = node.isVisible());
+
     //Label prop
     if(node._className == "LabelTTF") {
         data["string"] = node.string;
@@ -260,19 +262,21 @@ function cocosGenNodeByData(data, parent) {
 
     node.uuid = gen_uuid();
 
-    data.width && (node.width = parseFloat(data.width));
-    data.height && (node.height = parseFloat(data.height));
-    data.x && (node.x = parseFloat(data.x));
-    data.y && (node.y = parseFloat(data.y));
+    (!isNull(data.width)) && (node.width = parseFloat(data.width));
+    (!isNull(data.height)) && (node.height = parseFloat(data.height));
+    (!isNull(data.x)) && (node.x = parseFloat(data.x));
+    (!isNull(data.y)) && (node.y = parseFloat(data.y));
 
-    data.anchorX && (node.anchorX = parseFloat(data.anchorX));
-    data.anchorY && (node.anchorY = parseFloat(data.anchorY));
+    (!isNull(data.anchorX)) && (node.anchorX = parseFloat(data.anchorX));
+    (!isNull(data.anchorY)) && (node.anchorY = parseFloat(data.anchorY));
 
-    data.scaleX && (node.scaleX = parseFloat(data.scaleX));
-    data.scaleY && (node.scaleY = parseFloat(data.scaleY));
+    (!isNull(data.scaleX)) && (node.scaleX = parseFloat(data.scaleX));
+    (!isNull(data.scaleY)) && (node.scaleY = parseFloat(data.scaleY));
 
-    data.opacity && (node.opacity = parseFloat(data.opacity));
-    data.rotation && (node.rotation = parseFloat(data.rotation));
+    (!isNull(data.opacity)) && (node.opacity = parseFloat(data.opacity));
+    (!isNull(data.rotation)) && (node.rotation = parseFloat(data.rotation));
+
+    (!isNull(data.visible)) && node.setVisible(data.visible);
 
     (covertToColor(data.color)) && (node.color = covertToColor(data.color));
 

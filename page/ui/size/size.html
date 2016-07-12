@@ -11,14 +11,22 @@
         <div class="layout horizontal center">
             <editor-checkbox id="check_w" checked="{{value.isWidthPer}}" path="{{path}}.isWidthPer" disabled="{{!attrs.hasParent}}"></editor-checkbox>
             <span class="space"></span>
-            <editor-unit-input id="w" class="flex-1" disabled="{{disabled}}" readonly="{{readonly}}" path="{{path}}.width" input-value="{{value.width}}" hidden="{{value.isWidthPer}}" hint="W"></editor-unit-input>
-            <editor-unit-input id="wper" class="flex-1" disabled="{{disabled}}" readonly="{{readonly}}" path="{{path}}.widthPer" input-value="{{value.widthPer}}" hidden="{{!value.isWidthPer}}" hint="W%" max="1000" min="0"></editor-unit-input>
+            <editor-unit-input id="w" class="flex-1" disabled="{{disabled}}" readonly="{{readonly}}" 
+                                    path="{{path}}.width" input-value="{{value.width}}"
+                                    step="{{attrs.step}}" precision="{{attrs.precision}}"
+                                    min="{{attrs.min}}" max="{{attrs.max}}"
+                                    hidden="{{value.isWidthPer}}" hint="W"></editor-unit-input>
+            <editor-unit-input id="wper" class="flex-1" disabled="{{disabled}}" readonly="{{readonly}}" path="{{path}}.widthPer" input-value="{{value.widthPer}}" hidden="{{!value.isWidthPer}}" hint="W%" step="1" precision="1" max="1000" min="0"></editor-unit-input>
         </div>
         <div class="layout horizontal center">
             <editor-checkbox id="check_h" checked="{{value.isHeightPer}}" path="{{path}}.isHeightPer" disabled="{{!attrs.hasParent}}"></editor-checkbox>
             <span class="space"></span>
-            <editor-unit-input id="h" class="flex-1" disabled="{{disabled}}" readonly="{{readonly}}" path="{{path}}.height" input-value="{{value.height}}" hidden="{{value.isHeightPer}}" hint="H"></editor-unit-input>
-            <editor-unit-input id="hper" class="flex-1" disabled="{{disabled}}" readonly="{{readonly}}" path="{{path}}.heightPer" input-value="{{value.heightPer}}" hidden="{{!value.isHeightPer}}" hint="H%" max="1000" min="0"></editor-unit-input>
+            <editor-unit-input id="h" class="flex-1" disabled="{{disabled}}" readonly="{{readonly}}" 
+                                    path="{{path}}.height" input-value="{{value.height}}"
+                                    step="{{attrs.step}}" precision="{{attrs.precision}}"
+                                    min="{{attrs.min}}" max="{{attrs.max}}"
+                                    hidden="{{value.isHeightPer}}" hint="H"></editor-unit-input>
+            <editor-unit-input id="hper" class="flex-1" disabled="{{disabled}}" readonly="{{readonly}}" path="{{path}}.heightPer" input-value="{{value.heightPer}}" hidden="{{!value.isHeightPer}}" hint="H%" step="1" precision="1" max="1000" min="0"></editor-unit-input>
         </div>
     </template>
     <script src="size.js"></script>

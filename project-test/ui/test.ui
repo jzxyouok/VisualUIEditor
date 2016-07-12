@@ -45,10 +45,10 @@
             "anchorY": 0
         },
         {
-            "width": "46",
+            "width": "7.8%",
             "height": "46",
-            "x": 1174.05641025641,
-            "y": 292.174358974359,
+            "x": 975.0564102564099,
+            "y": 278.174358974359,
             "type": "Sprite",
             "spriteFrame": "res/default/Sprite.png"
         },
@@ -124,7 +124,7 @@
         {
             "width": "49",
             "height": "58",
-            "x": 1017.9,
+            "x": 100,
             "y": 540.3,
             "type": "Input",
             "fontName": "Arial",
@@ -160,6 +160,7 @@
             "id": "default",
             "type": "CheckBox",
             "scaleX": 1.2234028908058512,
+            "visible": false,
             "back": "res/default/CheckBoxNormal.png",
             "backSelect": "res/default/CheckBoxSelect.png",
             "active": "res/default/CheckBoxNodeNormal.png",

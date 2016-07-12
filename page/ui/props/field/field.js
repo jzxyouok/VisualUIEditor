@@ -105,6 +105,14 @@ Editor.polymerElement({
                     child.text = selects[this.value];
                 }
             }
+
+            if(this.attrs.expand) {
+                this.attrs.expand = null;
+                for(var k in this.attrs) {
+                    child[k] = this.attrs[k];
+                }
+            }
+
             t.appendChild(child);
 
         }

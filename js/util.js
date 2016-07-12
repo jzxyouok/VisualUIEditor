@@ -308,3 +308,7 @@ function getCanUseFile(path) {
         path: path + "/" + name,
     };
 }
+
+function isNull(value) {
+    return value === null || value === undefined;
+}

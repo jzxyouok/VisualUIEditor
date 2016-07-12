@@ -78,8 +78,10 @@ NodeData.prototype = {
             type: "vec2",
             name: "Position",
             attrs: {
-                min: 1,
-                max: 100,
+                step: 5,
+                precision: 0,
+                min: -1000,
+                max: 10000,
             },
             value: {
                 x: this._node.getPositionX(),
@@ -94,6 +96,9 @@ NodeData.prototype = {
             type: "Number",
             name: "Rotation",
             attrs: {
+                expand: true,
+                step: 5,
+                precision: 0,
                 min: 0,
                 max: 360,
             },
@@ -107,8 +112,10 @@ NodeData.prototype = {
             type: "vec2",
             name: "Scale",
             attrs: {
-                min: 0,
-                max: 360,
+                step: 0.2,
+                precision: 2,
+                min: -100,
+                max: 100,
             },
             value: {
                 x: this._node.getScaleX(),
@@ -123,8 +130,10 @@ NodeData.prototype = {
             type: "vec2",
             name: "Anchor",
             attrs: {
+                step: 0.1,
+                precision: 2,
                 min: 0,
-                max: 360,
+                max: 1,
             },
             value: {
                 x: this._node.anchorX,
@@ -150,7 +159,8 @@ NodeData.prototype = {
             attrs: {
                 hasParent : parent != null,
                 min: 0,
-                max: 360,
+                step: 5,
+                precision: 0,
             },
             value: {
                 isWidthPer: this._node.isWidthPer,
@@ -168,10 +178,7 @@ NodeData.prototype = {
             path: "tag",
             type: "string",
             name: "Tag",
-            attrs: {
-                min: 0,
-                max: 360,
-            },
+            attrs: {},
             value: this._node._name,
         }
     },
@@ -182,6 +189,9 @@ NodeData.prototype = {
             type: "Number",
             name: "Opacity",
             attrs: {
+                expand: true,
+                step: 5,
+                precision: 0,
                 min: 0,
                 max: 255,
             },
@@ -195,6 +205,8 @@ NodeData.prototype = {
             type: "vec2",
             name: "Skew",
             attrs: {
+                step: 5,
+                precision: 0,
                 min: 0,
                 max: 360,
             },
@@ -210,16 +222,23 @@ NodeData.prototype = {
             path: "color",
             type: "color",
             name: "Color",
-            attrs: {
-                min: 0,
-                max: 360,
-            },
+            attrs: {},
             value: {
                 r: this._node.color.r,
                 g: this._node.color.g,
                 b: this._node.color.b,
                 a: this._node.color.a
             }
+        }
+    },
+
+    get visible() {
+        return {
+            path: "visible",
+            type: "check",
+            name: "visible",
+            attrs: {},
+            value: this._node.isVisible(),
         }
     },
 
@@ -345,6 +364,8 @@ NodeData.prototype = {
                 this._node.x = parent.width - value;
                 this._node.right = value;
             }
+        } else if(path == "visible") {
+            this._node.setVisible(value);
         } else if(this._node._className == "LabelTTF") {
             if(path == "string") {
                 this._node.string = value;

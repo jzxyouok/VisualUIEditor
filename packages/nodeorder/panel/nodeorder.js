@@ -23,6 +23,16 @@
       this._curOpMode = "center";
       this._scene = null;
 
+      this.addEventListener("mousedown", function(e) {
+          if(e.button=='2') {
+              Editor.Ipc.sendToPackage('nodeorder', 'popup-operate-node-menu', e.clientX, e.clientY);
+          }
+      });
+    },
+
+    _addNode: function() {
+      let rect = this.$.addBtn.getBoundingClientRect();
+      Editor.Ipc.sendToPackage('nodeorder', 'popup-open-node-menu', rect.left, rect.bottom + 5);
     },
 
     build: function ( data ) {

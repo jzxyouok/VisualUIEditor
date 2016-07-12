@@ -4,30 +4,52 @@ const Electron = require('electron');
 
 module.exports = {
   load () {
-    Editor.Menu.register( 'open-log-file', () => {
+    Editor.Menu.register( 'create-node-menu', () => {
+      return MenuUtil.createNodeMenu();
+    })
+    
+    Editor.Menu.register( 'operate-node-menu', () => {
       return [
         {
-          label: Editor.T('CONSOLE.editor_log'),
+          label: Editor.T('新建'),
+          params: [],
+          submenu: MenuUtil.createNodeMenu(),
+        },
+        { type: 'separator' },
+        {
+          label: Editor.T('拷贝'),
           params: [],
           click () {
-            console.info("xxxxxxxxxxxxxxxxxxxx");
-            Editor.Ipc.sendToMain('console:open-log-file');
+            Editor.Ipc.sendToAll('node:copy_item');
           }
         },
         {
-          label: Editor.T('CONSOLE.cocos_console_log'),
+          label: Editor.T('粘贴'),
           params: [],
           click () {
-            Editor.Ipc.sendToMain('app:open-cocos-console-log');
+            Editor.Ipc.sendToAll('node:paste_item');
+          }
+        },
+        {
+          label: Editor.T('复制节点'),
+          params: [],
+          click () {
+            Editor.Ipc.sendToAll('node:copy_paste_item');
+          }
+        },
+        {
+          label: Editor.T('删除节点'),
+          params: [],
+          click () {
+            Editor.Ipc.sendToAll('node:delete_item');
           }
         },
       ];
     }, true );
-    
   },
 
   unload () {
-    Editor.Menu.unregister( 'open-log-file' );
+    Editor.Menu.unregister( 'create-node-menu' );
   },
 
   messages: {
@@ -42,14 +64,22 @@ module.exports = {
     'console:clear' () {
       Editor.clearLog();
     },
-    'popup-open-log-menu': function (event, x, y) {
-      let menuTmpl = Editor.Menu.getMenu('open-log-file');
-
+    'popup-open-node-menu': function (event, x, y) {
+      let menuTmpl = Editor.Menu.getMenu('create-node-menu');
       let editorMenu = new Editor.Menu(menuTmpl, event.sender);
       x = Math.floor(x);
       y = Math.floor(y);
       editorMenu.nativeMenu.popup(Electron.BrowserWindow.fromWebContents(event.sender), x, y);
       editorMenu.dispose();
-    }
+    },
+
+    'popup-operate-node-menu': function (event, x, y) {
+      let menuTmpl = Editor.Menu.getMenu('operate-node-menu');
+      let editorMenu = new Editor.Menu(menuTmpl, event.sender);
+      x = Math.floor(x);
+      y = Math.floor(y);
+      editorMenu.nativeMenu.popup(Electron.BrowserWindow.fromWebContents(event.sender), x, y);
+      editorMenu.dispose();
+    },
   }
 };

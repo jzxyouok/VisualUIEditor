@@ -520,63 +520,7 @@
         let runScene = this.$.scene.getRunScene();
         let scenePosition = this.calcSceneLocation(ev.clientX, ev.clientY);
         let uuid = gen_uuid();
-        var node = null;
-        if(data == "Sprite") {
-            let value = "res/default/Sprite.png";
-            node = new cc.Sprite(getFullPathForName(value) );
-            node._spriteFrame = value
-            node._className = "Sprite";
-        } else if(data == "LabelTTF") {
-            node = new cc.LabelTTF("VisualUI", "Arial", 20);
-        } else if(data == "Scale9") {
-            let value = "res/default/Scale9.png";
-            node = new cc.Scale9Sprite(value);
-            node._spriteFrame = value
-            node._className = "Scale9";
-        } else if(data == "Input") {
-            let value = "res/default/shurukuang.png";
-            node = new cc.EditBox(cc.size(100, 20), new cc.Scale9Sprite(value));
-            node.placeHolder = "VisualUI";
-            node.placeholderFontName = "Arial";
-            node.placeholderFontColor = cc.Color.GRAY;
-            node._className = "Input";
-            node._spriteBg = value;
-        } else if(data == "Slider") {
-            let back = "res/default/SliderBack.png";
-            let normalBall = "res/default/SliderNodeNormal.png";
-            node = new ccui.Slider(back, normalBall);
-            node._barBg = back;
-            node._barNormalBall = normalBall;
-            node._className = "Slider";
-        } else if(data == "Button") {
-            let normal = "res/default/ButtonNormal.png";
-            let select = "res/default/ButtonSelect.png";
-            let disable = "res/default/ButtonDisable.png";
-            node = new ccui.Button(normal, select, disable);
-            node._className = "Button";
-            node._bgNormal = normal;
-            node._bgSelect = select;
-            node._bgDisable = disable;
-        } else if(data == "Node") {
-            node = new cc.Node();
-            node.setContentSize(cc.size(40, 40));
-            node._className = "Node";
-        } else if(data == "CheckBox") {
-
-            let back = "res/default/CheckBoxNormal.png";
-            let backSelect = "res/default/CheckBoxSelect.png";
-            let active = "res/default/CheckBoxNodeNormal.png";
-            let backDisable = "res/default/CheckBoxDisable.png";
-            let activeDisable = "res/default/CheckBoxNodeDisable.png";
-            node = new ccui.CheckBox(back, backSelect, active, backDisable, activeDisable);
-            node._back = back;
-            node._backSelect = backSelect;
-            node._active = active;
-            node._backDisable = backDisable;
-            node._activeDisable = activeDisable;
-            node.setSelected(true);
-            node._className = "CheckBox";
-        }
+        var node = createEmptyNodeByType(data);
 
         if (node) {
             runScene.addChild(node, 0);
@@ -701,6 +645,19 @@
 
             cc.EGLView._resetInstance();
         },
+
+        'ui:create_render_node'(event, data) {
+            let runScene = this.$.scene.getRunScene();
+            let uuid = gen_uuid();
+            var node = createEmptyNodeByType(data);
+            if (node) {
+                runScene.addChild(node, 0);
+                node.setPosition(100, 100);
+                node.uuid = uuid;
+                node.uiname = data;
+                Editor.Ipc.sendToAll("ui:scene_item_add", {uuid:uuid});
+            }
+        }
 
     },
 

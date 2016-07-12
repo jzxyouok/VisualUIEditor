@@ -44,17 +44,17 @@ function cocosExportNodeData(node) {
     }
 
     if(node.left || node.right) {
-        node.left && (data["left"] = node.left.toFixed(0));
-        node.right && (data["right"] = node.right.toFixed(0));
+        node.left && (data["left"] = fixFloatValue(node.left));
+        node.right && (data["right"] = fixFloatValue(node.right));
     } else {
-        data["x"] = node.x;
+        data["x"] = fixFloatValue(node.x);
     }
 
     if(node.top || node.bottom) {
-        node.top && (data["top"] = node.top.toFixed(0));
-        node.bottom && (data["bottom"] = node.bottom.toFixed(0));
+        node.top && (data["top"] = fixFloatValue(node.top));
+        node.bottom && (data["bottom"] = fixFloatValue(node.bottom));
     } else {
-        data["y"] = node.y;
+        data["y"] = fixFloatValue(node.y);
     }
 
     if(node._name.length > 0) {
@@ -267,6 +267,12 @@ function cocosGenNodeByData(data, parent) {
     (!isNull(data.height)) && (node.height = parseFloat(data.height));
     (!isNull(data.x)) && (node.x = parseFloat(data.x));
     (!isNull(data.y)) && (node.y = parseFloat(data.y));
+
+    (!isNull(data.left)) && (node.x = parseFloat(data.left), node.left = data.left);
+    (!isNull(data.right) && parent) && (node.x = parent.width - parseFloat(data.right), node.right = data.right );
+
+    (!isNull(data.bottom)) && (node.y = parseFloat(data.bottom), node.bottom = data.bottom );
+    (!isNull(data.top) && parent) && (node.y = parent.height - parseFloat(data.top), node.top = data.top );
 
     (!isNull(data.anchorX)) && (node.anchorX = parseFloat(data.anchorX));
     (!isNull(data.anchorY)) && (node.anchorY = parseFloat(data.anchorY));

@@ -312,3 +312,7 @@ function getCanUseFile(path) {
 function isNull(value) {
     return value === null || value === undefined;
 }
+
+function fixFloatValue(value, precision) {
+    return parseFloat(parseFloat(value).toFixed(precision || 0));
+}

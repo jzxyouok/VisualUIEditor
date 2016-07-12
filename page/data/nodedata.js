@@ -278,7 +278,7 @@ NodeData.prototype = {
         if(path == "tag") {
             this._node._name = value;
         } else if(path == "position.x") {
-            this._node.x = value;
+            this._node.x = parseFloat(value.toFixed(0)) ;
             this._node.left = null;
             this._node.right = null;
         } else if(path == "position.y") {

@@ -50,7 +50,35 @@
     },
 
     _modeSelectedChange: function() {
+        if(this.modeSelected == 1) {
+            let data = cocosExportNodeData(this.$.scene.getRunScene());
+            this.$.code.value = JSON.stringify(data, null, 4);
+        } else {
+            let failed = false;
+            try {
+                let data = this.$.code.value;
+                if(data && data.length > 0) {
+                    let json = JSON.parse(data);
+                        let scene = cocosGenNodeByData(json, null);
+                        if(scene && (scene._className == "Scene")) {
+                        this.sceneChange(scene);
+                    } else {
+                        failed = true;
+                    }
+                }
+            } catch(e) {
+                failed = true;
+            }
 
+            if(failed) {
+                Editor.error("解析数据出错，放弃更改");
+            }
+        }
+
+        this.$.scene.hidden = this.modeSelected != 0;
+        this.$.code.hidden = this.modeSelected != 1;
+
+        
     },
 
     _zoomScaleChange: function(newValue, location) {
@@ -77,6 +105,9 @@
     },
 
     _mouseWheel: function(ev) {
+        if(this.modeSelected != 0) {
+            return;
+        }
         this.$.zoomSlider.value = this.$.zoomSlider.value + (ev.deltaY < 0 ? 0.05 : -0.05);
         this._zoomScaleChange(this.$.zoomSlider.value, {x : ev.clientX, y : ev.clientY});
 
@@ -84,6 +115,9 @@
     },
 
     _mouseMove: function(ev) {
+        if(this.modeSelected != 0) {
+            return;
+        }
         let location = this.calcSceneLocation(ev.clientX, ev.clientY);
         this.$.location.textContent = location.x + "X" + location.y;
     },

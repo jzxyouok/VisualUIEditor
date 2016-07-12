@@ -482,7 +482,8 @@ NodeData.prototype = {
             Editor.Ipc.sendToAll("ui:scene_prop_change", {});
         }
         
-        Editor.Ipc.sendToAll("ui:has_item_change", {});
+        Editor.Ipc.sendToAll("ui:has_item_change", {uuid:this._node.uuid});
+        
     },
 }
 

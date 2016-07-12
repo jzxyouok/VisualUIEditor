@@ -259,6 +259,7 @@ function cocosGenNodeByData(data, parent) {
         node = new cc.Node();
         node._className = "Node";
     }
+    node._name = "";
 
     node.uuid = gen_uuid();
 
@@ -449,5 +450,6 @@ function createEmptyNodeByType(data) {
         node.setSelected(true);
         node._className = "CheckBox";
     }
+    node._name = "";
     return node;
 }

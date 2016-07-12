@@ -15,10 +15,6 @@
       },
     },
 
-    addFunc: function(data) {
-
-    },
-
     _filterTextChanged: function() {
         applyFilterByTree(this.$.tree, this.filterText);
     },

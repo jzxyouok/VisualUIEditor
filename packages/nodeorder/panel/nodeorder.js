@@ -10,11 +10,12 @@
       filterText: {
         type: String,
         value: '',
+        observer: '_filterTextChanged'
       },
     },
 
-    addFunc: function(data) {
-
+    _filterTextChanged: function() {
+        applyFilterByTree(this.$.tree, this.filterText);
     },
 
     ready: function () {
@@ -271,8 +272,11 @@
           _item._isSlected = false;
           _item.$.header.style.removeProperty('background');
       }
-
-      item.name = entry._className || "Node";
+      let name = entry._className || "Node";
+      if(entry._name && entry._name.length > 0) {
+          name = name + ":" + entry._name;
+      }
+      item.name = name;
       item._uuid = entry.uuid;
       return item;
     },
@@ -291,7 +295,18 @@
       },
       'ui:scene_items_change'(event, message) {
         this.build();
-      }
+      },
+      'ui:has_item_change'(event, message) {
+        let item = this.$.tree.getItemById(message.uuid);
+        let child = cocosGetItemByUUID(this._scene, message.uuid);
+        if(item && child) {
+            let name = child._className || "Node";
+            if(child._name && child._name.length > 0) {
+                name = name + ":" + child._name;
+            }
+            item.name = name;
+        }
+      },
     },
 
   });

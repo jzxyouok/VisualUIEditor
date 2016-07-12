@@ -16,7 +16,13 @@
         type: Number,
         value: 1,
         observer: '_zoomScaleChange'
-      }
+      },
+
+      modeSelected: {
+        type: Number,
+        value: 0,
+        observer: '_modeSelectedChange'
+      },
     },
 
     listeners: {
@@ -37,6 +43,14 @@
         let zoom = this.calcGameCanvasZoom();
         gameCanvas.style.left = (curRect.width - rect.width * zoom) / 2 + "px";
         gameCanvas.style.top = (curRect.height - rect.height * zoom) / 2 + "px"; 
+    },
+
+    _realignPosition: function() {
+        this._resizeGameCanvasCenter();
+    },
+
+    _modeSelectedChange: function() {
+
     },
 
     _zoomScaleChange: function(newValue, location) {

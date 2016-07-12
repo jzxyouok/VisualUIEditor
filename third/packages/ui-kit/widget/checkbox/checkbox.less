@@ -4,7 +4,7 @@
 @color-box-bg-disabled : #525252;
 @color-border-normal : #888;
 @color-border-focus : #0c70a6;
-@color-checked : #0c90e6;
+@color-value : #0c90e6;
 
 :host {
   display: flex;
@@ -91,15 +91,15 @@
   text-indent: 5px;
 }
 
-:host[checked] #togglebox:before {
+:host[value] #togglebox:before {
   background: #818181;
 }
 
-:host[checked] #togglebox:after{
+:host[value] #togglebox:after{
   left: 2.5rem;
 }
 
-:host[checked] #icon {
+:host[value] #icon {
   opacity: 1;
 }
 
@@ -147,7 +147,7 @@
   border-color: #1ccd45;
 }
 
-:host[checked].green #togglebox:before{
+:host[value].green #togglebox:before{
   background-color: #1ccd45;
   color: #1ccd45;
 }
@@ -164,7 +164,7 @@
   border-color: #ffffff;
 }
 
-:host[checked].white #togglebox:before{
+:host[value].white #togglebox:before{
   background-color: #ffffff;
   color: #ffffff;
 }
@@ -181,7 +181,7 @@
   border-color: #1b8bff;
 }
 
-:host[checked].blue #togglebox:before{
+:host[value].blue #togglebox:before{
   background-color: #1b8bff;
   color: #1b8bff;
 }
@@ -198,7 +198,7 @@
   border-color: #ee1102;
 }
 
-:host[checked].red #togglebox:before{
+:host[value].red #togglebox:before{
   background-color: #ee1102;
   color: #ee1102;
 }
@@ -215,7 +215,7 @@
   border-color: #000000;
 }
 
-:host[checked].black #togglebox:before{
+:host[value].black #togglebox:before{
   background-color: #000000;
   color: #000000;
 }
@@ -232,7 +232,7 @@
   border-color: #ffda16;
 }
 
-:host[checked].yellow #togglebox:before{
+:host[value].yellow #togglebox:before{
   background-color: #ffda16;
   color: #ffda16;
 }
@@ -249,7 +249,7 @@
   border-color: #FF7E00;
 }
 
-:host[checked].orange #togglebox:before{
+:host[value].orange #togglebox:before{
   background-color: #FF7E00;
   color: #FF7E00;
 }
@@ -266,7 +266,7 @@
   border-color: #635c97;
 }
 
-:host[checked].purple #togglebox:before{
+:host[value].purple #togglebox:before{
   background-color: #635c97;
   color: #635c97;
 }

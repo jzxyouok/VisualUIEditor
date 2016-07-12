@@ -569,6 +569,11 @@
             let backDisable = "res/default/CheckBoxDisable.png";
             let activeDisable = "res/default/CheckBoxNodeDisable.png";
             node = new ccui.CheckBox(back, backSelect, active, backDisable, activeDisable);
+            node._back = back;
+            node._backSelect = backSelect;
+            node._active = active;
+            node._backDisable = backDisable;
+            node._activeDisable = activeDisable;
             node.setSelected(true);
             node._className = "CheckBox";
         }

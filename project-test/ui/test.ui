@@ -122,8 +122,8 @@
             "spriteFrame": "res/1.png"
         },
         {
-            "width": "100",
-            "height": "34",
+            "width": "49",
+            "height": "58",
             "x": 1017.9,
             "y": 540.3,
             "type": "Input",
@@ -136,6 +136,37 @@
             ],
             "placeHolder": "VisualUI",
             "spriteBg": "res/default/shurukuang.png"
+        },
+        {
+            "width": "40",
+            "height": "40",
+            "x": 1071.5,
+            "y": 133.8,
+            "id": "default",
+            "type": "CheckBox",
+            "back": "res/default/CheckBoxNormal.png",
+            "backSelect": "res/default/CheckBoxSelect.png",
+            "active": "res/default/CheckBoxNodeNormal.png",
+            "backDisable": "res/default/CheckBoxDisable.png",
+            "activeDisable": "res/default/CheckBoxNodeDisable.png",
+            "select": true,
+            "enable": true
+        },
+        {
+            "width": "40",
+            "height": "40",
+            "x": 1092.0432645357578,
+            "y": 244.66923076923075,
+            "id": "default",
+            "type": "CheckBox",
+            "scaleX": 1.2234028908058512,
+            "back": "res/default/CheckBoxNormal.png",
+            "backSelect": "res/default/CheckBoxSelect.png",
+            "active": "res/default/CheckBoxNodeNormal.png",
+            "backDisable": "res/default/CheckBoxDisable.png",
+            "activeDisable": "res/default/CheckBoxNodeDisable.png",
+            "select": false,
+            "enable": true
         }
     ]
 }

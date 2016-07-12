@@ -186,6 +186,15 @@ function cocosExportNodeData(node) {
             let color = node.getTitleColor();
             data["fontColor"] = [color.r, color.g, color.b, color.a];
         }
+    } else if(node._className == "CheckBox") {
+        (node._back) && (data["back"] = node._back);
+        (node._backSelect) && (data["backSelect"] = node._backSelect);
+        (node._active) && (data["active"] = node._active);
+        (node._backDisable) && (data["backDisable"] = node._backDisable);
+        (node._activeDisable) && (data["activeDisable"] = node._activeDisable);
+
+        data["select"] = node.isSelected();
+        data["enable"] = node.isTouchEnabled();
     }
 
     if(!isBaseType(node)) {
@@ -240,6 +249,9 @@ function cocosGenNodeByData(data, parent) {
         node._className = data.type;
     } else if(data.type == "Button") {
         node = new ccui.Button();
+        node._className = data.type;
+    } else if(data.type == "CheckBox") {
+        node = new ccui.CheckBox();
         node._className = data.type;
     } else {
         node = new cc.Node();
@@ -335,6 +347,15 @@ function cocosGenNodeByData(data, parent) {
         (data["fontName"]) && (node.setTitleFontName(data["fontName"]));
         (data["fontSize"]) && (node.setTitleFontSize(data["fontSize"]));
         (data["fontColor"]) && (node.setTitleColor(covertToColor(data["fontColor"])));
+    } else if(node._className == "CheckBox") {
+        setNodeSpriteFrame("back", data["back"], node, node.loadTextureBackGround);
+        setNodeSpriteFrame("backSelect", data["backSelect"], node, node.loadTextureBackGroundSelected);
+        setNodeSpriteFrame("active", data["active"], node, node.loadTextureFrontCross);
+        setNodeSpriteFrame("backDisable", data["backDisable"], node, node.loadTextureBackGroundDisabled);
+        setNodeSpriteFrame("activeDisable", data["activeDisable"], node, node.loadTextureFrontCrossDisabled);
+
+        (data["select"]) && (node.setSelected(data["select"]));
+        (data["enable"]) && (node.setTouchEnabled(data["enable"]));
     }
 
     data.children = data.children || [];

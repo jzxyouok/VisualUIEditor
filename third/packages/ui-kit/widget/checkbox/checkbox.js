@@ -10,7 +10,7 @@ Editor.polymerElement({
   },
 
   properties: {
-    checked: {
+    value: {
       type: Boolean,
       value: false,
       notify: true,
@@ -39,7 +39,7 @@ Editor.polymerElement({
   _onClick ( event ) {
     event.stopPropagation();
 
-    this.checked = !this.checked;
+    this.value = !this.value;
     this.async(() => {
       this.fire('end-editing');
     },1);

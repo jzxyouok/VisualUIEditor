@@ -31,6 +31,10 @@ function ButtonData(node) {
     this._node = node;
 }
 
+function CheckBoxData(node) {
+    this._node = node;
+}
+
 function FixNodeHor(node, step) {
     node.x += step;
     if(node.left) {
@@ -234,6 +238,8 @@ NodeData.prototype = {
             node.push(new Scale9Data(this._node));
         } else if(this._node._className == "Button") {
             node.push(new ButtonData(this._node));
+        } else if(this._node._className == "CheckBox") {
+            node.push(new CheckBoxData(this._node));
         } else {
         }
         
@@ -430,6 +436,22 @@ NodeData.prototype = {
                 this._node.setTitleColor(new cc.Color(value.r, value.g, value.b, value.a));
             } else {
                 this._node[path] = value;
+            }
+        } else if(this._node._className == "CheckBox") {
+            if(path == "back") {
+                this.setSpriteFrame(path, value, "res/default/CheckBoxNormal.png", this._node.loadTextureBackGround);
+            } else if(path == "backSelect") {
+                this.setSpriteFrame(path, value, "res/default/CheckBoxSelect.png", this._node.loadTextureBackGroundSelected);
+            } else if(path == "active") {
+                this.setSpriteFrame(path, value, "res/default/CheckBoxNodeNormal.png", this._node.loadTextureFrontCross);
+            } else if(path == "backDisable") {
+                this.setSpriteFrame(path, value, "res/default/CheckBoxDisable.png", this._node.loadTextureBackGroundDisabled);
+            } else if(path == "activeDisable") {
+                this.setSpriteFrame(path, value, "res/default/CheckBoxNodeDisable.png", this._node.loadTextureFrontCrossDisabled);
+            } else if(path == "select") {
+                this._node.setSelected(value);
+            } else if(path == "enable") {
+                this._node.setTouchEnabled(value);
             }
         } else {
             return;
@@ -1184,3 +1206,107 @@ ButtonData.prototype = {
     }
     
 };
+
+
+
+
+
+CheckBoxData.prototype = {
+    __editor__ : {
+        "inspector1": "cc.CheckBox",
+    },
+    __displayName__: "CheckBox",
+    __type__: "cc.CheckBox",
+
+    get back() {
+        return {
+            path: "back",
+            type: "fire-asset",
+            name: "back",
+            attrs: {
+            },
+            value: this._node._back,
+        };
+    },
+
+    get backSelect() {
+        return {
+            path: "backSelect",
+            type: "fire-asset",
+            name: "backSelect",
+            attrs: {
+            },
+            value: this._node._backSelect,
+        };
+    },
+
+    get active() {
+        return {
+            path: "active",
+            type: "fire-asset",
+            name: "active",
+            attrs: {
+            },
+            value: this._node._active,
+        };
+    },
+
+    get backDisable() {
+        return {
+            path: "backDisable",
+            type: "fire-asset",
+            name: "backDisable",
+            attrs: {
+            },
+            value: this._node._backDisable,
+        };
+    },
+
+    get activeDisable() {
+        return {
+            path: "activeDisable",
+            type: "fire-asset",
+            name: "activeDisable",
+            attrs: {
+            },
+            value: this._node._activeDisable,
+        };
+    },
+
+    get select() {
+        return {
+            path: "select",
+            type: "check",
+            name: "select",
+            attrs: {
+            },
+            value: this._node.isSelected(),
+        };
+    },
+
+   get enable() {
+        return {
+            path: "enable",
+            type: "check",
+            name: "enable",
+            attrs: {
+            },
+            value: this._node.isTouchEnabled(),
+        };
+    },
+
+
+    get __props__() {
+        return [
+            this.back,
+            this.backSelect,
+            this.active,
+            this.backDisable,
+            this.activeDisable,
+            this.select,
+            this.enable,
+        ];
+    }
+    
+};
+

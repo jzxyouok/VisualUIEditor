@@ -559,8 +559,7 @@ WidgetData.prototype = {
             path: "isRelativePos",
             type: "check",
             name: "RelativePos",
-            attrs: {
-            },
+            attrs: {},
             value: this._node.isRelativePos || false,
         };
     },
@@ -576,8 +575,8 @@ WidgetData.prototype = {
             type: "vec2",
             name: "relativePosition",
             attrs: {
-                min: 1,
-                max: 100,
+                step: 5,
+                precision: 0,
             },
             value: {
                 isAlignLeft: "number" == typeof this._node.left,
@@ -629,6 +628,11 @@ LabelData.prototype = {
             type: "number",
             name: "fontSize",
             attrs: {
+                expand: true,
+                step: 1,
+                precision: 0,
+                min: 0,
+                max: 72,
             },
             value: this._node.fontSize,
         };
@@ -704,6 +708,11 @@ LabelData.prototype = {
             type: "number",
             name: "LineWidth",
             attrs: {
+                expand: true,
+                step: 1,
+                precision: 0,
+                min: 0,
+                max: 72,
             },
             value: this._node.lineWidth,
         };
@@ -715,6 +724,11 @@ LabelData.prototype = {
             type: "number",
             name: "ShadowOffsetX",
             attrs: {
+                expand: true,
+                step: 0.1,
+                precision: 1,
+                min: 0,
+                max: 72,
             },
             value: this._node.shadowOffsetX,
         };
@@ -726,6 +740,11 @@ LabelData.prototype = {
             type: "number",
             name: "shadowOffsetY",
             attrs: {
+                expand: true,
+                step: 0.1,
+                precision: 1,
+                min: 0,
+                max: 72,
             },
             value: this._node.shadowOffsetY,
         };
@@ -737,6 +756,11 @@ LabelData.prototype = {
             type: "number",
             name: "shadowOpacity",
             attrs: {
+                expand: true,
+                step: 5,
+                precision: 0,
+                min: 0,
+                max: 255,
             },
             value: this._node.shadowOpacity,
         };
@@ -748,6 +772,11 @@ LabelData.prototype = {
             type: "number",
             name: "shadowBlur",
             attrs: {
+                expand: true,
+                step: 0.1,
+                precision: 1,
+                min: 0,
+                max: 72,
             },
             value: this._node.shadowBlur,
         };
@@ -778,6 +807,11 @@ SliderData.prototype = {
             type: "slider",
             name: "percent",
             attrs: {
+                expand: true,
+                step: 0.1,
+                precision: 1,
+                min: 0,
+                max: 100,
             },
             value: this._node.percent,
         };
@@ -919,6 +953,11 @@ InputData.prototype = {
             type: "number",
             name: "fontSize",
             attrs: {
+                expand: true,
+                step: 1,
+                precision: 0,
+                min: 0,
+                max: 72,
             },
             value: this._node._edFontSize,
         };
@@ -941,6 +980,10 @@ InputData.prototype = {
             type: "number",
             name: "maxLength",
             attrs: {
+                expand: true,
+                step: 1,
+                precision: 0,
+                min: 0,
             },
             value: this._node.maxLength,
         };
@@ -974,6 +1017,11 @@ InputData.prototype = {
             type: "number",
             name: "placeHolderFontSize",
             attrs: {
+                expand: true,
+                step: 1,
+                precision: 0,
+                min: 0,
+                max: 72,
             },
             value: this._node._placeholderFontSize,
         };
@@ -1090,6 +1138,10 @@ Scale9Data.prototype = {
             type: "number",
             name: "insetLeft",
             attrs: {
+                expand: true,
+                step: 1,
+                precision: 0,
+                min: 0,
             },
             value: this._node.insetLeft,
         };
@@ -1101,6 +1153,10 @@ Scale9Data.prototype = {
             type: "number",
             name: "insetTop",
             attrs: {
+                expand: true,
+                step: 1,
+                precision: 0,
+                min: 0,
             },
             value: this._node.insetTop,
         };
@@ -1112,6 +1168,10 @@ Scale9Data.prototype = {
             type: "number",
             name: "insetRight",
             attrs: {
+                expand: true,
+                step: 1,
+                precision: 0,
+                min: 0,
             },
             value: this._node.insetRight,
         };
@@ -1123,6 +1183,10 @@ Scale9Data.prototype = {
             type: "number",
             name: "insetBottom",
             attrs: {
+                expand: true,
+                step: 1,
+                precision: 0,
+                min: 0,
             },
             value: this._node.insetBottom,
         };
@@ -1198,6 +1262,11 @@ ButtonData.prototype = {
             type: "number",
             name: "fontSize",
             attrs: {
+                expand: true,
+                step: 1,
+                precision: 0,
+                min: 0,
+                max: 72,
             },
             value: this._node.getTitleFontSize(),
         };

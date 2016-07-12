@@ -45,10 +45,10 @@
             "anchorY": 0
         },
         {
-            "width": "7.8%",
+            "width": "46",
             "height": "46",
             "x": 975.0564102564099,
-            "y": 278.174358974359,
+            "top": "100",
             "type": "Sprite",
             "spriteFrame": "res/default/Sprite.png"
         },

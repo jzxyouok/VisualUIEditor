@@ -599,8 +599,8 @@
         for(var i = index; i < children.length; i++) {
             afterNode.push(children[i]);
         }
-        for(var i = index; i < children.length; i++) {
-            children[i].removeFromParent(false);
+        for(var i = 0; i < afterNode.length; i++) {
+            afterNode[i].removeFromParent(false);
         }
         compareParent.addChild(sourceNode);
         for(var i = 0; i < afterNode.length; i++) {
@@ -620,10 +620,9 @@
         for(var i = index + 1; i < children.length; i++) {
             afterNode.push(children[i]);
         }
-        for(var i = index + 1; i < children.length; i++) {
-            children[i].removeFromParent(false);
+        for(var i = 0; i < afterNode.length; i++) {
+            afterNode[i].removeFromParent(false);
         }
-
         compareParent.addChild(sourceNode);
         for(var i = 0; i < afterNode.length; i++) {
             compareParent.addChild(afterNode[i]);

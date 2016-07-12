@@ -95,6 +95,9 @@
       let oldparentItem = Polymer.dom(sourceItem).parentNode;
       let compareParentItem = Polymer.dom(compareItem).parentNode;
       let nextItem = this.nextItem(compareItem, true);
+      if(nextItem == sourceItem) {
+        return;
+      }
       Polymer.dom(compareParentItem).insertBefore(sourceItem, nextItem);
       compareParentItem.foldable = _checkFoldable(compareParentItem);
       if ( oldparentItem !== this ) {

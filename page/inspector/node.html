@@ -4,7 +4,7 @@
 <dom-module id="cc-node-inspector">
   <link rel="import" type="css" href="common.css">
   <template>
-    <inspector-node-header target="{{target}}"></inspector-node-header>
+    <!--<inspector-node-header target="{{target}}"></inspector-node-header>-->
     <div class="props flex-1 layout">
       <inspector-node-section target="{{target}}">
         <editor-prop title="Tag" prop="{{target.tag}}"></editor-prop>
@@ -19,9 +19,9 @@
         <editor-prop title="Skew" prop="{{target.skew}}"></editor-prop>
       </inspector-node-section>
       <inspector-comps-section target="{{target}}"></inspector-comps-section>
-      <div class="add-comp-btn layout horizontal center-center">
+      <!--<div class="add-comp-btn layout horizontal center-center">
         <editor-button id="addCompBtn" style="width: 240px" on-click="_onPopupComponentMenu" nofocus>[[_T('INSPECTOR.add_component')]]</editor-button>
-      </div>
+      </div>-->
     </div>
   </template>
   <script>

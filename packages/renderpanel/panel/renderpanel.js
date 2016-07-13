@@ -35,14 +35,126 @@
     _mouseDown : function(ev) {
     },
 
+    _alignSelectItems: function(dir) {
+        let selectItems = this.getSelectItems();
+        if(selectItems.length <= 1) {
+            return;
+        }
+        //only in same parent add opitems
+        let firstChild = cocosGetItemByUUID(this.$.scene.getRunScene(), selectItems[0]);
+        let parent = firstChild.getParent();
+        let opitems = [];
+        for(var i = 1; i < selectItems.length; i++) {
+            let compareChild = cocosGetItemByUUID(this.$.scene.getRunScene(), selectItems[i]);
+            if(firstChild.getParent() == compareChild.getParent()) {
+                opitems.push(compareChild);
+            }
+        }
+
+        if(!parent || opitems.length == 0) {
+            return;
+        }
+
+        let left = firstChild.x - firstChild.anchorX * firstChild.width;
+        let right = left + firstChild.width;
+
+        let rect = firstChild.getBoundingBox();
+
+        switch(dir) {
+            case 0:
+            {
+                opitems.forEach(function(child){  
+                    child.x = rect.x +  child.anchorX * child.width * child.scaleX;
+                });
+            }
+                break;
+
+            case 1:
+            {
+                opitems.forEach(function(child){  
+                    let childRect = child.getBoundingBox();
+                    let alignX = rect.x + rect.width / 2 - childRect.width / 2;
+                    child.x = alignX +  child.anchorX * child.width * child.scaleX;
+                });
+            }
+                break;
+
+            case 2:
+            {
+                opitems.forEach(function(child){  
+                    let childRect = child.getBoundingBox();
+                    let alignX = rect.x + rect.width - childRect.width;
+                    child.x = alignX +  child.anchorX * child.width * child.scaleX;
+                });
+            }
+                break;
+            case 3:
+            {
+                opitems.forEach(function(child){  
+                    let childRect = child.getBoundingBox();
+                    let alignY = rect.y + rect.height - childRect.height;
+                    child.y = alignY +  child.anchorY * child.height * child.scaleY;
+                });
+            }
+                break;
+
+            case 4:
+            {
+                opitems.forEach(function(child){  
+                    let childRect = child.getBoundingBox();
+                    let alignY = rect.y + rect.height / 2 - childRect.height / 2;
+                    child.y = alignY +  child.anchorY * child.height * child.scaleY;
+                });
+            }
+                break;
+
+            case 5:
+            {
+                opitems.forEach(function(child){  
+                    child.y = rect.y +  child.anchorY * child.height * child.scaleY;
+                });
+            }
+                break;
+        }
+
+        
+        this.updateForgeCanvas(); 
+
+    },
+
+    _alignLeft: function() {
+        this._alignSelectItems(0);
+    },
+
+    _alignHCenter: function() {
+        this._alignSelectItems(1);
+    },
+
+    _alignRight: function() {
+        this._alignSelectItems(2);
+    },
+
+    _alignTop: function() {
+        this._alignSelectItems(3);
+    },
+
+    _alignVCenter: function() {
+        this._alignSelectItems(4);
+    },
+
+    _alignBottom: function() {
+        this._alignSelectItems(5);
+    },
 
     _resizeGameCanvasCenter: function() {
         let gameCanvas = this.$.scene.$.gameCanvas;
         let rect = gameCanvas.getBoundingClientRect();
         let curRect = this.getBoundingClientRect();
         let zoom = this.calcGameCanvasZoom();
-        gameCanvas.style.left = (curRect.width - rect.width * zoom) / 2 + "px";
-        gameCanvas.style.top = (curRect.height - rect.height * zoom) / 2 + "px"; 
+        gameCanvas.style.left = ((curRect.width - rect.width * zoom) / 2 / zoom) + "px";
+        gameCanvas.style.top = ((curRect.height - rect.height * zoom) / 2 / zoom) + "px";
+
+        this.updateForgeCanvas(); 
     },
 
     _realignPosition: function() {

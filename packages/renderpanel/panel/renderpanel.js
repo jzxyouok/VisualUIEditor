@@ -40,11 +40,20 @@
         if(selectItems.length <= 1) {
             return;
         }
+        if(!this._firstSelectItem) {
+            this._firstSelectItem = selectItems[0];
+        }
         //only in same parent add opitems
-        let firstChild = cocosGetItemByUUID(this.$.scene.getRunScene(), selectItems[0]);
+        let firstChild = cocosGetItemByUUID(this.$.scene.getRunScene(), this._firstSelectItem);
+        if(!firstChild) {
+            return;
+        }
         let parent = firstChild.getParent();
         let opitems = [];
-        for(var i = 1; i < selectItems.length; i++) {
+        for(var i = 0; i < selectItems.length; i++) {
+            if(this._firstSelectItem == selectItems[i]) {
+                continue;
+            }
             let compareChild = cocosGetItemByUUID(this.$.scene.getRunScene(), selectItems[i]);
             if(firstChild.getParent() == compareChild.getParent()) {
                 opitems.push(compareChild);
@@ -275,6 +284,9 @@
     },
 
     addNodeControl: function(node) {
+        if(!this._firstSelectItem) {
+            this._firstSelectItem = node.uuid;
+        }
         let canvas = this.$.scene.getFabricCanvas();
         let forgeRect = this.$.scene.$.forgeCanvas.getBoundingClientRect();
         let nodeRect = this.getNodeWorldRectToFabric(node);
@@ -429,7 +441,7 @@
     },
 
     ready: function () {
-
+        this._firstSelectItem = null;
         this._openPath = null;
         this.$.zoomSlider.addEventListener('change', (event => {
             event.stopPropagation();
@@ -471,6 +483,7 @@
                    }
                }
                this.$.scene.getFabricCanvas().clear();
+               this._firstSelectItem = null;
                Editor.Ipc.sendToAll("ui:scene_items_change", {});
            }
 
@@ -492,6 +505,7 @@
 
     sceneChange: function(newScene) {
         this.$.scene.getFabricCanvas().clear();
+        this._firstSelectItem = null;
         this.$.scene.runScene = newScene;
         window.runScene = newScene;
         cc.director.runScene(newScene);
@@ -522,6 +536,7 @@
 
         } else {
             canvas.clear();
+            this._firstSelectItem = null;
         }
 
         this.preSelectorRect({selector: {
@@ -757,6 +772,7 @@
         }
         if(!info.ctrlKey) {
             this.$.scene.getFabricCanvas().clear();
+            this._firstSelectItem = null;
         }
         this.addNodeControl(sourceNode);
         this.updateForgeCanvas();

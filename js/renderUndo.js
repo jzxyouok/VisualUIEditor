@@ -22,7 +22,12 @@ class Command {
       if(!node) {
         return false;
       }
-      NodePropChange(node, this.info.prop, this.info.oldValue);
+      if(this.info.doPropChange) {
+        this.info.doPropChange(node, this.info.prop, this.info.oldValue);
+      } else {
+        NodePropChange(node, this.info.prop, this.info.oldValue);
+      }
+      
       
       return true;
     }
@@ -34,7 +39,12 @@ class Command {
         if(!node) {
           return false;
         }
+        
+      if(this.info.doPropChange) {
+        this.info.doPropChange(node, this.info.prop, this.info.newValue);
+      } else {
         NodePropChange(node, this.info.prop, this.info.newValue);
+      }
         return true;
       }
     Editor.warn('Please implement redo function in your command'); 
@@ -180,7 +190,8 @@ class UndoList extends EventEmitter {
     if ( this._curGroup.canCommit() ) {
       this._curGroup.undo();
       this._changed('undo-cache');
-      this._curGroup.clear();
+      this._groups.push(this._curGroup);
+      this._curGroup = new CommandGroup();
       return true;
     }
 
@@ -315,8 +326,8 @@ class UndoObj {
     }
   }
 
-  add ( id, info ) {
-    this._undoList.add(id, info);
+  add ( cmd ) {
+    this._undoList.add(cmd);
   }
 
   commit () {
@@ -357,17 +368,25 @@ class UndoObj {
 
 };
 
-  //{op=xx,scene=xx,uuid=xx,prop=xx,oldValue=xx,newValue=xx,time=xx}
-function newPropCommandChange(scene, uuid, prop, oldValue, newValue) {
-  return new Command({op:"prop", scene:scene, uuid:uuid, prop:prop, oldValue:oldValue, newValue: newValue, time : new Date().getTime()})
+  //{op=xx,scene=xx,uuid=xx,prop=xx,oldValue=xx,newValue=xx,time=xx, doPropChange=fn}
+function newPropCommandChange(scene, uuid, prop, oldValue, newValue, doPropChange) {
+  return new Command({op:"prop", scene:getRootNode(scene), uuid:uuid, prop:prop, oldValue:oldValue, newValue: newValue, doPropChange:doPropChange, time : new Date().getTime()})
 }
-// let RenderUndo = {
-//   UndoObj: UndoObj,
-//   Command: Command,
-//   newUndo() {
-//     return new UndoObj();
-//   }
-// };
 
-// // window.RenderUndo = RenderUndo;
-// module.exports = RenderUndo;
+function tryAddCommand(undo, command) {
+  //no change don't add
+  if(command.info.oldValue == command.info.newValue) {
+    return;
+  }
+  undo.add(command);
+}
+
+
+function addNodeCommand(node, prop, oldValue, newValue, doPropChange) {
+  let scene = getRootNode(node);
+  if(!scene._undo) {
+    return;
+  }
+
+  tryAddCommand(scene._undo, newPropCommandChange(scene, node.uuid, oldValue, newValue, doPropChange));
+}

@@ -491,7 +491,7 @@
             if(!genNode) {
                 continue;
             }
-            parent.addChild(genNode);
+            this._doItemAdd(parent, genNode);
             Editor.Ipc.sendToAll("ui:scene_item_add", {uuid:genNode.uuid});
         }
 
@@ -499,7 +499,22 @@
 
     },
 
+    _doItemDelete: function(node) {
+        let runScene = this.$.scene.getRunScene();
+        let oldValue = cocosExportNodeData(node, {uuid: true});
+        this._undo.add(newPropCommandChange(runScene, node.getParent().uuid, node.uuid, oldValue, {}, AddPropChange));
+        node.removeFromParent(false);
+    },
+
+    _doItemAdd: function(parent, node) {
+        let runScene = this.$.scene.getRunScene();
+        let newValue = cocosExportNodeData(node, {uuid: true});
+        this._undo.add(newPropCommandChange(runScene, parent.uuid, node.uuid, {}, newValue, AddPropChange));
+        parent.addChild(node);
+    },
+
     ready: function () {
+        this._undo = null;
         this._firstSelectItem = null;
         this._openPath = null;
         this.$.zoomSlider.addEventListener('change', (event => {
@@ -543,7 +558,7 @@
                for(var i = 0; i < select_items.length; i++) {
                    let node = cocosGetItemByUUID(runScene, select_items[i]);
                    if(node.getParent()) {
-                       node.removeFromParent();
+                       this._doItemDelete(node);
                    }
                }
                this.$.scene.getFabricCanvas().clear();
@@ -762,7 +777,7 @@
         var node = createEmptyNodeByType(data);
 
         if (node) {
-            runScene.addChild(node, 0);
+            this._doItemAdd(runScene, node);
             node.setPosition(parseFloat(scenePosition.x), parseFloat(scenePosition.y));
             node.uuid = uuid;
             node.uiname = data;
@@ -824,8 +839,8 @@
         } else if(mode == "bottom") {
             this.insertItemAfter(sourceNode, compareNode);
         } else {
-            sourceNode.removeFromParent(false);
-            compareNode.addChild(sourceNode);
+            this._doItemDelete(sourceNode);
+            this._doItemAdd(compareNode, sourceNode);
         }
     },
 
@@ -857,6 +872,8 @@
             let runScene = this.$.scene.getRunScene();
             if(!runScene._undo)
                 runScene._undo =  new UndoObj();
+
+            this._undo = runScene._undo;
             this.$.scene.$.gameCanvas.width = runScene.width;
             this.$.scene.$.gameCanvas.height = runScene.height;
 
@@ -891,10 +908,10 @@
             let uuid = gen_uuid();
             var node = createEmptyNodeByType(data);
             if (node) {
-                runScene.addChild(node, 0);
                 node.setPosition(100, 100);
                 node.uuid = uuid;
                 node.uiname = data;
+                this._doItemAdd(runScene, node);
                 Editor.Ipc.sendToAll("ui:scene_item_add", {uuid:uuid});
             }
         }

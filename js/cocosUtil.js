@@ -1,5 +1,25 @@
 var fs = require('fs');
 
+cocosGetItemByUUID = function(node, uuid) {
+    if(!uuid) {
+        return null;
+    }
+    function recursiveGetChild(node, uuid) {
+        if (node.uuid == uuid) {
+            return node;
+        }
+        var children = node.getChildren();
+        for(var i = 0; i < children.length; i++) {
+            let subNode = recursiveGetChild(children[i], uuid);
+            if(subNode) {
+                return subNode;
+            }
+        }
+        return null;
+    }
+    return recursiveGetChild(node, uuid);
+}
+
 function isBaseTypeByName(name) {
     if(name == "LabelTTF" || name == "Slider" || name == "Sprite"
        || name == "Scale9" || name == "Input" || name == "Button" || name == "CheckBox") {
@@ -26,7 +46,7 @@ function setNodeSpriteFrame(path, value, node, fn) {
     fn.call(node, url);
 }
 
-function cocosExportNodeData(node) {
+function cocosExportNodeData(node, ext) {
     let data = {};
     let parent = node.getParent();
     if(node.isWidthPer && parent) {
@@ -87,6 +107,11 @@ function cocosExportNodeData(node) {
 
     if(node.anchorY != 0.5) {
         data["anchorY"] = node.anchorY; 
+    }
+
+    //适用于删除及添加的撤消操作
+    if(ext && ext.uuid) {
+        data["uuid"] = node.uuid;
     }
 
     (!node.isVisible()) && (data["visible"] = node.isVisible());
@@ -203,7 +228,7 @@ function cocosExportNodeData(node) {
         let childrenData = [];
         let children = node.getChildren();
         for(var i = 0; i < children.length; i++) {
-            childrenData.push(cocosExportNodeData(children[i]));
+            childrenData.push(cocosExportNodeData(children[i], ext));
         }
 
         if(childrenData.length > 0) {
@@ -216,7 +241,7 @@ function cocosExportNodeData(node) {
 }
 
 function saveSceneToFile(filename, scene) {
-    let data = cocosExportNodeData(scene);
+    let data = cocosExportNodeData(scene, ext);
     fs.writeFileSync(filename, JSON.stringify(data, null, 4));
 }
 
@@ -261,7 +286,7 @@ function cocosGenNodeByData(data, parent) {
     }
     node._name = "";
 
-    node.uuid = gen_uuid();
+    node.uuid = data.uuid || gen_uuid();
 
     (!isNull(data.width)) && (node.width = parseFloat(data.width));
     (!isNull(data.height)) && (node.height = parseFloat(data.height));
@@ -458,4 +483,12 @@ function createEmptyNodeByType(data) {
     }
     node._name = "";
     return node;
+}
+
+function getRootNode(node) {
+    let root = node;
+    while(root.getParent()) {
+        root = root.getParent();
+    }
+    return root;
 }

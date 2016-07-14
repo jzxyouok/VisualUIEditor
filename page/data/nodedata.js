@@ -67,6 +67,33 @@ function NodePropChange(node, prop, newValue) {
     }
 }
 
+function AddPropChange(node, uuid, newValue) {
+    //delete
+    if(!newValue || Object.keys(newValue).length == 0) {
+        let childNode = cocosGetItemByUUID(node, uuid);
+        if(childNode) {
+            childNode.removeFromParent(true);
+            Editor.Ipc.sendToAll("ui:scene_items_change", {});
+        }
+    } else {
+        let subNode = cocosGenNodeByData(newValue, node);
+        if(subNode) {
+            node.addChild(subNode);
+            Editor.Ipc.sendToAll("ui:scene_item_add", {uuid:uuid});
+        }
+    }
+}
+
+function setSizeChange(node, prop, newValue) {
+    if(prop == "width") {
+        let setFn = node.setPreferredSize ? node.setPreferredSize : node.setContentSize;
+        setFn.call(node, cc.size(newValue, node.height));    
+    } else {
+        let setFn = node.setPreferredSize ? node.setPreferredSize : node.setContentSize;
+        setFn.call(node, cc.size(node.width, newValue));    
+    }
+}
+
 NodeData.prototype = {
     get uuid() {
         return this._node.uuid;
@@ -276,54 +303,72 @@ NodeData.prototype = {
 
     setAttrib(path, value) {
         if(path == "tag") {
+            addNodeCommand(this._node, "_name", this._node._name, value);
             this._node._name = value;
         } else if(path == "position.x") {
+            addNodeCommand(this._node, "x", this._node.x, parseFloat(value.toFixed(0)));
             this._node.x = parseFloat(value.toFixed(0)) ;
             this._node.left = null;
             this._node.right = null;
         } else if(path == "position.y") {
+            addNodeCommand(this._node, "y", this._node.y, value);
             this._node.y = value;
             this._node.top = null;
             this._node.bottom = null;
         } else if(path == "rotation") {
+            addNodeCommand(this._node, "rotation", this._node.rotation, value);
             this._node.rotation = value;
         } else if(path == "scale.x") {
+            addNodeCommand(this._node, "scaleX", this._node.scaleX, value);
             this._node.scaleX = value;
         } else if(path == "scale.y") {
+            addNodeCommand(this._node, "scaleY", this._node.scaleY, value);
             this._node.scaleY = value;
         } else if(path == "anchor.x") {
+            addNodeCommand(this._node, "anchorX", this._node.anchorX, value);
             this._node.anchorX = value;
         } else if(path == "anchor.y") {
+            addNodeCommand(this._node, "anchorY", this._node.anchorY, value);
             this._node.anchorY = value;
         } else if(path == "skew.x") {
+            addNodeCommand(this._node, "skewX", this._node.skewX, value);
             this._node.skewX = value;
         } else if(path == "skew.y") {
+            addNodeCommand(this._node, "skewY", this._node.skewY, value);
             this._node.skewY = value;
         } else if(path == "size.width") {
-            let setFn = this._node.setPreferredSize ? this._node.setPreferredSize : this._node.setContentSize;
-            setFn.call(this._node, cc.size(value, this._node.height));
+            addNodeCommand(this._node, "width", this._node.width, value, setSizeChange);
+            setSizeChange(this._node, "width", value);
         } else if(path == "size.height") {
-            let setFn = this._node.setPreferredSize ? this._node.setPreferredSize : this._node.setContentSize;
-            setFn.call(this._node, cc.size(this._node.width, value));
+            addNodeCommand(this._node, "height", this._node.height, value, setSizeChange);
+            setSizeChange(this._node, "height", value);
         } else if(path == "opacity") {
+            addNodeCommand(this._node, "opacity", this._node.opacity, value);
             this._node.opacity = value;
         } else if(path == "color") {
+            addNodeCommand(this._node, "color", this._node.color, new cc.Color(value.r, value.g, value.b, value.a));
             this._node.color = new cc.Color(value.r, value.g, value.b, value.a);
         } else if(path == "size.isWidthPer") {
+            addNodeCommand(this._node, "isWidthPer", this._node.isWidthPer, !this._node.isWidthPer);
             this._node.isWidthPer = !this._node.isWidthPer;
         } else if(path == "size.isHeightPer") {
+            addNodeCommand(this._node, "isHeightPer", this._node.isHeightPer, !this._node.isHeightPer);
             this._node.isHeightPer = !this._node.isHeightPer;
         } else if(path == "size.widthPer") {
             let parent = this._node.getParent();
             if(parent && parent.width) {
                 let val = value * parent.width / 100;
-                this._node.width = parseFloat(val.toFixed(0));
+                val = parseFloat(val.toFixed(0));
+                addNodeCommand(this._node, "width", this._node.width, val, setSizeChange);
+                setSizeChange(this._node, "width", val);
             }
         } else if(path == "size.heightPer") {
             let parent = this._node.getParent();
             if(parent && parent.height) {
                 let val = value * parent.height / 100;
-                this._node.height = parseFloat(val.toFixed(0));
+                val = parseFloat(val.toFixed(0));
+                addNodeCommand(this._node, "height", this._node.height, val, setSizeChange);
+                setSizeChange(this._node, "height", val);
             }
         } else if(path == "relativePosition.checkTop") {
             if(!value) {
@@ -346,26 +391,31 @@ NodeData.prototype = {
             value = parseFloat(value);
             let parent = this._node.getParent();
             if(parent && parent.height) {
+                addNodeCommand(this._node, "y", this._node.y, parent.height - value);
                 this._node.y = parent.height - value;
                 this._node.top = value;
             }
         } else if(path == "relativePosition.bottom") {
             value = parseFloat(value);
+            addNodeCommand(this._node, "y", this._node.y, value);
             this._node.y = value;
             this._node.bottom = value;
         } else if(path == "relativePosition.left") {
             value = parseFloat(value);
+            addNodeCommand(this._node, "x", this._node.x, value);
             this._node.x = value;
             this._node.left = value;
         } else if(path == "relativePosition.right") {
             value = parseFloat(value);
             let parent = this._node.getParent();
             if(parent && parent.width) {
+                addNodeCommand(this._node, "x", this._node.x, parent.width - value);
                 this._node.x = parent.width - value;
                 this._node.right = value;
             }
         } else if(path == "visible") {
-            this._node.setVisible(value);
+            addNodeCommand(this._node, "visible", this._node.visible, value);
+            this._node.visible = value;
         } else if(this._node._className == "LabelTTF") {
             if(path == "string") {
                 this._node.string = value;

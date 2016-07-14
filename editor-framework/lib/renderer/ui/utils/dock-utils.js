@@ -180,13 +180,16 @@ DockUtils.dragoverDock = function ( target ) {
   _potentialDocks.push(target);
 };
 
-DockUtils.reset = function () {
+DockUtils.reset = function (recursive) {
   if ( !DockUtils.root ) {
     return;
   }
+  if(recursive === null || recursive === undefined) {
+    recursive = true;
+  } 
 
   if ( DockUtils.root._dockable ) {
-    this.root._finalizeSizeRecursively(true);
+    this.root._finalizeSizeRecursively(recursive);
     this.root._finalizeMinMaxRecursively();
     this.root._finalizeStyleRecursively();
     this.root._notifyResize();
@@ -443,7 +446,7 @@ ipcRenderer.on('editor:reset-layout', (event, layoutInfo) => {
 
   DockUtils.resetLayout( anchorEL, layoutInfo, (err) => {
     if ( !err ) {
-      DockUtils.reset();
+      DockUtils.reset(false);
     }
   });
 });

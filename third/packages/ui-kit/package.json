@@ -5,11 +5,6 @@
   "author": "Firebox Technology",
   "build": true,
   "main": "main.js",
-  "main-menu": {
-    "i18n:MAIN_MENU.developer.title/UI Preview/ui-kit": {
-      "message": "ui-kit:open"
-    }
-  },
   "panel": {
     "main": "panel/panel.html",
     "ui": "polymer",

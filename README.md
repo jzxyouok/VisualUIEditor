@@ -1,6 +1,13 @@
 #VisualUIEditor
 
-cnpm install editor-framework
-cnpm install fire-path
-cnpm install electron-prebuilt
-bower install
+A UIEditor for Game, base on electron.
+
+#install
+> install node.js
+> npm install fire-path
+> npm install electron-prebuilt
+> bower install
+
+#run
+open shell in project root and run
+> electron .

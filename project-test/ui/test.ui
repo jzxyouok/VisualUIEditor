@@ -8,8 +8,8 @@
         {
             "width": "40",
             "height": "40",
-            "x": 417,
-            "y": 314,
+            "x": 609,
+            "y": 354,
             "type": "Node",
             "anchorX": 0,
             "anchorY": 0,
@@ -122,8 +122,8 @@
         {
             "width": "40",
             "height": "40",
-            "x": 464,
-            "y": 169,
+            "x": 656,
+            "y": 209,
             "type": "Node",
             "anchorX": 0,
             "anchorY": 0,
@@ -160,8 +160,8 @@
         {
             "width": "40",
             "height": "40",
-            "x": 482,
-            "y": 467,
+            "x": 674,
+            "y": 507,
             "type": "Node",
             "anchorX": 0,
             "anchorY": 0,
@@ -194,6 +194,63 @@
             "string": "VisualUI",
             "fontSize": 20,
             "fontName": "Arial"
+        },
+        {
+            "width": "40",
+            "height": "40",
+            "x": 461,
+            "y": 518,
+            "type": "Node",
+            "anchorX": 0,
+            "anchorY": 0,
+            "children": [
+                {
+                    "width": "46",
+                    "height": "46",
+                    "x": 0,
+                    "y": 0,
+                    "type": "Sprite",
+                    "spriteFrame": "res/default/Sprite.png"
+                }
+            ]
+        },
+        {
+            "width": "40",
+            "height": "40",
+            "x": 443,
+            "y": 220,
+            "type": "Node",
+            "anchorX": 0,
+            "anchorY": 0,
+            "children": [
+                {
+                    "width": "46",
+                    "height": "46",
+                    "x": 0,
+                    "y": 0,
+                    "type": "Sprite",
+                    "spriteFrame": "res/default/Sprite.png"
+                }
+            ]
+        },
+        {
+            "width": "40",
+            "height": "40",
+            "x": 396,
+            "y": 365,
+            "type": "Node",
+            "anchorX": 0,
+            "anchorY": 0,
+            "children": [
+                {
+                    "width": "46",
+                    "height": "46",
+                    "x": 0,
+                    "y": 0,
+                    "type": "Sprite",
+                    "spriteFrame": "res/default/Sprite.png"
+                }
+            ]
         }
     ]
 }

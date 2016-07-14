@@ -388,5 +388,5 @@ function addNodeCommand(node, prop, oldValue, newValue, doPropChange) {
     return;
   }
 
-  tryAddCommand(scene._undo, newPropCommandChange(scene, node.uuid, oldValue, newValue, doPropChange));
+  tryAddCommand(scene._undo, newPropCommandChange(scene, node.uuid, prop, oldValue, newValue, doPropChange));
 }

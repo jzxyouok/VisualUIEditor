@@ -73,7 +73,9 @@
             case 0:
             {
                 opitems.forEach(function(child){  
-                    child.x = rect.x +  child.anchorX * child.width * child.scaleX;
+                    let newX = rect.x +  child.anchorX * child.width * child.scaleX;
+                    addNodeCommand(child, "x", child.x, newX);
+                    child.x = newX;
                 });
             }
                 break;
@@ -83,7 +85,9 @@
                 opitems.forEach(function(child){  
                     let childRect = child.getBoundingBox();
                     let alignX = rect.x + rect.width / 2 - childRect.width / 2;
-                    child.x = alignX +  child.anchorX * child.width * child.scaleX;
+                    let newX = alignX +  child.anchorX * child.width * child.scaleX;
+                    addNodeCommand(child, "x", child.x, newX);
+                    child.x = newX;
                 });
             }
                 break;
@@ -93,7 +97,9 @@
                 opitems.forEach(function(child){  
                     let childRect = child.getBoundingBox();
                     let alignX = rect.x + rect.width - childRect.width;
-                    child.x = alignX +  child.anchorX * child.width * child.scaleX;
+                    let newX = alignX +  child.anchorX * child.width * child.scaleX;
+                    addNodeCommand(child, "x", child.x, newX);
+                    child.x = newX;
                 });
             }
                 break;
@@ -102,7 +108,9 @@
                 opitems.forEach(function(child){  
                     let childRect = child.getBoundingBox();
                     let alignY = rect.y + rect.height - childRect.height;
-                    child.y = alignY +  child.anchorY * child.height * child.scaleY;
+                    let newY = alignY +  child.anchorY * child.height * child.scaleY;
+                    addNodeCommand(child, "y", child.y, newY);
+                    child.y = newY;
                 });
             }
                 break;
@@ -112,15 +120,19 @@
                 opitems.forEach(function(child){  
                     let childRect = child.getBoundingBox();
                     let alignY = rect.y + rect.height / 2 - childRect.height / 2;
-                    child.y = alignY +  child.anchorY * child.height * child.scaleY;
+                    let newY = alignY +  child.anchorY * child.height * child.scaleY;
+                    addNodeCommand(child, "y", child.y, newY);
+                    child.y = newY;
                 });
             }
                 break;
 
             case 5:
             {
-                opitems.forEach(function(child){  
-                    child.y = rect.y +  child.anchorY * child.height * child.scaleY;
+                opitems.forEach(function(child){
+                    let newY = rect.y +  child.anchorY * child.height * child.scaleY;
+                    addNodeCommand(child, "y", child.y, newY);
+                    child.y = newY;
                 });
             }
                 break;

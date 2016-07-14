@@ -22,6 +22,7 @@
         {icon:"res/control/SliderBar.png", name:"Slider"},
         {icon:"res/control/Button.png", name:"Button"},
         {icon:"res/control/CheckBox.png", name:"CheckBox"},
+        // {icon:"res/control/Layout.png", name:"Layout"},
     ],
 
     _getItems: function() {

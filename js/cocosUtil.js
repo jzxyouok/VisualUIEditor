@@ -466,7 +466,6 @@ function createEmptyNodeByType(data) {
         node.setContentSize(cc.size(40, 40));
         node._className = "Node";
     } else if(data == "CheckBox") {
-
         let back = "res/default/CheckBoxNormal.png";
         let backSelect = "res/default/CheckBoxSelect.png";
         let active = "res/default/CheckBoxNodeNormal.png";
@@ -480,6 +479,10 @@ function createEmptyNodeByType(data) {
         node._activeDisable = activeDisable;
         node.setSelected(true);
         node._className = "CheckBox";
+    } else if(data == "Layout") {
+        node = new ccui.Layout();
+        node.setContentSize(cc.size(100, 100));
+        node._className = "Layout";
     }
     node._name = "";
     return node;

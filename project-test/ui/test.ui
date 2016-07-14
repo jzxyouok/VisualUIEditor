@@ -8,8 +8,8 @@
         {
             "width": "40",
             "height": "40",
-            "x": 366,
-            "y": 361,
+            "x": 417,
+            "y": 314,
             "type": "Node",
             "anchorX": 0,
             "anchorY": 0,
@@ -23,6 +23,177 @@
                     "spriteFrame": "res/default/Sprite.png"
                 }
             ]
+        },
+        {
+            "width": "40",
+            "height": "40",
+            "x": 989,
+            "y": 404,
+            "type": "Node",
+            "anchorX": 0,
+            "anchorY": 0
+        },
+        {
+            "width": "75",
+            "height": "23",
+            "x": 1001,
+            "y": 360,
+            "type": "LabelTTF",
+            "string": "VisualUI",
+            "fontSize": 20,
+            "fontName": "Arial"
+        },
+        {
+            "width": "40",
+            "height": "40",
+            "x": 256,
+            "y": 277,
+            "type": "Node",
+            "anchorX": 0,
+            "anchorY": 0,
+            "children": [
+                {
+                    "width": "46",
+                    "height": "46",
+                    "x": 0,
+                    "y": 0,
+                    "type": "Sprite",
+                    "spriteFrame": "res/default/Sprite.png"
+                }
+            ]
+        },
+        {
+            "width": "40",
+            "height": "40",
+            "x": 828,
+            "y": 368,
+            "type": "Node",
+            "anchorX": 0,
+            "anchorY": 0
+        },
+        {
+            "width": "75",
+            "height": "23",
+            "x": 840,
+            "y": 324,
+            "type": "LabelTTF",
+            "string": "VisualUI",
+            "fontSize": 20,
+            "fontName": "Arial"
+        },
+        {
+            "width": "40",
+            "height": "40",
+            "x": 74,
+            "y": 513,
+            "type": "Node",
+            "anchorX": 0,
+            "anchorY": 0,
+            "children": [
+                {
+                    "width": "46",
+                    "height": "46",
+                    "x": 0,
+                    "y": 0,
+                    "type": "Sprite",
+                    "spriteFrame": "res/default/Sprite.png"
+                }
+            ]
+        },
+        {
+            "width": "40",
+            "height": "40",
+            "x": 646,
+            "y": 604,
+            "type": "Node",
+            "anchorX": 0,
+            "anchorY": 0
+        },
+        {
+            "width": "75",
+            "height": "23",
+            "x": 658,
+            "y": 560,
+            "type": "LabelTTF",
+            "string": "VisualUI",
+            "fontSize": 20,
+            "fontName": "Arial"
+        },
+        {
+            "width": "40",
+            "height": "40",
+            "x": 464,
+            "y": 169,
+            "type": "Node",
+            "anchorX": 0,
+            "anchorY": 0,
+            "children": [
+                {
+                    "width": "46",
+                    "height": "46",
+                    "x": 0,
+                    "y": 0,
+                    "type": "Sprite",
+                    "spriteFrame": "res/default/Sprite.png"
+                }
+            ]
+        },
+        {
+            "width": "40",
+            "height": "40",
+            "x": 1036,
+            "y": 260,
+            "type": "Node",
+            "anchorX": 0,
+            "anchorY": 0
+        },
+        {
+            "width": "75",
+            "height": "23",
+            "x": 1048,
+            "y": 216,
+            "type": "LabelTTF",
+            "string": "VisualUI",
+            "fontSize": 20,
+            "fontName": "Arial"
+        },
+        {
+            "width": "40",
+            "height": "40",
+            "x": 482,
+            "y": 467,
+            "type": "Node",
+            "anchorX": 0,
+            "anchorY": 0,
+            "children": [
+                {
+                    "width": "46",
+                    "height": "46",
+                    "x": 0,
+                    "y": 0,
+                    "type": "Sprite",
+                    "spriteFrame": "res/default/Sprite.png"
+                }
+            ]
+        },
+        {
+            "width": "40",
+            "height": "40",
+            "x": 1054,
+            "y": 558,
+            "type": "Node",
+            "anchorX": 0,
+            "anchorY": 0
+        },
+        {
+            "width": "75",
+            "height": "23",
+            "x": 1066,
+            "y": 514,
+            "type": "LabelTTF",
+            "string": "VisualUI",
+            "fontSize": 20,
+            "fontName": "Arial"
         }
     ]
 }

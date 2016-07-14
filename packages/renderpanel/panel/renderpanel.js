@@ -344,6 +344,19 @@
         return select_items;
     },
 
+    _doSelectAll: function() {
+        let canvas = this.$.scene.getFabricCanvas();
+        this._firstSelectItem = null;
+        canvas.clear();
+
+        let runScene = this.$.scene.getRunScene();
+        runScene.getChildren().forEach(function(node) {
+            this.addNodeControl(node);
+        }, this);
+
+        this.updateAllObjectSelect();
+    },
+
     updateForgeCanvas: function() {
 
         let canvas = this.$.scene.getFabricCanvas();
@@ -537,20 +550,33 @@
        this['ondragleave'] = this.dragLeave.bind(this);
 
        this['onkeydown'] = function(event) {
-           if(event.keyCode == Editor.KeyCode('z') && event.ctrlKey) {
-               this.undoScene();
-           } else if(event.keyCode == Editor.KeyCode('y') && event.ctrlKey) {
-               this.redoScene();
-           } else if(event.keyCode == Editor.KeyCode('c') && event.ctrlKey) {
+        //    if(event.keyCode == Editor.KeyCode('z') && event.ctrlKey) {
+        //        this.undoScene();
+        //    } else if(event.keyCode == Editor.KeyCode('y') && event.ctrlKey) {
+        //        this.redoScene();
+        //    } else if(event.keyCode == Editor.KeyCode('c') && event.ctrlKey) {
+        //        this._doCopyFunc();
+        //    } else if(event.keyCode == Editor.KeyCode('v') && event.ctrlKey) {
+        //        this._doPasteFunc();
+        //    } else 
+           
+           if(event.keyCode == Editor.KeyCode('c') && event.ctrlKey) {
                this._doCopyFunc();
+               event.stopPropagation();
+               event.preventDefault();
            } else if(event.keyCode == Editor.KeyCode('v') && event.ctrlKey) {
                this._doPasteFunc();
-            //    window.clipboardData.setData("CopyItems", this.getSelectItems()); 
-           } else if(event.keyCode == Editor.KeyCode('s') && event.ctrlKey && this._openPath) {
+               event.stopPropagation();
+               event.preventDefault();
+           } else if(event.keyCode == Editor.KeyCode('a') && event.ctrlKey) {
+               this._doSelectAll();
+               event.stopPropagation();
+               event.preventDefault();
+           }
+           if(event.keyCode == Editor.KeyCode('s') && event.ctrlKey && this._openPath) {
                saveSceneToFile(this._openPath, this.$.scene.getRunScene());
-           } else if(event.keyCode == Editor.KeyCode('n') && event.ctrlKey) {
-               let scene = loadSceneFromFile("E:/test.ui");
-               scene && (scene._className == "Scene") && this.sceneChange(scene);
+               event.stopPropagation();
+               event.preventDefault();
            } else if(event.keyCode == Editor.KeyCode('delete')) {
                let runScene = this.$.scene.getRunScene();
                let select_items = this.getSelectItems();
@@ -564,8 +590,9 @@
                this.$.scene.getFabricCanvas().clear();
                this._firstSelectItem = null;
                Editor.Ipc.sendToAll("ui:scene_items_change", {});
+               event.stopPropagation();
+               event.preventDefault();
            }
-
            
        }.bind(this);
 
@@ -914,7 +941,22 @@
                 this._doItemAdd(runScene, node);
                 Editor.Ipc.sendToAll("ui:scene_item_add", {uuid:uuid});
             }
-        }
+        },
+        'ui:scene-undo'(event, data) {
+            this.undoScene();
+        },
+        'ui:scene-redo'(event, data) {
+            this.redoScene();
+        },
+        'ui:scene-copy'(event, data) {
+            this._doCopyFunc();
+        },
+        'ui:scene-paste'(event, data) {
+            this._doPasteFunc();
+        },
+        'ui:scene-copyall'(event, data) {
+            this._doSelectAll();
+        },
 
     },
 

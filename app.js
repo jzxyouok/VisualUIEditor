@@ -59,7 +59,7 @@ Editor.App.extend({
           },
           //File
           {
-            label: Editor.T('文件'),
+            label: Editor.T('文件(&F)'),
             role: 'file',
             id: 'file',
             params: [],
@@ -83,6 +83,48 @@ Editor.App.extend({
                 dev: true,
                 click () {
                   Editor.Ipc.sendToMainWin( 'editor:reset-layout', null);
+                }
+              },
+            ]
+          },
+          {
+            label: Editor.T('编辑(&E)'),
+            id: 'editor',
+            submenu: [
+              {
+                label: Editor.T('撤消'),
+                accelerator: 'CmdOrCtrl+Z',
+                click () {
+                  Editor.Ipc.sendToAll( 'ui:scene-undo' );
+                }
+              },
+              {
+                label: Editor.T('重做'),
+                accelerator: 'CmdOrCtrl+Y',
+                click () {
+                  Editor.Ipc.sendToAll( 'ui:scene-redo' );
+                }
+              },
+              { type: 'separator' },
+              {
+                label: Editor.T('复制'),
+                accelerator: 'CmdOrCtrl+C',
+                click () {
+                  Editor.Ipc.sendToAll( 'ui:scene-copy' );
+                }
+              },
+              {
+                label: Editor.T('粘贴'),
+                accelerator: 'CmdOrCtrl+V',
+                click () {
+                  Editor.Ipc.sendToAll( 'ui:scene-paste' );
+                }
+              },
+              {
+                label: Editor.T('选择全部'),
+                accelerator: 'CmdOrCtrl+A',
+                click () {
+                  Editor.Ipc.sendToAll( 'ui:scene-copyall' );
                 }
               },
             ]

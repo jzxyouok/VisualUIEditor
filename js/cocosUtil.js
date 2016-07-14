@@ -240,7 +240,7 @@ function cocosExportNodeData(node, ext) {
     return data;
 }
 
-function saveSceneToFile(filename, scene) {
+function saveSceneToFile(filename, scene, ext) {
     let data = cocosExportNodeData(scene, ext);
     fs.writeFileSync(filename, JSON.stringify(data, null, 4));
 }

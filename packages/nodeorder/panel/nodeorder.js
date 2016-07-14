@@ -200,7 +200,7 @@
         if(parent) {
             parentItem = this.$.tree.getItemById(parent.uuid) || this.$.tree;
         }
-        let item = this.newEntry(child);
+        let item = this.newEntryRecursively(child);
         this.$.tree.addItem(parentItem, item);
     },
     sceneItemDelete: function(uuid) {

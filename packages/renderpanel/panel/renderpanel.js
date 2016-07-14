@@ -440,6 +440,65 @@
 
     },
 
+    _doCopyFunc: function() {
+        Electron.clipboard.writeText(this.getSelectItems().join("#"));
+    },
+
+    _doPasteFunc: function() {
+        let detail = Electron.clipboard.readText();
+        let selectItems = detail.split("#");
+        let runScene = this.$.scene.getRunScene();
+        if(detail.length == 0 || selectItems.length == 0) {
+            return;
+        }
+
+        //only copy parent node, filter child node
+        let finalItems = [];
+        for (var i = 0; i < selectItems.length; i++) {
+            var item = cocosGetItemByUUID(runScene, selectItems[i]);
+            if(!item) {
+                return;
+            }
+            let isChildNode = false;
+            let parent = item.getParent();
+            while(parent) {
+                if(selectItems.indexOf(parent.uuid) >= 0) {
+                    isChildNode = true;
+                    break;
+                }
+                parent = parent.getParent();
+            }
+            if(!isChildNode) {
+                finalItems.push(item);
+            }
+        }
+
+        for(var i = 0; i < finalItems.length; i++) {
+            let item = finalItems[i];
+            let parent = item.getParent();
+            //no parent node(such as scene), no support copy
+            if(!parent) {
+                continue;
+            }
+
+            let data = cocosExportNodeData(item);
+            //no support same tag in same children
+            if(data.tag && data.tag.length > 0) {
+                data.tag = null;
+            }
+
+            let genNode = cocosGenNodeByData(data, parent);
+            if(!genNode) {
+                continue;
+            }
+            parent.addChild(genNode);
+            Editor.Ipc.sendToAll("ui:scene_item_add", {uuid:genNode.uuid});
+        }
+
+
+
+    },
+
     ready: function () {
         this._firstSelectItem = null;
         this._openPath = null;
@@ -467,6 +526,11 @@
                this.undoScene();
            } else if(event.keyCode == Editor.KeyCode('y') && event.ctrlKey) {
                this.redoScene();
+           } else if(event.keyCode == Editor.KeyCode('c') && event.ctrlKey) {
+               this._doCopyFunc();
+           } else if(event.keyCode == Editor.KeyCode('v') && event.ctrlKey) {
+               this._doPasteFunc();
+            //    window.clipboardData.setData("CopyItems", this.getSelectItems()); 
            } else if(event.keyCode == Editor.KeyCode('s') && event.ctrlKey && this._openPath) {
                saveSceneToFile(this._openPath, this.$.scene.getRunScene());
            } else if(event.keyCode == Editor.KeyCode('n') && event.ctrlKey) {

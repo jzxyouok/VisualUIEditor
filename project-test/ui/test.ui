@@ -6,30 +6,23 @@
     "type": "Scene",
     "children": [
         {
-            "width": "49",
-            "height": "58",
-            "x": 791,
-            "y": 369,
-            "type": "Input",
-            "fontName": "Arial",
-            "fontColor": [
-                255,
-                255,
-                255,
-                255
-            ],
-            "placeHolder": "VisualUI",
-            "spriteBg": "res/default/shurukuang.png"
-        },
-        {
-            "width": "46",
-            "height": "46",
-            "x": 900,
-            "top": 314,
-            "type": "Sprite",
-            "scaleX": 2.7513669670308025,
-            "scaleY": 2.7513669670308025,
-            "spriteFrame": "res/default/Sprite.png"
+            "width": "40",
+            "height": "40",
+            "x": 366,
+            "y": 361,
+            "type": "Node",
+            "anchorX": 0,
+            "anchorY": 0,
+            "children": [
+                {
+                    "width": "46",
+                    "height": "46",
+                    "x": 0,
+                    "y": 0,
+                    "type": "Sprite",
+                    "spriteFrame": "res/default/Sprite.png"
+                }
+            ]
         }
     ]
 }

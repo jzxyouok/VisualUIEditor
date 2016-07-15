@@ -191,7 +191,7 @@
         } else {
             let failed = false;
             try {
-                let data = this.$.code.value;
+                let data = this._editor.getValue();
                 if(data && data.length > 0) {
                     let json = JSON.parse(data);
                         let scene = cocosGenNodeByData(json, null);

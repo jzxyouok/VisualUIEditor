@@ -627,6 +627,8 @@
         this.$.scene.runScene = newScene;
         window.runScene = newScene;
         cc.director.runScene(newScene);
+
+        this.$.showName.textContent = this._openPath;
         Editor.Ipc.sendToAll('ui:scene_change', {});
     },
 
@@ -804,7 +806,6 @@
         ev.stopPropagation();
     },
     dragDrop: function(ev) {
-        Editor.log("dragDrop!!!!!!!!!!!!!!!!!!!");
         ev.preventDefault();
         ev.stopPropagation();
         ev.target.style.removeProperty("background");

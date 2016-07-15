@@ -114,7 +114,6 @@
         }
 
         var data = ev.dataTransfer.getData(dragIdName);
-        Editor.log("dragOver!!!!!!!!!!!!!!!!!!!" + ev.target._uuid + data);
     },
     dragLeave: function(ev) {
         ev.preventDefault();
@@ -122,7 +121,6 @@
         ev.target.style.removeProperty("background");
     },
     dragDrop: function(ev) {
-        Editor.log("dragDrop!!!!!!!!!!!!!!!!!!!");
         ev.preventDefault();
         ev.stopPropagation();
         ev.target.style.removeProperty("background");
@@ -276,6 +274,7 @@
           }
           _item.$.header.style.background = 'blue';
           _item._isSlected = true;
+          Editor.Ipc.sendToAll("ui:item_path_click", {path: e.currentTarget.path});
       }).bind(this);
 
       item['dounselect'] = (() => {

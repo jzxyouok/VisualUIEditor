@@ -88,7 +88,6 @@
         }
 
         var data = ev.dataTransfer.getData(dragIdName);
-        Editor.log("dragOver!!!!!!!!!!!!!!!!!!!" + ev.target._uuid + data);
     },
     dragLeave: function(ev) {
         ev.preventDefault();
@@ -96,7 +95,6 @@
         ev.target.style.removeProperty("background");
     },
     dragDrop: function(ev) {
-        Editor.log("dragDrop!!!!!!!!!!!!!!!!!!!");
         ev.preventDefault();
         ev.stopPropagation();
         ev.target.style.removeProperty("background");
@@ -137,7 +135,6 @@
 
     messages: {
       'ui:scene_change' ( event, message ) {
-        Editor.log("ui:scene_change");
         this._scene = window.runScene;
         this._opnode = new NodeData(this._scene);
         this.$.node.target = this._opnode;
@@ -164,10 +161,18 @@
         }
         this._opnode = new NodeData(node);
         this.$.node.target = this._opnode;
-        // this.$.node.target = new NodeData(node);
-        // this.selectItemsByData(message.select_items);
+        this.$.node.hidden = false;
+        this.$.spritePreview.hidden = true;
       },
-      
+      'ui:item_path_click' (event, message) {
+        let path = message.path;
+        if(!endWith(path, ".png")) {
+            return;
+        }
+        this.$.node.hidden = true;
+        this.$.spritePreview.hidden = false;
+        this.$.spritePreview.path = path;
+      },
     },
 
   });

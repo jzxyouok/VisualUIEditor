@@ -118,7 +118,6 @@
         }
 
         var data = ev.dataTransfer.getData(dragIdName);
-        Editor.log("dragOver!!!!!!!!!!!!!!!!!!!" + ev.target._uuid + data);
     },
     dragLeave: function(ev) {
         ev.preventDefault();
@@ -126,7 +125,6 @@
         ev.target.style.removeProperty("background");
     },
     dragDrop: function(ev) {
-        Editor.log("dragDrop!!!!!!!!!!!!!!!!!!!");
         ev.preventDefault();
         ev.stopPropagation();
         ev.target.style.removeProperty("background");
@@ -290,7 +288,6 @@
         this.selectItemsByData(message.select_items);
       },
       'ui:scene_item_add'(event, message) {
-        Editor.log("ui:scene_item_add");
         this.sceneItemAdd(message.uuid);
       },
       'ui:scene_items_change'(event, message) {

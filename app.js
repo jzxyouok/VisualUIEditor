@@ -22,7 +22,6 @@ Editor.App.extend({
           {
             label: Editor.T('打开项目'),
             click () {
-              Editor.log("about!!!!!!!!!!!!!");
               Editor.Ipc.sendToAll('ui:open-project-folder');
             }
           },

@@ -25,15 +25,6 @@
             ]
         },
         {
-            "width": "40",
-            "height": "40",
-            "x": 989,
-            "y": 404,
-            "type": "Node",
-            "anchorX": 0,
-            "anchorY": 0
-        },
-        {
             "width": "75",
             "height": "23",
             "x": 1001,
@@ -46,8 +37,8 @@
         {
             "width": "40",
             "height": "40",
-            "x": 256,
-            "y": 277,
+            "x": 290,
+            "y": 271,
             "type": "Node",
             "anchorX": 0,
             "anchorY": 0,
@@ -58,6 +49,12 @@
                     "x": 0,
                     "y": 0,
                     "type": "Sprite",
+                    "color": [
+                        216,
+                        103,
+                        103,
+                        255
+                    ],
                     "spriteFrame": "res/default/Sprite.png"
                 }
             ]
@@ -72,11 +69,26 @@
             "anchorY": 0
         },
         {
+            "width": "40",
+            "height": "40",
+            "x": 989,
+            "y": 404,
+            "type": "Node",
+            "anchorX": 0,
+            "anchorY": 0
+        },
+        {
             "width": "75",
             "height": "23",
             "x": 840,
             "y": 324,
             "type": "LabelTTF",
+            "color": [
+                179,
+                45,
+                45,
+                255
+            ],
             "string": "VisualUI",
             "fontSize": 20,
             "fontName": "Arial"
@@ -84,8 +96,8 @@
         {
             "width": "40",
             "height": "40",
-            "x": 74,
-            "y": 513,
+            "x": 319,
+            "y": 493,
             "type": "Node",
             "anchorX": 0,
             "anchorY": 0,
@@ -112,8 +124,8 @@
         {
             "width": "75",
             "height": "23",
-            "x": 658,
-            "y": 560,
+            "x": 656,
+            "y": 602,
             "type": "LabelTTF",
             "string": "VisualUI",
             "fontSize": 20,
@@ -160,8 +172,9 @@
         {
             "width": "40",
             "height": "40",
-            "x": 674,
-            "y": 507,
+            "x": 739,
+            "y": 502,
+            "id": "fdsafdas",
             "type": "Node",
             "anchorX": 0,
             "anchorY": 0,
@@ -198,8 +211,8 @@
         {
             "width": "40",
             "height": "40",
-            "x": 461,
-            "y": 518,
+            "x": 491,
+            "y": 545,
             "type": "Node",
             "anchorX": 0,
             "anchorY": 0,

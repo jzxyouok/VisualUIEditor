@@ -185,6 +185,8 @@
     _modeSelectedChange: function() {
         if(this.modeSelected == 1) {
             let data = cocosExportNodeData(this.$.scene.getRunScene());
+            // this._editor.setInnerHtml(JSON.stringify(data, null, 4));
+            this._editor.setValue(JSON.stringify(data, null, 4));
             this.$.code.value = JSON.stringify(data, null, 4);
         } else {
             let failed = false;
@@ -542,6 +544,13 @@
         this._undo = null;
         this._firstSelectItem = null;
         this._openPath = null;
+
+        var editor = ace.edit(this.$.code);
+        editor.setTheme("ace/theme/twilight");
+        editor.session.setMode("ace/mode/javascript");
+        editor.setFontSize(16);
+        this._editor = editor;
+
         this.$.zoomSlider.addEventListener('change', (event => {
             event.stopPropagation();
             this._zoomScaleChange(event.detail.value);

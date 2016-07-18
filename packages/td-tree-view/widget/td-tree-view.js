@@ -186,7 +186,7 @@
 
     scrollToItem ( el ) {
       window.requestAnimationFrame(() => {
-        this.$.content.scrollTop = el.offsetTop + 16 - this.offsetHeight/2;
+        this.scrollTop = el.offsetTop + 16 - this.offsetHeight/2;
       });
     },
 

@@ -225,6 +225,7 @@
         }
     },
     newEntry: function (entry) {
+      let _this = this;
       var item = document.createElement('td-tree-item');
       item.draggable = true;
       item['ondragstart'] = this.dragStart.bind(this);
@@ -268,6 +269,7 @@
               parentNode.folded = false;
               parentNode = Polymer.dom(parentNode).parentNode;
           }
+          _this.$.tree.scrollToItem(_item);
           if(e)
             Editor.Ipc.sendToAll("ui:select_item", {uuid : _item._uuid, ctrlKey : e.ctrlKey});
       };

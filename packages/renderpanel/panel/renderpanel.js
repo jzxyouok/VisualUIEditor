@@ -323,21 +323,44 @@
         let canvas = this.$.scene.getFabricCanvas();
 
         let forgeRect = this.$.scene.$.forgeCanvas.getBoundingClientRect();
-        let nodeRect = this.getNodeWorldRectToFabric(node);
-        nodeRect.left -= forgeRect.left;
-        nodeRect.top -= forgeRect.top;
-        let isCollect = this.isCollection(nodeRect, rect);
 
-        if(isCollect) {
-            this.addNodeControl(node);
-            return true;
-        }
-
-        var children = node.getChildren();
-        for(var i = 0; i < children.length; i++) {
-            let isSuccessAdd = this.recursiveAddChild(children[i], rect, isClick);
-            if(isClick && isSuccessAdd) {
+        if(isClick) {
+            let _this = this;
+            function calcCollectNode(node, rect) {
+                let nodeRect = _this.getNodeWorldRectToFabric(node);
+                nodeRect.left -= forgeRect.left;
+                nodeRect.top -= forgeRect.top;
+                let baseNode = null;
+                var children = node.getChildren();
+                for(var i = 0; i < children.length; i++) {
+                    baseNode = calcCollectNode(children[i], rect);
+                    if(baseNode) {
+                        break;
+                    }
+                }
+                if(!baseNode && _this.isCollection(nodeRect, rect)) {
+                    baseNode = node;
+                }
+                return baseNode;
+            }
+            let baseNode = calcCollectNode(node, rect);
+            if(baseNode) {
+                this.addNodeControl(baseNode);
+            }
+            return baseNode != null;
+        } else {
+            let nodeRect = this.getNodeWorldRectToFabric(node);
+            nodeRect.left -= forgeRect.left;
+            nodeRect.top -= forgeRect.top;
+            let isCollect = this.isCollection(nodeRect, rect);
+            if(isCollect) {
+                this.addNodeControl(node);
                 return true;
+            }
+
+            var children = node.getChildren();
+            for(var i = 0; i < children.length; i++) {
+                this.recursiveAddChild(children[i], rect, isClick);
             }
         }
 

@@ -262,6 +262,12 @@
           }
           _item.$.header.style.background = 'blue';
           _item._isSlected = true;
+
+          let parentNode = Polymer.dom(_item).parentNode;
+          while(parentNode) {
+              parentNode.folded = false;
+              parentNode = Polymer.dom(parentNode).parentNode;
+          }
           if(e)
             Editor.Ipc.sendToAll("ui:select_item", {uuid : _item._uuid, ctrlKey : e.ctrlKey});
       };

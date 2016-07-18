@@ -222,6 +222,29 @@ function cocosExportNodeData(node, ext) {
 
         data["select"] = node.isSelected();
         data["enable"] = node.isTouchEnabled();
+    } else if(node._className == "Layout") {
+        (node._backGroundImageFileName && node._backGroundImageFileName.length > 0) && (data["bkImg"] = node._backGroundImageFileName);
+        (node._backGroundScale9Enabled) && (node["bkScaleEnable"] = node._backGroundScale9Enabled);
+        let backgroupColorType = node.getBackGroundColorType();
+        if(backgroupColorType != ccui.Layout.BG_COLOR_NONE) {
+            data["bkColorType"] = backgroupColorType;
+            if(backgroupColorType == ccui.Layout.BG_COLOR_SOLID) {
+                let color = node.getBackGroundColor();
+                data["bkColor"] = [color.r, color.g, color.b, color.a];
+            } else if(backgroupColorType == ccui.Layout.BG_COLOR_GRADIENT) {
+                let color = node.getBackGroundStartColor();
+                data["bkStartColor"] = [color.r, color.g, color.b, color.a];
+                color = node.getBackGroundEndColor();
+                data["bkEndColor"] = [color.r, color.g, color.b, color.a];
+            }
+        }
+
+       data["layoutType"] = node.layoutType;
+       if(node.clippingEnabled) {
+           data["clippingEnabled"] = node.clippingEnabled;
+           data["clippingType"] = node.clippingType;
+       }
+
     }
 
     if(!isBaseType(node)) {
@@ -280,6 +303,9 @@ function cocosGenNodeByData(data, parent) {
     } else if(data.type == "CheckBox") {
         node = new ccui.CheckBox();
         node._className = data.type;
+    } else if(data.type == "Layout") {
+        node = new ccui.Layout();
+        node._className = "Layout";
     } else {
         node = new cc.Node();
         node._className = "Node";
@@ -394,6 +420,20 @@ function cocosGenNodeByData(data, parent) {
 
         (data["select"]) && (node.setSelected(data["select"]));
         (data["enable"]) && (node.setTouchEnabled(data["enable"]));
+    } else if(node._className == "Layout") {
+        setNodeSpriteFrame("backGroundImageFileName", data["bkImg"], node, node.setBackGroundImage);
+        (data["bkScaleEnable"]) && (node.setBackGroundImageScale9Enabled(data["bkScaleEnable"]));
+        
+        (data["bkColorType"]) && (node.setBackGroundColorType(data["bkColorType"]));
+        (covertToColor(data.bkColor)) && (node.setBackGroundColor(covertToColor(data.bkColor)));
+        if(covertToColor(data.bkStartColor) && covertToColor(data.bkEndColor)) {
+            node.setBackGroundColor(covertToColor(data.bkStartColor), covertToColor(data.bkEndColor));
+        }
+
+        (data["layoutType"]) && (node.setLayoutType(data["layoutType"]));
+        (data["clippingEnabled"]) && (node.setClippingEnabled(data["clippingEnabled"]));
+        (data["clippingType"]) && (node.setClippingType(data["clippingType"]));
+
     }
 
     data.children = data.children || [];
@@ -483,6 +523,7 @@ function createEmptyNodeByType(data) {
         node._className = "CheckBox";
     } else if(data == "Layout") {
         node = new ccui.Layout();
+        node.setBackGroundColorType(1);
         node.setContentSize(cc.size(100, 100));
         node._className = "Layout";
     }

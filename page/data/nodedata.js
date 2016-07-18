@@ -35,6 +35,10 @@ function CheckBoxData(node) {
     this._node = node;
 }
 
+function LayoutData(node) {
+    this._node = node;
+}
+
 function FixNodeHor(node, step) {
     node.x += step;
     if(node.left) {
@@ -286,6 +290,8 @@ NodeData.prototype = {
             node.push(new ButtonData(this._node));
         } else if(this._node._className == "CheckBox") {
             node.push(new CheckBoxData(this._node));
+        } else if(this._node._className == "Layout") {
+            node.push(new LayoutData(this._node));
         } else {
         }
         
@@ -523,6 +529,26 @@ NodeData.prototype = {
                 this._node.setSelected(value);
             } else if(path == "enable") {
                 this._node.setTouchEnabled(value);
+            }
+        } else if(this._node._className == "Layout") {
+            if(path == "spriteFrame") {
+                this.setSpriteFrame(path, value, "", this._node.setBackGroundImage);
+            } else if(path == "bkScaleEnable") {
+                this._node.setBackGroundImageScale9Enabled(value);
+            } else if(path == "colorType") {
+                this._node.setBackGroundColorType(parseInt(value));
+            } else if(path == "bkColor") {
+                this._node.setBackGroundColor(value);
+            } else if(path == "bkStartColor") {
+                this._node.setBackGroundColor(value, this._node.getBackGroundEndColor());
+            } else if(path == "bkEndColor") {
+                this._node.setBackGroundColor(this._node.getBackGroundStartColor(), value);
+            } else if(path == "layoutType") {
+                this._node.setLayoutType(parseInt(value));
+            } else if(path == "clippingEnabled") {
+                this._node.setClippingEnabled(value);
+            } else if(path == "clippingType") {
+                this._node.setClippingType(parseInt(value));
             }
         } else {
             return;
@@ -1451,3 +1477,127 @@ CheckBoxData.prototype = {
     
 };
 
+
+LayoutData.prototype = {
+    __editor__ : {
+        "inspector": "cc.Layout",
+    },
+    __displayName__: "Layout",
+
+    __type__: "cc.Layout",
+
+    get spriteFrame() {
+        return this._node._backGroundImageFileName;
+    },
+
+    set spriteFrame(value) {
+
+    },
+
+    get bkScaleEnable() {
+        return {
+            path: "bkScaleEnable",
+            type: "check",
+            name: "bkScaleEnable",
+            attrs: {
+            },
+            value: this._node.isBackGroundImageScale9Enabled(),
+        };
+    },
+
+    get colorType() {
+        return {
+            path: "colorType",
+            type: "select",
+            name: "colorType",
+            attrs: {
+                selects: {
+                    0: "BG_COLOR_NONE",
+                    1: "BG_COLOR_SOLID",
+                    2: "BG_COLOR_GRADIENT",
+                }
+            },
+            value: this._node.getBackGroundColorType(),
+        };
+    },
+
+    get bkColor() {
+        return {
+            path: "bkColor",
+            type: "color",
+            name: "bkColor",
+            attrs: {
+            },
+            value: this._node.getBackGroundColor(),
+        };
+    },
+
+    get bkStartColor() {
+        return {
+            path: "bkStartColor",
+            type: "color",
+            name: "bkStartColor",
+            attrs: {
+            },
+            value: this._node.getBackGroundStartColor(),
+        };
+    },
+
+    get bkEndColor() {
+        return {
+            path: "bkEndColor",
+            type: "color",
+            name: "bkEndColor",
+            attrs: {
+            },
+            value: this._node.getBackGroundEndColor(),
+        };
+    },
+
+    get layoutType() {
+        return {
+            path: "layoutType",
+            type: "select",
+            name: "layoutType",
+            attrs: {
+                selects: {
+                    0: "ABSOLUTE",
+                    1: "LINEAR_VERTICAL",
+                    2: "LINEAR_HORIZONTAL",
+                    3: "RELATIVE",
+                }
+            },
+            value: this._node.layoutType,
+        };
+    },
+
+    get clippingEnabled() {
+        return {
+            path: "clippingEnabled",
+            type: "check",
+            name: "clippingEnabled",
+            attrs: {
+            },
+            value: this._node.clippingEnabled,
+        };
+    },
+
+    get clippingType() {
+        return {
+            path: "clippingType",
+            type: "select",
+            name: "clippingType",
+            attrs: {
+                selects: {
+                    0: "CLIPPING_STENCIL",
+                    1: "CLIPPING_SCISSOR",
+                }
+            },
+            value: this._node.clippingType,
+        };
+    },
+
+
+
+    
+}

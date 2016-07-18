@@ -1,12 +1,83 @@
-<dom-module id="cc-layout-inspector"><template><editor-prop prop="{{target.type}}"></editor-prop><editor-prop prop="{{target.resizeMode}}"></editor-prop><div hidden="[[_isLayoutTypeNone(target.type.value)]]"><editor-prop prop="{{target.cellSize}}" hidden="[[_isHiddenCellSize(target.type.value, target.resizeMode.value)]]"></editor-prop><editor-prop prop="{{target.startAxis}}" hidden="[[!_isGridLayout(target.type.value)]]"></editor-prop><editor-prop prop="{{target.padding}}"></editor-prop><editor-prop prop="{{target.spacingX}}" hidden="[[_isVerticalLayout(target.type.value)]]"></editor-prop><editor-prop prop="{{target.spacingY}}" hidden="[[_isHorizontalLayout(target.type.value)]]"></editor-prop><editor-prop prop="{{target.verticalDirection}}" hidden="[[_isHorizontalLayout(target.type.value)]]"></editor-prop><editor-prop prop="{{target.horizontalDirection}}" hidden="[[_isVerticalLayout(target.type.value)]]"></editor-prop></div></template><script>'use strict';
+<dom-module id="cc-layout-inspector">
+  <template>
+    <editor-custom-prop name="Sprite Frame">
+      <div class="layout horizontal center">
+        <fire-asset class="flex-1" value="{{target.spriteFrame}}" path="spriteFrame" type="sprite-frame"></fire-asset>
+        <!--<editor-button title="编辑" class="small" on-click="_editSprite">编辑</editor-button>-->
+      </div>
+    </editor-custom-prop>
+    <editor-prop prop="{{target.bkScaleEnable}}"></editor-prop>
 
+    <!--<editor-custom-prop name="{{colorType.name}}">
+      <editor-select on-value-changed="_selectChange" value="{{colorType.value}}" path="{{colorType.path}}">
+        <editor-option value="0" text="BG_COLOR_NONE">BG_COLOR_NONE</editor-option>
+        <editor-option value="1" text="BG_COLOR_SOLID">BG_COLOR_SOLID</editor-option>
+        <editor-option value="2" text="BG_COLOR_GRADIENT">BG_COLOR_GRADIENT</editor-option>
+      </editor-select>
+    </editor-custom-prop>-->
+    <editor-prop prop="{{colorType}}" on-value-changed="_selectChange"></editor-prop>
+    <div hidden="[[!_isSolidColor(colorType.value)]]">
+      <editor-prop prop="{{target.bkColor}}"></editor-prop>
+    </div>
+
+    <div hidden="[[!_isGradientColor(colorType.value)]]">
+      <editor-prop prop="{{target.bkStartColor}}"></editor-prop>
+      <editor-prop prop="{{target.bkEndColor}}"></editor-prop>
+    </div>
+
+    <editor-prop prop="{{target.layoutType}}"></editor-prop>
+    <editor-prop prop="{{target.clippingEnabled}}"></editor-prop>
+    <editor-prop prop="{{target.clippingType}}"></editor-prop>
+
+  </template>
+  <script>
+    'use strict';
     Editor.polymerElement({
       properties: {
         target: {
           type: Object,
           value: null,
           notify: true,
+          observer: "_targetChanged"
         },
+        colorType: {
+          type: Object,
+          value: null,
+          notify: true,
+        }
+      },
+
+      ready: function() {
+         this.addEventListener("end-editing", function(e) {
+            if(e.detail.cancel) {
+                return;
+            }
+            let path = e.target.path, value = e.target.value;
+            if(path == "colorType") {
+              this._selectChange();
+            }
+        });
+      },
+
+      _selectChange: function() {
+        this.async(() => {
+          if(!this.colorType || this.colorType.value != this.target.colorType.value) {
+            this.target && (this.colorType = this.target.colorType);
+          }
+        },1);
+      },
+
+      _targetChanged: function() {
+        if(this.target)
+          this.colorType = this.target.colorType;
+      },
+
+      _isSolidColor(type) {
+        return type == 1;
+      },
+
+      _isGradientColor(type) {
+        return type == 2;
       },
 
       _isLayoutTypeNone (type) {
@@ -29,4 +100,6 @@
         return type !== 3 || resizeMode !== 2;
       },
 
-    });</script></dom-module>
+    });
+  </script>
+</dom-module>

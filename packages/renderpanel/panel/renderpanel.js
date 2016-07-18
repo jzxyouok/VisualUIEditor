@@ -642,7 +642,6 @@
     },
 
     undoScene: function() {
-        Editor.log("undoScene!!!!!!");
         let runScene = this.$.scene.getRunScene();
         if(!runScene) {
             return;
@@ -651,7 +650,6 @@
     },
 
     redoScene: function() {
-        Editor.log("redoScene!!!!!!");
         let runScene = this.$.scene.getRunScene();
         if(!runScene) {
             return;

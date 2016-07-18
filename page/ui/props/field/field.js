@@ -48,7 +48,7 @@ Editor.polymerElement({
     },
     rebuild: function() {
         var t = this;
-        this.debounce("rebuild", function() {
+        this.async(function() {
             t._rebuild()
         }, 50)
     },

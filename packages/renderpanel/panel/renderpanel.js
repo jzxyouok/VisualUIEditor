@@ -331,11 +331,13 @@
                 nodeRect.left -= forgeRect.left;
                 nodeRect.top -= forgeRect.top;
                 let baseNode = null;
-                var children = node.getChildren();
-                for(var i = 0; i < children.length; i++) {
-                    baseNode = calcCollectNode(children[i], rect);
-                    if(baseNode) {
-                        break;
+                if(!isBaseType(node)) {
+                    var children = node.getChildren();
+                    for(var i = 0; i < children.length; i++) {
+                        baseNode = calcCollectNode(children[i], rect);
+                        if(baseNode) {
+                            break;
+                        }
                     }
                 }
                 if(!baseNode && _this.isCollection(nodeRect, rect)) {
@@ -794,7 +796,6 @@
             undo.add(newPropCommandChange(runScene, child.uuid, 'rotation', oldValue, child.rotation));
         }
 
-        
         Editor.Ipc.sendToAll("ui:item_prop_change", {uuid:child.uuid});
         // curInfo.left -= group.left || 0;
         // curInfo.top -= group.top || 0;
@@ -823,7 +824,16 @@
             return;
         }
         var data = ev.dataTransfer.getData("controlType");
-        if(!data) {
+        var asset = ev.dataTransfer.getData("asset");
+        var isCanControl = false;
+        if(data) {
+            isCanControl = true;
+        } else if(asset) {
+            if(endWith(asset, ".ui") || endWith(asset, ".png")) {
+                isCanControl = true;
+            }
+        }
+        if(!isCanControl) {
             return;
         }
         ev.dataTransfer.effectAllowed = "all";
@@ -839,12 +849,28 @@
         ev.preventDefault();
         ev.stopPropagation();
         ev.target.style.removeProperty("background");
-        
-        var data = ev.dataTransfer.getData("controlType");
         let runScene = this.$.scene.getRunScene();
         let scenePosition = this.calcSceneLocation(ev.clientX, ev.clientY);
         let uuid = gen_uuid();
-        var node = createEmptyNodeByType(data);
+    
+        var data = ev.dataTransfer.getData("controlType");
+        var asset = ev.dataTransfer.getData("asset");
+        var node = null;
+        if(data) {
+            node = createEmptyNodeByType(data);
+        }
+
+        if(asset) {
+            let subPath = calcRelativePath(window.projectFolder, asset);
+            if(endWith(subPath, ".ui")) {
+                node = cocosGenNodeByData({"path":subPath}, runScene);
+            } else if(endWith(subPath, ".png")) {
+                node = createEmptyNodeByType("Sprite");
+                if(node) {
+                    setNodeSpriteFrame("spriteFrame", subPath, node, node.initWithFile);
+                }
+            }
+        }
 
         if (node) {
             this._doItemAdd(runScene, node);
@@ -853,6 +879,7 @@
             node.uiname = data;
             Editor.Ipc.sendToAll("ui:scene_item_add", {uuid:uuid});
         }
+        
     },
 
     insertItemBefore: function(sourceNode, compareNode) {

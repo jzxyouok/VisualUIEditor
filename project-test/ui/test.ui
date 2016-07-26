@@ -304,6 +304,23 @@
                 255
             ],
             "layoutType": 2
+        },
+        {
+            "width": "100",
+            "height": "34",
+            "x": 905,
+            "y": 418,
+            "type": "Input",
+            "string": "fdfdsfdsfds",
+            "fontName": "Arial",
+            "fontColor": [
+                255,
+                255,
+                255,
+                255
+            ],
+            "placeHolder": "VisualUI",
+            "spriteBg": "res/default/shurukuang.png"
         }
     ]
 }

@@ -30,7 +30,7 @@ function isBaseTypeByName(name) {
 
 function isBaseType(node) {
     let name = node._className;
-    return isBaseTypeByName(name);
+    return isBaseTypeByName(name) || node._path != null;
 }
 
 function setNodeSpriteFrame(path, value, node, fn) {
@@ -275,9 +275,32 @@ function covertToColor(value) {
     return new cc.color(value[0], value[1], value[2], value[3]);
 }
 
-function cocosGenNodeByData(data, parent) {
+function checkPathRepeat(node, path) {
+    let parent = node
+    while(parent) {
+        if(path == parent._path || path == parent._sceneSubPath) {
+            return true
+        }
+        parent = parent.getParent()
+    }
+    return false
+}
+
+function cocosGenNodeByData(data, parent, isSetParent) {
+    if(!data) {
+        return;
+    }
     let node = null;
-    if(data.type == "Scene" || !parent) {
+    if(isSetParent) {
+        node = parent;
+    } else if(data.path) {
+        node = new cc.Node();
+        node._path = data.path;
+        if(checkPathRepeat(parent, data.path)) {
+            return null;
+        }
+        cocosGenNodeByData(getPathData(data.path), node, true)
+    } else if(data.type == "Scene" || !parent) {
         node = new cc.Scene();
         if(!parent) {
             node.width = 800;
@@ -447,9 +470,15 @@ function cocosGenNodeByData(data, parent) {
     return node;
 }
 
+function getPathData(path) {
+    let content = fs.readFileSync(getFullPathForName(path));
+    return JSON.parse(content || "");
+}
+
 function loadSceneFromFile(filename) {
     let content = fs.readFileSync(filename);
     let data = JSON.parse(content || "");
+    data._sceneSubPath = calcRelativePath(window.projectFolder, filename)
     return cocosGenNodeByData(data, null);
 }
 
@@ -490,9 +519,12 @@ function createEmptyNodeByType(data) {
     } else if(data == "Slider") {
         let back = "res/default/SliderBack.png";
         let normalBall = "res/default/SliderNodeNormal.png";
+        let barProgress = "res/default/SliderBar.png";
         node = new ccui.Slider(back, normalBall);
         node._barBg = back;
         node._barNormalBall = normalBall;
+
+        setNodeSpriteFrame("barProgress", barProgress, node, node.loadProgressBarTexture)
         node._className = "Slider";
     } else if(data == "Button") {
         let normal = "res/default/ButtonNormal.png";

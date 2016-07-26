@@ -25,12 +25,18 @@ function isBaseTypeByName(name) {
        || name == "Scale9" || name == "Input" || name == "Button" || name == "CheckBox") {
         return true;
     }
+    if(startWith(name, "SubPath:")) {
+        return true;
+    }
     return false;
 }
 
 function isBaseType(node) {
+    if(node._path != null) {
+        return true
+    }
     let name = node._className;
-    return isBaseTypeByName(name) || node._path != null;
+    return isBaseTypeByName(name);
 }
 
 function setNodeSpriteFrame(path, value, node, fn) {
@@ -116,8 +122,11 @@ function cocosExportNodeData(node, ext) {
 
     (!node.isVisible()) && (data["visible"] = node.isVisible());
 
+    if(startWith(node._className, "SubPath")) {
+        data["path"] = node._path;
+    }
     //Label prop
-    if(node._className == "LabelTTF") {
+    else if(node._className == "LabelTTF") {
         data["string"] = node.string;
         if(node.textAlign != cc.TEXT_ALIGNMENT_LEFT) {
             data["textAlign"] = node.textAlign;
@@ -300,6 +309,7 @@ function cocosGenNodeByData(data, parent, isSetParent) {
             return null;
         }
         cocosGenNodeByData(getPathData(data.path), node, true)
+        node._className = "SubPath:" + data.path;
     } else if(data.type == "Scene" || !parent) {
         node = new cc.Scene();
         if(!parent) {

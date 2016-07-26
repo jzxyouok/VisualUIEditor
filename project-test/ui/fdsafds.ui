@@ -1,1 +1,19 @@
-{}
+{
+    "width": "800",
+    "height": "400",
+    "x": 0,
+    "y": 0,
+    "type": "Scene",
+    "children": [
+        {
+            "width": "300",
+            "height": "100",
+            "x": 204,
+            "y": 156,
+            "type": "SubPath:/ui/sub1.ui",
+            "anchorX": 0,
+            "anchorY": 0,
+            "path": "/ui/sub1.ui"
+        }
+    ]
+}

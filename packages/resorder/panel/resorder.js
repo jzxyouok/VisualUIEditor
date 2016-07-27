@@ -206,9 +206,12 @@
     newEntry: function (entry) {
       var item = document.createElement('td-tree-item');
       let file = "fa fa-file";
+      let color = "gray";
       if(entry.isDirectory) {
-          file = "fa fa-folder"
+          file = "red fa fa-folder"
+          color = "CornflowerBlue"
       }
+      item.$.icon.style.color = color;
       item.$.icon.className = file;
       item.$.icon.hidden = false;
       item.draggable = true;

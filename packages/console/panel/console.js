@@ -61,7 +61,6 @@
       },
 
       'editor:console-info' ( event, message ) {
-        console.log("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
         this.add( 'info', message );
       },
 
@@ -119,7 +118,6 @@
     },
 
     clear () {
-      console.log("clear!!!!!!!!!!!!!!!!1");
       this._clear();
       Editor.Ipc.sendToMain('console:clear');
     },
@@ -133,8 +131,6 @@
       let rect = this.$.openLogBtn.getBoundingClientRect();
 
       Editor.Ipc.sendToPackage('console', 'popup-open-log-menu', rect.left, rect.bottom + 5 );
-
-      Editor.info("xxxxxxxxxxxxxxxxxxx");
     },
 
     applyFilter ( logsCount, filterText, filterOption, useRegex, collapse ) {

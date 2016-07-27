@@ -348,9 +348,14 @@ function cocosGenNodeByData(data, parent, isSetParent) {
     node.uuid = data.uuid || gen_uuid();
 
     (data.id) && (node._name = data.id);
-
-    (!isNull(data.width)) && (node.width = parseFloat(data.width));
-    (!isNull(data.height)) && (node.height = parseFloat(data.height));
+    if(!isNull(data.width) || !isNull(data.height)) {
+        let setFn = node.setPreferredSize ? node.setPreferredSize : node.setContentSize;
+        let width = !isNull(data.width) ? parseFloat(data.width) : node.width;
+        let height = !isNull(data.height) ? parseFloat(data.height) : node.height;
+        setFn.call(node, width, height);
+    }
+    // (!isNull(data.width)) && (node.width = parseFloat(data.width));
+    // (!isNull(data.height)) && (node.height = parseFloat(data.height));
     (!isNull(data.x)) && (node.x = parseFloat(data.x));
     (!isNull(data.y)) && (node.y = parseFloat(data.y));
 

@@ -1,6 +1,7 @@
 'use strict';
 
 // const Editor = require('editor-framework');
+const Electron = require('electron');
 const Editor = require('./editor-framework/index');
 const Path = require('fire-path');
 
@@ -155,7 +156,7 @@ Editor.App.extend({
                 accelerator: 'CmdOrCtrl+Shift+C',
                 click () {
                   let nativeWin = Electron.BrowserWindow.getFocusedWindow();
-                  let editorWin = Window.find(nativeWin);
+                  let editorWin = Editor.Window.find(nativeWin);
                   if ( editorWin ) {
                     editorWin.send( 'editor:window-inspect' );
                   }

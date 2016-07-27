@@ -1005,7 +1005,7 @@ InputData.prototype = {
     get string() {
         return {
             path: "string",
-            type: "text",
+            type: "string",
             name: "string",
             attrs: {
             },

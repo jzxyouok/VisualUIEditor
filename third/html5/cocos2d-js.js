@@ -45536,6 +45536,7 @@ cc.EditBox = cc.ControlButton.extend({
         tmpEdTxt.addEventListener("keypress", this._keyPressEvent);
         tmpEdTxt.addEventListener("focus", this._focusEvent);
         tmpEdTxt.addEventListener("blur", this._blurEvent);
+        tmpEdTxt.hidden = true;
         cc.DOM.convert(tmpDOMSprite);
         tmpDOMSprite.dom.appendChild(tmpEdTxt);
         tmpDOMSprite.dom.showTooltipDiv = false;

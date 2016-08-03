@@ -6,17 +6,18 @@
     "type": "Scene",
     "children": [
         {
-            "width": "46",
-            "height": "46",
-            "x": 395,
-            "y": 229.5,
-            "type": "Sprite"
+            "width": "128",
+            "height": "128",
+            "x": 348,
+            "y": 279,
+            "type": "Sprite",
+            "spriteFrame": "res/grid.png"
         },
         {
             "width": "75",
             "height": "23",
             "x": 434,
-            "y": 189.5,
+            "y": 190,
             "type": "LabelTTF",
             "string": "VisualUI",
             "fontSize": 20,

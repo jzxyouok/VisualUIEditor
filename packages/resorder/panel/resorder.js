@@ -164,7 +164,6 @@
         }).bind(this));
     },
     dblclickItem: function(e) {
-        Editor.log("dblclick");
         this.clearSelectInfo();
 
         if(!e.currentTarget.isDirectory) {
@@ -210,6 +209,12 @@
       if(entry.isDirectory) {
           file = "red fa fa-folder"
           color = "CornflowerBlue"
+      } else if(endWith(entry.name, ".png") || endWith(entry.name, ".jpg")) {
+          file = "fa fa-file-image-o"
+          color = "PaleTurquoise"
+      } else if(endWith(entry.name, ".ui")) {
+          file = "fa fa-fire"
+          color = "LightPink"
       }
       item.$.icon.style.color = color;
       item.$.icon.className = file;
@@ -365,7 +370,6 @@
                return;
            }
            this.createFolderOrFile(operateItem, true);
-                Editor.log("create scene");
       },
       'ui:rename-file-or-folder'(event, message) {
            let operateItem = this._curMouseOverItem || this._curSelectItem;
@@ -378,7 +382,6 @@
             setTimeout(() => {
                 input.$.input.focus();
             },1);
-                Editor.log("rename scene");
       },
       'ui:delete-file-or-folder'(event, message) {
           let operateItem = this._curMouseOverItem || this._curSelectItem;
@@ -389,7 +392,6 @@
            this.$.tree.removeItem(operateItem);
            this._curMouseOverItem = null;
            this._curSelectItem = null;
-                Editor.log("delete scene");
       },
       'ui:show-in-explorer'(event, message) {
            let operateItem = this._curMouseOverItem || this._curSelectItem;

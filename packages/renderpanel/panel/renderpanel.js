@@ -861,7 +861,7 @@
         }
 
         if(asset) {
-            let subPath = calcRelativePath(window.projectFolder, asset);
+            let subPath = calcRelativePath(window.projectFolder + "/", asset);
             if(endWith(subPath, ".ui")) {
                 node = cocosGenNodeByData({"path":subPath}, runScene);
             } else if(endWith(subPath, ".png")) {

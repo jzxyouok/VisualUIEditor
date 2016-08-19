@@ -10,10 +10,10 @@
             "height": "100",
             "x": 204,
             "y": 156,
-            "type": "SubPath:/ui/sub1.ui",
+            "type": "SubPath:ui/sub1.ui",
             "anchorX": 0,
             "anchorY": 0,
-            "path": "/ui/sub1.ui"
+            "path": "ui/sub1.ui"
         }
     ]
 }

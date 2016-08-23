@@ -381,7 +381,6 @@ function cocosGenNodeByData(data, parent, isSetParent) {
     if(data.type == "LabelTTF") {
         data.string && (node.string = data.string);
         data.textAlign && (node.textAlign = data.textAlign);
-        data.textAlign && (node.textAlign = data.textAlign);
         data.verticalAlign && (node.verticalAlign = data.verticalAlign);
         data.fontSize && (node.fontSize = data.fontSize);
         data.fontName && (node.fontName = data.fontName);

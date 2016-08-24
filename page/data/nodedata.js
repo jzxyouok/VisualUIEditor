@@ -70,8 +70,8 @@ function NodePropChange(node, prop, newValue) {
     } else if(prop == "y") {
         let step = newValue - node[prop];
         FixNodeVer(node, step);
-    } else if(prop == "touchEnable") {
-        node.setTouchEnabled(newValue)
+    } else if(prop == "touchEnabled") {
+        node._touchEnabled = newValue;
     } else {
         node[prop] = newValue;
     }
@@ -434,9 +434,9 @@ NodeData.prototype = {
         } else if(path == "visible") {
             addNodeCommand(this._node, "visible", this._node.visible, value);
             this._node.visible = value;
-        } else if(path == "touchEnable") {
-            addNodeCommand(this._node, "touchEnable", this._node.isTouchEnabled(), value);
-            this._node.setTouchEnabled(value);
+        } else if(path == "touchEnabled") {
+            addNodeCommand(this._node, "touchEnabled", this._node._touchEnabled, value);
+            this._node._touchEnabled = value;
         } else if(path == "touchListener") {
             addNodeCommand(this._node, "touchListener", this._node.touchListener, value);
             this._node.touchListener = value;
@@ -545,8 +545,6 @@ NodeData.prototype = {
                 this.setSpriteFrame(path, value, "res/default/CheckBoxNodeDisable.png", this._node.loadTextureFrontCrossDisabled);
             } else if(path == "select") {
                 this._node.setSelected(value);
-            } else if(path == "enable") {
-                this._node.setTouchEnabled(value);
             }
         } else if(this._node._className == "Layout") {
             if(path == "spriteFrame") {
@@ -1502,22 +1500,19 @@ TouchData.prototype = {
     __displayName__: "Touch",
     __type__: "cc.Touch",
 
-    get touchEnable() {
-        let touch = false;
-        if (this._node.isTouchEnabled) {
-            touch = this._node.isTouchEnabled();
-        }
+    get touchEnabled() {
         return {
-            path: "touchEnable",
+            path: "touchEnabled",
             type: "check",
-            name: "touchEnable",
+            name: "touchEnabled",
             attrs: {
             },
-            value: touch,
+            value: this._node._touchEnabled,
         };
     },
 
     get touchListener() {
+
         return {
             path: "touchListener",
             type: "string",
@@ -1530,7 +1525,7 @@ TouchData.prototype = {
 
     get __props__() {
         return [
-            this.touchEnable,
+            this.touchEnabled,
             this.touchListener,
         ];
     }

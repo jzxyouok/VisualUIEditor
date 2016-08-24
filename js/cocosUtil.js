@@ -115,8 +115,8 @@ function cocosExportNodeData(node, ext) {
         data["anchorY"] = node.anchorY; 
     }
 
-    if(node.isTouchEnabled && node.isTouchEnabled() == false) {
-        data["touchEnable"] = node.isTouchEnabled();
+    if(node._touchEnabled == false) {
+        data["touchEnabled"] = node._touchEnabled;
     }
 
     if(node.touchListener) {
@@ -386,7 +386,7 @@ function cocosGenNodeByData(data, parent, isSetParent) {
 
     (covertToColor(data.color)) && (node.color = covertToColor(data.color));
 
-    (!isNull(data.touchEnable)) && node.setTouchEnabled(data.touchEnable);
+    (!isNull(data.touchEnabled)) && (node._touchEnabled = data.touchEnabled);
     (!isNull(data.touchListener)) && (node.touchListener = data.touchListener);
 
     if(data.type == "LabelTTF") {
@@ -467,7 +467,7 @@ function cocosGenNodeByData(data, parent, isSetParent) {
         setNodeSpriteFrame("activeDisable", data["activeDisable"], node, node.loadTextureFrontCrossDisabled);
 
         (data["select"]) && (node.setSelected(data["select"]));
-        (data["enable"]) && (node.setTouchEnabled(data["enable"]));
+        // (data["enable"]) && (node.setTouchEnabled(data["enable"]));
     } else if(node._className == "Layout") {
         setNodeSpriteFrame("backGroundImageFileName", data["bkImg"], node, node.setBackGroundImage);
         (data["bkScaleEnable"]) && (node.setBackGroundImageScale9Enabled(data["bkScaleEnable"]));

@@ -7,19 +7,13 @@ An UIEditor for Game, base on electron.
 #install
 > install node.js first
 
-> npm install -g electron-prebuilt@1.2.1
+> npm install -g electron-prebuilt
 
 > npm install -g bower
 
 > bower install
 
 > npm install
-
-# build editor-framework
-> cd editor-framework
-
-> npm install
-now you success install editor-framework
 
 #run
 open shell in project root and run

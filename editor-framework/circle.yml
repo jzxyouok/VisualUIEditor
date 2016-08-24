@@ -1,7 +1,0 @@
-machine:
-  node:
-    version: 5.4.0
-
-dependencies:
-  pre:
-    - npm install -g node-gyp

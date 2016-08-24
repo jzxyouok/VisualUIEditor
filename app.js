@@ -1,8 +1,8 @@
 'use strict';
 
-// const Editor = require('editor-framework');
+const Editor = require('editor-framework');
 const Electron = require('electron');
-const Editor = require('./editor-framework/index');
+// const Editor = require('./editor-framework/index');
 const Path = require('fire-path');
 
 global.MenuUtil = require('./js/MenuUtil.js');

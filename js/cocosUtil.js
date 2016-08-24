@@ -496,6 +496,9 @@ function cocosGenNodeByData(data, parent, isSetParent) {
 }
 
 function getPathData(path) {
+    if(!path) {
+        return JSON.parse("");
+    }
     let content = fs.readFileSync(getFullPathForName(path));
     return JSON.parse(content || "");
 }

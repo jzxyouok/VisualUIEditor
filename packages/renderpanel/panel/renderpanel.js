@@ -958,6 +958,14 @@
     },
 
     messages: {
+        "ui:project_floder_change"(event, message) {
+            window.localStorage["last_open_ui"] = null;
+            this._openPath = null;
+            let node = new cc.Scene();
+            node.width = 800;
+            node.height = 400;
+            this.sceneChange(node);
+        },
         "ui:change_item_position" (event, message) {
             this.changeItemPosition(message.sourceUUID, message.compareUUID, message.mode);
             this.updateForgeCanvas();

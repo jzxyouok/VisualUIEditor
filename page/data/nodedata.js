@@ -39,6 +39,10 @@ function LayoutData(node) {
     this._node = node;
 }
 
+function TouchData(node) {
+    this._node = node;
+}
+
 function FixNodeHor(node, step) {
     node.x += step;
     if(node.left) {
@@ -66,9 +70,13 @@ function NodePropChange(node, prop, newValue) {
     } else if(prop == "y") {
         let step = newValue - node[prop];
         FixNodeVer(node, step);
+    } else if(prop == "touchEnable") {
+        node.setTouchEnabled(newValue)
     } else {
         node[prop] = newValue;
     }
+
+    
 }
 
 function AddPropChange(node, uuid, newValue) {
@@ -281,14 +289,18 @@ NodeData.prototype = {
         } else if(this._node._className == "LabelTTF") {
             node.push(new LabelData(this._node));
         } else if(this._node._className == "Slider") {
+            node.push(new TouchData(this._node));
             node.push(new SliderData(this._node));
         } else if(this._node._className == "Input") {
+            node.push(new TouchData(this._node));
             node.push(new InputData(this._node));
         } else if(this._node._className == "Scale9") {
             node.push(new Scale9Data(this._node));
         } else if(this._node._className == "Button") {
+            node.push(new TouchData(this._node));
             node.push(new ButtonData(this._node));
         } else if(this._node._className == "CheckBox") {
+            node.push(new TouchData(this._node));
             node.push(new CheckBoxData(this._node));
         } else if(this._node._className == "Layout") {
             node.push(new LayoutData(this._node));
@@ -422,6 +434,12 @@ NodeData.prototype = {
         } else if(path == "visible") {
             addNodeCommand(this._node, "visible", this._node.visible, value);
             this._node.visible = value;
+        } else if(path == "touchEnable") {
+            addNodeCommand(this._node, "touchEnable", this._node.isTouchEnabled(), value);
+            this._node.setTouchEnabled(value);
+        } else if(path == "touchListener") {
+            addNodeCommand(this._node, "touchListener", this._node.touchListener, value);
+            this._node.touchListener = value;
         } else if(this._node._className == "LabelTTF") {
             if(path == "string") {
                 this._node.string = value;
@@ -1451,16 +1469,16 @@ CheckBoxData.prototype = {
         };
     },
 
-   get enable() {
-        return {
-            path: "enable",
-            type: "check",
-            name: "enable",
-            attrs: {
-            },
-            value: this._node.isTouchEnabled(),
-        };
-    },
+//    get enable() {
+//         return {
+//             path: "enable",
+//             type: "check",
+//             name: "enable",
+//             attrs: {
+//             },
+//             value: this._node.isTouchEnabled(),
+//         };
+//     },
 
 
     get __props__() {
@@ -1471,7 +1489,49 @@ CheckBoxData.prototype = {
             this.backDisable,
             this.activeDisable,
             this.select,
-            this.enable,
+            // this.enable,
+        ];
+    }
+    
+};
+
+TouchData.prototype = {
+    __editor__ : {
+        "inspector1": "cc.Touch",
+    },
+    __displayName__: "Touch",
+    __type__: "cc.Touch",
+
+    get touchEnable() {
+        let touch = false;
+        if (this._node.isTouchEnabled) {
+            touch = this._node.isTouchEnabled();
+        }
+        return {
+            path: "touchEnable",
+            type: "check",
+            name: "touchEnable",
+            attrs: {
+            },
+            value: touch,
+        };
+    },
+
+    get touchListener() {
+        return {
+            path: "touchListener",
+            type: "string",
+            name: "touchListener",
+            attrs: {
+            },
+            value: this._node.touchListener,
+        };
+    },
+
+    get __props__() {
+        return [
+            this.touchEnable,
+            this.touchListener,
         ];
     }
     

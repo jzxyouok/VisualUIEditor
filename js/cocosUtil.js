@@ -115,6 +115,14 @@ function cocosExportNodeData(node, ext) {
         data["anchorY"] = node.anchorY; 
     }
 
+    if(node.isTouchEnabled && node.isTouchEnabled() == false) {
+        data["touchEnable"] = node.isTouchEnabled();
+    }
+
+    if(node.touchListener) {
+        data["touchListener"] = node.touchListener;
+    }
+
     //适用于删除及添加的撤消操作
     if(ext && ext.uuid) {
         data["uuid"] = node.uuid;
@@ -377,6 +385,9 @@ function cocosGenNodeByData(data, parent, isSetParent) {
     (!isNull(data.visible)) && node.setVisible(data.visible);
 
     (covertToColor(data.color)) && (node.color = covertToColor(data.color));
+
+    (!isNull(data.touchEnable)) && node.setTouchEnabled(data.touchEnable);
+    (!isNull(data.touchListener)) && (node.touchListener = data.touchListener);
 
     if(data.type == "LabelTTF") {
         data.string && (node.string = data.string);

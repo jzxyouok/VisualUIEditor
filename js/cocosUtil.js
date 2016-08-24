@@ -496,16 +496,16 @@ function cocosGenNodeByData(data, parent, isSetParent) {
 }
 
 function getPathData(path) {
-    if(!path) {
-        return JSON.parse("");
+    if(!path || !getFullPathForName(path)) {
+        return JSON.parse("{}");
     }
     let content = fs.readFileSync(getFullPathForName(path));
-    return JSON.parse(content || "");
+    return JSON.parse(content || "{}");
 }
 
 function loadSceneFromFile(filename) {
     let content = fs.readFileSync(filename);
-    let data = JSON.parse(content || "");
+    let data = JSON.parse(content || "{}");
     data._sceneSubPath = calcRelativePath(window.projectFolder, filename)
     return cocosGenNodeByData(data, null);
 }

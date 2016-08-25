@@ -495,6 +495,20 @@
 
     },
 
+    _doDeleteFunc: function() {
+        let runScene = this.$.scene.getRunScene();
+        let select_items = this.getSelectItems();
+        for(var i = 0; i < select_items.length; i++) {
+            let node = cocosGetItemByUUID(runScene, select_items[i]);
+            if(node.getParent()) {
+                this._doItemDelete(node);
+            }
+        }
+        this.$.scene.getFabricCanvas().clear();
+        this._firstSelectItem = null;
+        Editor.Ipc.sendToAll("ui:scene_items_change", {});
+    },
+
     _doCopyFunc: function() {
         Electron.clipboard.writeText(this.getSelectItems().join("#"));
     },
@@ -673,18 +687,7 @@
                event.stopPropagation();
                event.preventDefault();
            } else if(event.keyCode == Editor.KeyCode('delete')) {
-               let runScene = this.$.scene.getRunScene();
-               let select_items = this.getSelectItems();
-               //TODO undo
-               for(var i = 0; i < select_items.length; i++) {
-                   let node = cocosGetItemByUUID(runScene, select_items[i]);
-                   if(node.getParent()) {
-                       this._doItemDelete(node);
-                   }
-               }
-               this.$.scene.getFabricCanvas().clear();
-               this._firstSelectItem = null;
-               Editor.Ipc.sendToAll("ui:scene_items_change", {});
+               this._doDeleteFunc();
                event.stopPropagation();
                event.preventDefault();
            }
@@ -1083,6 +1086,19 @@
         },
         'ui:scene-copyall'(event, data) {
             this._doSelectAll();
+        },
+        'node:delete_item'(event, data) {
+            this._doDeleteFunc();
+        },
+        'node:copy_paste_item'(event, data) {
+            this._doCopyFunc();
+            this._doPasteFunc();
+        },
+        'node:paste_item'(event, data) {
+            this._doPasteFunc();
+        },
+        'node:copy_item'(event, data) {
+            this._doCopyFunc();
         },
 
     },

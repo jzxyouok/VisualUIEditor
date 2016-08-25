@@ -40,6 +40,15 @@
           }
       });
 
+      this['onkeydown'] = function(event) {
+           
+           if(event.keyCode == Editor.KeyCode('f5')) {
+               this.showFolderTree();
+               event.stopPropagation();
+               event.preventDefault();
+           }
+       }.bind(this);
+
 
     },
 
@@ -343,9 +352,9 @@
         },1);
     },
 
-    messages: {
-      'ui:project_floder_change'(event, message) {
-        var files = getFileList(message.folder, function(file) {
+    showFolderTree: function(folder) {
+        folder = folder || window.projectFolder;
+        var files = getFileList(folder, function(file) {
             if(file.length > 0 && file.charAt(0) == '.') {
                 return true;
             }
@@ -355,6 +364,11 @@
             return false;
         });
         this.build(files);
+    },
+
+    messages: {
+      'ui:project_floder_change'(event, message) {
+          this.showFolderTree(message.folder)
       },
       'ui:create_folder'(event, message) {
           

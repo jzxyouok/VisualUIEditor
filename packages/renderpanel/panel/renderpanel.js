@@ -624,7 +624,11 @@
                event.preventDefault();
            }
            if(event.keyCode == Editor.KeyCode('s') && event.ctrlKey && this._openPath) {
-               saveSceneToFile(this._openPath, this.$.scene.getRunScene());
+               if(this.modeSelected == 1) {
+                   saveFileByContent(this._openPath, this._editor.getValue())
+               } else {
+                   saveSceneToFile(this._openPath, this.$.scene.getRunScene());
+               }
                event.stopPropagation();
                event.preventDefault();
            } else if(event.keyCode == Editor.KeyCode('delete')) {

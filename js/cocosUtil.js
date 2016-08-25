@@ -115,7 +115,7 @@ function cocosExportNodeData(node, ext) {
         data["anchorY"] = node.anchorY; 
     }
 
-    if(node._touchEnabled == false) {
+    if(typeof(node._touchEnabled) == "boolean") {
         data["touchEnabled"] = node._touchEnabled;
     }
 
@@ -238,7 +238,7 @@ function cocosExportNodeData(node, ext) {
         (node._activeDisable) && (data["activeDisable"] = node._activeDisable);
 
         data["select"] = node.isSelected();
-        data["enable"] = node.isTouchEnabled();
+        // data["enable"] = node.isTouchEnabled();
     } else if(node._className == "Layout") {
         (node._backGroundImageFileName && node._backGroundImageFileName.length > 0) && (data["bkImg"] = node._backGroundImageFileName);
         (node._backGroundScale9Enabled) && (node["bkScaleEnable"] = node._backGroundScale9Enabled);
@@ -283,6 +283,10 @@ function cocosExportNodeData(node, ext) {
 function saveSceneToFile(filename, scene, ext) {
     let data = cocosExportNodeData(scene, ext);
     fs.writeFileSync(filename, JSON.stringify(data, null, 4));
+}
+
+function saveFileByContent(filename, content, ext) {
+    fs.writeFileSync(filename, content);
 }
 
 function covertToColor(value) {
@@ -360,7 +364,7 @@ function cocosGenNodeByData(data, parent, isSetParent) {
         let setFn = node.setPreferredSize ? node.setPreferredSize : node.setContentSize;
         let width = !isNull(data.width) ? parseFloat(data.width) : node.width;
         let height = !isNull(data.height) ? parseFloat(data.height) : node.height;
-        setFn.call(node, width, height);
+        setFn.call(node, cc.size(width, height));
     }
     // (!isNull(data.width)) && (node.width = parseFloat(data.width));
     // (!isNull(data.height)) && (node.height = parseFloat(data.height));

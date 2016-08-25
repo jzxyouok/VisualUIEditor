@@ -336,7 +336,7 @@
                 let baseNode = null;
                 if(!isBaseType(node)) {
                     var children = node.getChildren();
-                    for(var i = 0; i < children.length; i++) {
+                    for(var i = children.length - 1; i >= 0; i--) {
                         baseNode = calcCollectNode(children[i], rect);
                         if(baseNode) {
                             break;
@@ -537,11 +537,11 @@
             }
 
             let data = cocosExportNodeData(item);
-            //no support same tag in same children
-            if(data.tag && data.tag.length > 0) {
-                data.tag = null;
+            //no support same id in same children
+            if(data.id && data.id.length > 0) {
+                data.id = null;
             }
-
+            
             let genNode = cocosGenNodeByData(data, parent);
             if(!genNode) {
                 continue;
@@ -732,7 +732,7 @@
 
         let forgeRect = this.$.scene.$.forgeCanvas.getBoundingClientRect();
         let objectLen = canvas.getObjects().length;
-        for(var i = 0; i < children.length; i++) {
+        for(var i = children.length - 1; i >= 0; i--) {
             let isSuccessAdd = this.recursiveAddChild(children[i], rect, isClick);
             if(isClick && isSuccessAdd) {
                 break;

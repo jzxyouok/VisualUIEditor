@@ -21,6 +21,10 @@ cocosGetItemByUUID = function(node, uuid) {
 }
 
 function isBaseTypeByName(name) {
+    let index = name.indexOf(":")
+    if(index >= 0) {
+        name = name.substring(0, index);
+    }
     if(name == "LabelTTF" || name == "Slider" || name == "Sprite"
        || name == "Scale9" || name == "Input" || name == "Button" || name == "CheckBox") {
         return true;
@@ -220,6 +224,7 @@ function cocosExportNodeData(node, ext) {
         (node._barSelectBall) && (data["barSelectBall"] = node._barSelectBall);
         (node._barDisableBall) && (data["barDisableBall"] = node._barDisableBall);
     } else if(node._className == "Button") {
+        (node.isScale9Enabled()) && (data["scale9Enable"] = node.isScale9Enabled());
         (node._bgNormal) && (data["bgNormal"] = node._bgNormal);
         (node._bgSelect) && (data["bgSelect"] = node._bgSelect);
         (node._bgDisable) && (data["bgDisable"] = node._bgDisable);
@@ -366,8 +371,6 @@ function cocosGenNodeByData(data, parent, isSetParent) {
         let height = !isNull(data.height) ? parseFloat(data.height) : node.height;
         setFn.call(node, cc.size(width, height));
     }
-    // (!isNull(data.width)) && (node.width = parseFloat(data.width));
-    // (!isNull(data.height)) && (node.height = parseFloat(data.height));
     (!isNull(data.x)) && (node.x = parseFloat(data.x));
     (!isNull(data.y)) && (node.y = parseFloat(data.y));
 
@@ -417,14 +420,20 @@ function cocosGenNodeByData(data, parent, isSetParent) {
 
         if(data.spriteBg && getFullPathForName(data.spriteBg)) {
             let fullpath = getFullPathForName(data.spriteBg);
+            let anchor = node.getAnchorPoint();
+            let size = node.getPreferredSize();
             node.initWithBackgroundSprite(new cc.Scale9Sprite(fullpath));
+            node.setAnchorPoint(anchor);
+            node.setPreferredSize(size);
             node._spriteBg = data.spriteBg;
         }
 
     } else if(data.type == "Sprite") {
         if(data.spriteFrame && getFullPathForName(data.spriteFrame)) {
             let fullpath = getFullPathForName(data.spriteFrame);
-            node.init(fullpath);
+            let anchor = node.getAnchorPoint();
+            node.initWithFile(fullpath);
+            node.setAnchorPoint(anchor);
             node._spriteFrame = data.spriteFrame;
         }
         data.blendSrc && (node.setBlendFunc(parseInt(data.blendSrc), node.getBlendFunc().dst));
@@ -434,7 +443,9 @@ function cocosGenNodeByData(data, parent, isSetParent) {
 
         if(data.spriteFrame && getFullPathForName(data.spriteFrame)) {
             let fullpath = getFullPathForName(data.spriteFrame);
+            let anchor = node.getAnchorPoint();
             node.initWithFile(fullpath);
+            node.setAnchorPoint(anchor);
             node._spriteFrame = data.spriteFrame;
         }
 
@@ -454,7 +465,7 @@ function cocosGenNodeByData(data, parent, isSetParent) {
         setNodeSpriteFrame("barSelectBall", data["barSelectBall"], node, node.loadSlidBallTexturePressed);
         setNodeSpriteFrame("barDisableBall", data["barDisableBall"], node, node.loadSlidBallTextureDisabled);
     } else if(data.type == "Button") {
-        (data["percent"]) && (node.percent = data["percent"]);
+        (data["scale9Enable"]) && (node.setScale9Enabled(data["scale9Enable"]));
         setNodeSpriteFrame("bgNormal", data["bgNormal"], node, node.loadTextureNormal);
         setNodeSpriteFrame("bgSelect", data["bgSelect"], node, node.loadTexturePressed);
         setNodeSpriteFrame("bgDisable", data["bgDisable"], node, node.loadTextureDisabled);

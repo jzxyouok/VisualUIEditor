@@ -99,6 +99,7 @@ function AddPropChange(node, uuid, newValue) {
 function setSizeChange(node, prop, newValue) {
     if(prop == "width") {
         let setFn = node.setPreferredSize ? node.setPreferredSize : node.setContentSize;
+        let perfer = node.setPreferredSize;
         setFn.call(node, cc.size(newValue, node.height));    
     } else {
         let setFn = node.setPreferredSize ? node.setPreferredSize : node.setContentSize;
@@ -515,7 +516,9 @@ NodeData.prototype = {
                 this._node[path] = value;
             }
         } else if(this._node._className == "Button") {
-            if(path == "bgNormal") {
+            if(path == "isScale9Enabled") {
+                this._node.setScale9Enabled(value);
+            } else if(path == "bgNormal") {
                 this.setSpriteFrame(path, value, "res/default/ButtonNormal.png", this._node.loadTextureNormal);
             } else if(path == "bgSelect") {
                 this.setSpriteFrame(path, value, "res/default/ButtonSelect.png", this._node.loadTexturePressed);
@@ -1294,6 +1297,17 @@ ButtonData.prototype = {
     __displayName__: "Button",
     __type__: "cc.Button",
 
+    get isScale9Enabled() {
+        return {
+            path: "isScale9Enabled",
+            type: "check",
+            name: "isScale9Enabled",
+            attrs: {
+            },
+            value: this._node.isScale9Enabled(),
+        };
+    },
+
     get bgNormal() {
         return {
             path: "bgNormal",
@@ -1378,6 +1392,7 @@ ButtonData.prototype = {
 
     get __props__() {
         return [
+            this.isScale9Enabled,
             this.bgNormal,
             this.bgSelect,
             this.bgDisable,

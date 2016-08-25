@@ -541,7 +541,7 @@
             if(data.id && data.id.length > 0) {
                 data.id = null;
             }
-            
+
             let genNode = cocosGenNodeByData(data, parent);
             if(!genNode) {
                 continue;
@@ -549,9 +549,6 @@
             this._doItemAdd(parent, genNode);
             Editor.Ipc.sendToAll("ui:scene_item_add", {uuid:genNode.uuid});
         }
-
-
-
     },
 
     _doItemDelete: function(node) {
@@ -566,6 +563,42 @@
         let newValue = cocosExportNodeData(node, {uuid: true});
         this._undo.add(newPropCommandChange(runScene, parent.uuid, node.uuid, {}, newValue, AddPropChange));
         parent.addChild(node);
+    },
+
+    _doItemMove: function(event) {
+        let canvas = this.$.scene.getFabricCanvas();
+        let objects = canvas.getObjects();
+        let runScene = this.$.scene.getRunScene();
+        let undo = runScene._undo;
+
+        let step = 1;
+        let prop = 'x';
+        if(event.keyCode == Editor.KeyCode('left')) {
+            step = -1;
+        } else if(event.keyCode == Editor.KeyCode('right')) {
+            step = 1;
+        } else if(event.keyCode == Editor.KeyCode('up')) {
+            step = 1;
+            prop = 'y';
+        } else if(event.keyCode == Editor.KeyCode('down')) {
+            step = -1;
+            prop = 'y';
+        }
+
+        if (event.shiftKey) {
+            step = step * 10;
+        }
+        
+        for(var i = 0; i < objects.length; i++) {
+            let child = objects[i]._innerItem;
+            let oldValue = child[prop];
+            if(prop == 'x') {
+                FixNodeHor(child, step);
+            } else {
+                FixNodeVer(child, step);
+            }
+            undo.add(newPropCommandChange(runScene, child.uuid, prop, oldValue, child[prop]));
+        }
     },
 
     ready: function () {
@@ -622,7 +655,15 @@
                this._doSelectAll();
                event.stopPropagation();
                event.preventDefault();
+           } else if(event.keyCode == Editor.KeyCode('esc')) {
+               this.$.scene.getFabricCanvas().clear();
+               this._firstSelectItem = null;
+           } else if(event.keyCode == Editor.KeyCode('left') || event.keyCode == Editor.KeyCode('right') || event.keyCode == Editor.KeyCode('up') || event.keyCode == Editor.KeyCode('down')) {
+               this._doItemMove(event);
+               event.stopPropagation();
+               event.preventDefault();
            }
+            
            if(event.keyCode == Editor.KeyCode('s') && event.ctrlKey && this._openPath) {
                if(this.modeSelected == 1) {
                    saveFileByContent(this._openPath, this._editor.getValue())

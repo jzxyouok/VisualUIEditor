@@ -312,6 +312,40 @@ function checkPathRepeat(node, path) {
     return false
 }
 
+function calcWidth(node, width, parent) {
+    let ret = {width : 0, isWidthPer : false};
+    if(isNull(width)) {
+        width = node.width;
+    }
+    width = width.toString();
+    let index = width.indexOf("%")
+    if(!parent || index < 0) {
+        ret.width = parseFloat(width)
+        return ret;
+    }
+
+    ret.isWidthPer = true;
+    ret.width = parent.getContentSize().width * parseFloat(width) / 100;
+    return ret;
+}
+
+function calcHeight(node, height, parent) {
+    let ret = {height : 0, isHeightPer : false};
+    if(isNull(height)) {
+        height = node.height;
+    }
+    height = height.toString();
+    let index = height.indexOf("%")
+    if(!parent || index < 0) {
+        ret.height = parseFloat(height)
+        return ret;
+    }
+
+    ret.isHeightPer = true;
+    ret.height = parent.getContentSize().height * parseFloat(height) / 100;
+    return ret;
+}
+
 function cocosGenNodeByData(data, parent, isSetParent) {
     if(!data) {
         return;
@@ -367,9 +401,11 @@ function cocosGenNodeByData(data, parent, isSetParent) {
     (data.id) && (node._name = data.id);
     if(!isNull(data.width) || !isNull(data.height)) {
         let setFn = node.setPreferredSize ? node.setPreferredSize : node.setContentSize;
-        let width = !isNull(data.width) ? parseFloat(data.width) : node.width;
-        let height = !isNull(data.height) ? parseFloat(data.height) : node.height;
-        setFn.call(node, cc.size(width, height));
+        let widthRet = calcWidth(node, data.width, parent);
+        let heightRet = calcHeight(node, data.height, parent);
+        node.isWidthPer = widthRet.isWidthPer;
+        node.isHeightPer = heightRet.isHeightPer;
+        setFn.call(node, cc.size(widthRet.width, heightRet.height));
     }
     (!isNull(data.x)) && (node.x = parseFloat(data.x));
     (!isNull(data.y)) && (node.y = parseFloat(data.y));

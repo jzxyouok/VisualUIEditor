@@ -881,7 +881,7 @@
         if(data) {
             isCanControl = true;
         } else if(asset) {
-            if(endWith(asset, ".ui") || endWith(asset, ".png")) {
+            if(endWith(asset, ".ui") || endWith(asset, ".png") || endWith(asset, ".jpg")) {
                 isCanControl = true;
             }
         }
@@ -916,7 +916,7 @@
             let subPath = calcRelativePath(window.projectFolder + "/", asset);
             if(endWith(subPath, ".ui")) {
                 node = cocosGenNodeByData({"path":subPath}, runScene);
-            } else if(endWith(subPath, ".png")) {
+            } else if(endWith(subPath, ".png") || endWith(subPath, ".jpg")) {
                 node = createEmptyNodeByType("Sprite");
                 if(node) {
                     setNodeSpriteFrame("spriteFrame", subPath, node, node.initWithFile);
